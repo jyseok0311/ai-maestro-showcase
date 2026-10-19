@@ -1,158 +1,46 @@
-<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8">
-<title>성과공유회 엑스배너 600x1800</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css">
-<style>
-  /* 실제 크기 600 x 1800 mm (재단 여백 미포함) */
-  @page { size: 600mm 1800mm; margin: 0; }
-  :root {
-    --paper: #f5f2ec;
-    --ink: #121a2f;
-    --ink-2: #4a5468;
-    --ink-3: #8a91a2;
-    --blue: #2b54c9;
-    --blue-soft: #e1e8fa;
-    --coral: #ff6b45;
-    --coral-soft: #ffe4da;
-    --line: #e3ddd2;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { width: 600mm; height: 1800mm; }
-  body {
-    font-family: "Pretendard Variable", Pretendard, "Malgun Gothic", sans-serif;
-    color: var(--ink); background: var(--paper);
-    -webkit-print-color-adjust: exact; print-color-adjust: exact; overflow: hidden;
-  }
-  .canvas { position: relative; width: 600mm; height: 1800mm; overflow: hidden; background: var(--paper); }
-  .canvas::before { /* 은은한 점 격자 */
-    content: ""; position: absolute; inset: 0;
-    background-image: radial-gradient(rgba(18,26,47,.10) 0.7mm, transparent 0.8mm);
-    background-size: 14mm 14mm;
-    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 35%);
-    mask-image: linear-gradient(180deg, #000 0%, transparent 35%);
-  }
-  .blob { position: absolute; border-radius: 50%; }
-  .blob.b1 { width: 520mm; height: 520mm; right: -220mm; top: -180mm; background: radial-gradient(circle, var(--blue-soft) 0%, rgba(225,232,250,0) 70%); }
-  .blob.b2 { width: 480mm; height: 480mm; left: -230mm; top: 820mm; background: radial-gradient(circle, var(--coral-soft) 0%, rgba(255,228,218,0) 70%); }
-  .deco { position: absolute; right: 30mm; top: 95mm; width: 150mm; height: 150mm; }
-  .pad { position: absolute; left: 50mm; right: 50mm; }
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>엑스배너_H</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"><style>
+:root { --bg:#F3EEE3; --ink:#1A1916; --ink2:#5b564c; --gold:#A87B22; --gold2:rgba(168,123,34,.5); }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Pretendard Variable',Pretendard,'Malgun Gothic',sans-serif; color:var(--ink); background:var(--bg); -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+.sans { font-family:'Pretendard Variable',Pretendard,'Malgun Gothic',sans-serif; }
+.canvas { position:relative; overflow:hidden; background:var(--bg); }
+.canvas::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 40%, rgba(255,255,255,.55), rgba(255,255,255,0) 60%); }
+.frame { position:absolute; border:var(--fb) solid var(--gold); }
+.frame::after { content:''; position:absolute; inset:var(--fi); border:calc(var(--fb) * .55) solid var(--gold2); }
+.staff { position:relative; }
+.staff .l { position:absolute; left:0; right:0; background:var(--ink); }
+.note { position:absolute; border-radius:50%; background:var(--ink); transform:rotate(-22deg); }
+.note::after { content:''; position:absolute; right:0; background:var(--ink); }
+.note.last { background:var(--gold); } .note.last::after { background:var(--gold); }
+em { font-style:normal; color:var(--gold); }
 
-  .org { top: 60mm; display: flex; align-items: center; gap: 8mm; font-size: 21mm; font-weight: 700; letter-spacing: -.5mm; }
-  .org .mark { width: 30mm; height: 30mm; border-radius: 8mm; background: var(--ink); display: grid; place-items: center; }
-  .org .mark svg { width: 17mm; height: 17mm; }
-
-  .kicker { top: 150mm; }
-  .kicker span { display: inline-flex; padding: 6mm 13mm; border-radius: 99mm; background: var(--blue); color: #fff; font-size: 19mm; font-weight: 700; letter-spacing: -.5mm; }
-
-  .headline { top: 215mm; font-size: 82mm; font-weight: 900; line-height: 1.14; letter-spacing: -4mm; }
-  .headline .hl { color: var(--coral); }
-  .sub { top: 525mm; font-size: 25mm; font-weight: 500; line-height: 1.5; letter-spacing: -.8mm; color: var(--ink-2); }
-  .sub b { color: var(--ink); font-weight: 800; }
-
-  .illust { top: 670mm; height: 392mm; }
-  .illust svg { width: 100%; height: 100%; display: block; overflow: visible; }
-
-  .stories { top: 1080mm; display: grid; gap: 11mm; }
-  .story { display: flex; align-items: center; gap: 12mm; background: #fff; border-radius: 14mm; padding: 13mm 16mm; box-shadow: 0 0.5mm 0 var(--line), 0 6mm 14mm rgba(18,26,47,.06); }
-  .story .ic { flex: none; width: 44mm; height: 44mm; border-radius: 11mm; display: grid; place-items: center; }
-  .story .ic svg { width: 24mm; height: 24mm; }
-  .story:nth-child(1) .ic { background: var(--blue-soft); color: var(--blue); }
-  .story:nth-child(2) .ic { background: var(--coral-soft); color: var(--coral); }
-  .story:nth-child(3) .ic { background: #e3f1ea; color: #1f8a5b; }
-  .story h3 { font-size: 24mm; font-weight: 800; letter-spacing: -.8mm; }
-  .story p { margin-top: 3mm; font-size: 16.5mm; font-weight: 500; line-height: 1.4; color: var(--ink-2); letter-spacing: -.4mm; word-break: keep-all; }
-
-  .info { top: 1438mm; border-radius: 18mm; background: var(--blue-soft); color: var(--ink); border: 1mm solid rgba(43,84,201,.14); padding: 30mm 32mm; display: grid; gap: 22mm; }
-  .info .row { display: flex; align-items: flex-start; gap: 12mm; }
-  .info .row svg { width: 26mm; height: 26mm; color: var(--blue); flex: none; margin-top: 4mm; }
-  .info .v { font-size: 40mm; font-weight: 800; letter-spacing: -1.5mm; line-height: 1.2; }
-  .info .v small { display: block; margin-top: 2mm; font-size: 26mm; font-weight: 600; color: var(--ink-2); letter-spacing: -.5mm; }
-</style>
-</head>
-<body>
-<div class="canvas">
-  <div class="blob b1"></div><div class="blob b2"></div>
-  <svg class="deco" viewBox="0 0 300 300" aria-hidden="true"><path d="M170 30c8 52 34 78 86 86-52 8-78 34-86 86-8-52-34-78-86-86 52-8 78-34 86-86z" fill="#ff6b45"/><path d="M70 170c4 26 17 39 43 43-26 4-39 17-43 43-4-26-17-39-43-43 26-4 39-17 43-43z" fill="#2b54c9"/><circle cx="250" cy="230" r="10" fill="#121a2f"/><circle cx="60" cy="60" r="6" fill="#ff6b45" opacity=".5"/></svg>
-
-  <div class="pad org">
-    <span class="mark"><svg viewBox="0 0 24 24"><path d="M12 2l2.2 6.3L20.5 10l-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-1.7z" fill="#ff6b45"/><circle cx="19" cy="19" r="2.2" fill="#fff"/></svg></span>
-    부산대학교 AX·정보화혁신본부
-  </div>
-
-  <div class="pad kicker"><span>AI 마에스트로 성과공유회</span></div>
-
-  <h1 class="pad headline">코딩을 몰라도,<br><span class="hl">AI 에이전트</span>를<br>만들었습니다</h1>
-
-  <p class="pad sub"><b>AI 교육</b>부터 <b>자율 스터디</b>까지,<br>비전공 실무자들이 <b>바이브코딩</b>으로<br>업무에 AI를 입혀 본 <b>경험과 배움</b>을 나눕니다</p>
-
-  <!-- 일러스트: 말로 요청 → 에이전트 완성 -->
-  <div class="pad illust">
-    <svg viewBox="0 0 600 470" aria-hidden="true">
-      <defs>
-        <filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#121a2f" flood-opacity=".10"/></filter>
-        <marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#ff6b45"/></marker>
-      </defs>
-      <!-- 채팅 창 -->
-      <g filter="url(#sh)"><rect x="0" y="12" width="580" height="306" rx="24" fill="#fff"/></g>
-      <circle cx="30" cy="42" r="7" fill="#ff8a6b"/><circle cx="52" cy="42" r="7" fill="#f6c34a"/><circle cx="74" cy="42" r="7" fill="#5cc28a"/>
-      <text x="100" y="49" font-size="19" font-weight="700" fill="#8a91a2">바이브코딩 · 말로 만드는 코드</text>
-      <line x1="0" y1="70" x2="580" y2="70" stroke="#efeae1" stroke-width="2"/>
-      <rect x="168" y="88" width="388" height="92" rx="22" fill="#2b54c9"/>
-      <text x="192" y="126" font-size="23" font-weight="700" fill="#fff">우리 부서 엑셀 데이터로</text>
-      <text x="192" y="160" font-size="23" font-weight="700" fill="#fff">현황 대시보드 만들어 줘</text>
-      <circle cx="44" cy="222" r="20" fill="#ff6b45"/>
-      <path d="M44 208l3.2 8.8 8.8 3.2-8.8 3.2L44 232l-3.2-8.8-8.8-3.2 8.8-3.2z" fill="#fff"/>
-      <rect x="76" y="198" width="400" height="104" rx="22" fill="#f1efe9"/>
-      <text x="98" y="234" font-size="21" font-weight="700" fill="#121a2f">좋아요! 데이터를 읽고 만들어 볼게요</text>
-      <rect x="98" y="254" width="70" height="12" rx="6" fill="#2b54c9" opacity=".55"/>
-      <rect x="176" y="254" width="140" height="12" rx="6" fill="#ff6b45" opacity=".45"/>
-      <rect x="324" y="254" width="90" height="12" rx="6" fill="#121a2f" opacity=".15"/>
-      <rect x="118" y="276" width="110" height="12" rx="6" fill="#121a2f" opacity=".15"/>
-      <rect x="236" y="276" width="80" height="12" rx="6" fill="#2b54c9" opacity=".55"/>
-      <!-- 화살표 -->
-      <path d="M110 340 C 120 400, 170 420, 228 404" fill="none" stroke="#ff6b45" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round" marker-end="url(#ah)"/>
-      <path d="M70 410l2.6 7 7 2.6-7 2.6-2.6 7-2.6-7-7-2.6 7-2.6z" fill="#2b54c9"/>
-      <!-- 결과 카드 -->
-      <g filter="url(#sh)"><rect x="246" y="300" width="354" height="170" rx="24" fill="#fff"/></g>
-      <text x="270" y="364" font-size="22" font-weight="800" fill="#121a2f">부서 현황 대시보드</text>
-      <text x="270" y="392" font-size="16" font-weight="600" fill="#8a91a2">업무 데이터 자동 연동</text>
-      <rect x="270" y="414" width="64" height="26" rx="13" fill="#e1e8fa"/><text x="285" y="432" font-size="13" font-weight="700" fill="#2b54c9">엑셀</text>
-      <rect x="342" y="414" width="64" height="26" rx="13" fill="#ffe4da"/><text x="357" y="432" font-size="13" font-weight="700" fill="#ff6b45">차트</text>
-      <line x1="452" y1="446" x2="578" y2="446" stroke="#e3ddd2" stroke-width="2"/>
-      <rect x="456" y="410" width="20" height="36" rx="5" fill="#e1e8fa"/>
-      <rect x="482" y="388" width="20" height="58" rx="5" fill="#9fb3ea"/>
-      <rect x="508" y="398" width="20" height="48" rx="5" fill="#e1e8fa"/>
-      <rect x="534" y="370" width="20" height="76" rx="5" fill="#2b54c9"/>
-      <rect x="560" y="356" width="14" height="90" rx="5" fill="#ff6b45"/>
-      <!-- 완성 배지 -->
-      <rect x="414" y="280" width="190" height="46" rx="23" fill="#ff6b45"/>
-      <circle cx="439" cy="303" r="12" fill="#fff"/>
-      <path d="M433 303l4.5 4.5 8-9" fill="none" stroke="#ff6b45" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-      <text x="460" y="311" font-size="20" font-weight="800" fill="#fff">에이전트 완성</text>
-    </svg>
-  </div>
-
-  <div class="pad stories">
-    <div class="story">
-      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg></div>
-      <div><h3>말로 만든 코드</h3><p>코딩을 배운 적 없는 실무자가<br>대화만으로 시작한 첫 에이전트</p></div>
-    </div>
-    <div class="story">
-      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M20 12c0 1.66-3.58 3-8 3s-8-1.34-8-3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/></svg></div>
-      <div><h3>내 업무 데이터로</h3><p>엑셀·문서·공시자료, 매일 쓰던<br>데이터가 AI의 재료가 되기까지</p></div>
-    </div>
-    <div class="story">
-      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3M8 22h8"/></svg></div>
-      <div><h3>시행착오의 이야기</h3><p>막혔던 순간과 돌파한 방법,<br>부서로 번져 간 경험</p></div>
-    </div>
-  </div>
-
-  <div class="pad info">
-    <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><div class="v">2026. 10. 30.(금)<small>오후 2시</small></div></div>
-    <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><div class="v">대학본부 본관<small>3층 대강당</small></div></div>
-  </div>
-</div>
-</body>
-</html>
+@page { size:600mm 1800mm; margin:0; }
+html, body { width:600mm; height:1800mm; }
+.canvas { width:600mm; height:1800mm; display:flex; flex-direction:column; align-items:center; justify-content:space-between; text-align:center; padding:62mm 50mm 80mm; --fb:1.2mm; --fi:4mm; }
+.g { position:relative; width:100%; display:flex; flex-direction:column; align-items:center; }
+.frame { inset:20mm; }
+.org { position:relative; font-size:15mm; font-weight:700; letter-spacing:.06em; color:var(--ink2); }
+.pre { position:relative; margin-top:0; font-size:17mm; color:var(--gold); letter-spacing:.32em; font-weight:700; }
+h2 { position:relative; margin-top:10mm; font-size:76mm; font-weight:800; letter-spacing:-.03em; line-height:1.1; }
+.sub { position:relative; margin-top:8mm; font-size:30mm; font-weight:700; }
+.st { position:relative; }
+.head { position:relative; margin-top:0; font-size:39mm; font-weight:800; line-height:1.4; letter-spacing:-.03em; }
+.lead { position:relative; margin-top:16mm; font-size:17mm; font-weight:700; color:var(--ink2); }
+.prog { position:relative; width:100%; border-top:1mm solid var(--ink); text-align:left; }
+.prog div { display:grid; grid-template-columns:48mm 1fr; padding:16mm 0 15mm; border-bottom:.5mm solid rgba(0,0,0,.25); align-items:baseline; }
+.prog .m { color:var(--gold); font-weight:800; font-size:28mm; }
+.prog b { display:block; font-size:29mm; font-weight:800; }
+.prog small { display:block; margin-top:5mm; font-size:16mm; color:var(--ink2); }
+.foot { position:relative; }
+.when { font-size:52mm; font-weight:900; letter-spacing:-.04em; }
+.time { margin-top:4mm; font-size:34mm; font-weight:800; color:var(--gold); }
+.where { margin-top:10mm; font-size:22mm; font-weight:700; }
+</style></head><body><div class="canvas"><div class="frame"></div>
+<div class="org sans">부산대학교 AX·정보화혁신본부</div>
+<div class="g"><div class="pre">PERFORMANCE</div><h2>AI 마에스트로</h2><div class="sub">성과공유회</div></div>
+<div class="st"><div class="staff" style="width:470mm;height:200mm"><style>.note::after{width:1.62mm;height:56mm;bottom:7.65mm;}</style><div class="l" style="top:60.00mm;height:0.9mm"></div><div class="l" style="top:86.00mm;height:0.9mm"></div><div class="l" style="top:112.00mm;height:0.9mm"></div><div class="l" style="top:138.00mm;height:0.9mm"></div><div class="l" style="top:164.00mm;height:0.9mm"></div><i class="note" style="left:28.20mm;top:169.20mm;width:22mm;height:17mm"></i><i class="note" style="left:83.66mm;top:141.38mm;width:22mm;height:17mm"></i><i class="note" style="left:139.12mm;top:136.96mm;width:22mm;height:17mm"></i><i class="note" style="left:194.58mm;top:109.14mm;width:22mm;height:17mm"></i><i class="note" style="left:250.04mm;top:104.72mm;width:22mm;height:17mm"></i><i class="note" style="left:305.50mm;top:76.90mm;width:22mm;height:17mm"></i><i class="note" style="left:360.96mm;top:72.48mm;width:22mm;height:17mm"></i><i class="note last" style="left:416.42mm;top:44.66mm;width:22mm;height:17mm"></i><div class="cap sans" style="position:absolute;left:0;right:0;bottom:0;display:flex;font-size:12mm;color:#5b564c"><span style="position:absolute;left:34.80mm">1</span><span style="position:absolute;left:90.26mm">2</span><span style="position:absolute;left:145.72mm">3</span><span style="position:absolute;left:201.18mm">4</span><span style="position:absolute;left:256.64mm">5</span><span style="position:absolute;left:312.10mm">6</span><span style="position:absolute;left:367.56mm">7</span><span style="position:absolute;left:423.02mm">8</span></div></div></div>
+<div class="g"><div class="head">코딩을 몰라도,<br><em>AI 에이전트</em>를 만들었습니다</div>
+<div class="lead">21명이 연주한 여덟 번의 미션, 결과물 100건</div></div>
+<div class="prog"><div><span class="m">Ⅰ</span><span><b>사업성과 발표</b><small class="sans">AX혁신과</small></span></div><div><span class="m">Ⅱ</span><span><b>우수사례 발표</b><small class="sans">마에스트로 4명</small></span></div><div><span class="m">Ⅲ</span><span><b>AX 특강</b><small class="sans">AI 그라운드 장병준</small></span></div><div><span class="m">Ⅳ</span><span><b>피날레</b><small class="sans">성과조사 · 단체사진</small></span></div></div>
+<div class="foot"><div class="when sans">10. 30.(금)</div><div class="time sans">오후 2시</div><div class="where sans">대학본부 본관 3층 대강당</div></div>
+</div></body></html>
