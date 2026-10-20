@@ -85,7 +85,9 @@ function build(rows) {
     if (!seen.has(key) || seen.get(key).t <= o.t) seen.set(key, o);
   });
   const recs = [...seen.values()];
-  const people = [...new Set(recs.map(x => x.who))];
+  // 제출 기록이 없어도 악보에 한 줄을 갖는 마에스트로(명단 21명 기준) — 입학과 박*형
+  const ROSTER_EXTRA = ['박*형'];
+  const people = [...new Set(recs.map(x => x.who).concat(ROSTER_EXTRA))];
   const cell = new Map();   // 사람·회차 → 대표 기록(웹 > 코드·문서 > 없음)
   const rank = { live:3, code:2, link:2, none:1 };
   recs.forEach(x => { const k = x.who + '|' + x.r, c = cell.get(k); if (!c || rank[x.kd.k] > rank[c.kd.k] || (rank[x.kd.k] === rank[c.kd.k] && x.t > c.t)) cell.set(k, x); });
@@ -100,7 +102,7 @@ function build(rows) {
   recs.filter(x => x.kd.k === 'live').forEach(x => { const k = x.who + '|' + site(x.kd.u); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(x); });
   const full = people.filter(p => doneOf(p) === 8).length;
   document.getElementById('stats').innerHTML = [
-    [people.length, '명', '미션을 낸 마에스트로', ''],
+    [people.length, '명', 'AI 마에스트로', ''],
     [cell.size, '칸', `채워진 악보 (전체 ${people.length * 8}칸)`, 'g'],
     [full, '명', '여덟 미션 완주', ''],
     [lives.size, '개', '바로 열리는 웹 결과물', 'g'],
