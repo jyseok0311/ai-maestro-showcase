@@ -301,10 +301,12 @@ footer { padding:40px 0 calc(100px + env(safe-area-inset-bottom)); text-align:ce
 .pa-bar .sh { flex:none; width:40px; height:40px; border-radius:50%; border:1px solid rgba(231,196,120,.45); background:transparent; color:#E2B85C; cursor:pointer; display:grid; place-items:center; }
 .pa-bar .sh svg { width:18px; height:18px; }
 .pa-bar .go { flex:none; padding:11px 18px; border-radius:999px; background:#E2B85C; color:var(--ink); font-weight:800; font-size:14.5px; text-decoration:none; }
-.pa-top { position:fixed; right:22px; bottom:calc(92px + env(safe-area-inset-bottom)); z-index:49; width:42px; height:42px; border-radius:50%;
-          border:1px solid rgba(168,123,34,.35); background:rgba(251,248,241,.45); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); color:var(--gold); font-size:18px; font-weight:800; cursor:pointer;
-          opacity:0; transform:translateY(10px); pointer-events:none; transition:opacity .3s, transform .3s; box-shadow:0 6px 14px rgba(26,25,22,.1); }
-.pa-top.on { opacity:1; transform:none; pointer-events:auto; }
+.pa-top { position:fixed; right:18px; bottom:calc(92px + env(safe-area-inset-bottom)); z-index:49; width:32px; height:32px; padding:0; border-radius:50%;
+          border:1px solid rgba(168,123,34,.28); background:rgba(251,248,241,.28); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); color:var(--gold); font-size:14px; font-weight:800; line-height:1; cursor:pointer;
+          opacity:0; transform:translateY(10px); pointer-events:none; transition:opacity .3s, transform .3s; box-shadow:0 3px 8px rgba(26,25,22,.06); }
+.pa-top::before { content:''; position:absolute; inset:-7px; }   /* 작아져도 손가락으로 누르기 쉽게 */
+.pa-top.on { opacity:.6; transform:none; pointer-events:auto; }
+.pa-top.on:hover, .pa-top.on:focus-visible { opacity:1; }
 .tabs { top:calc(74px + env(safe-area-inset-top)) !important; }   /* 흔적 장의 회차 탭이 장 바로가기 아래에 붙도록 */
 section.chap, #ax { scroll-margin-top:70px; }
 footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
