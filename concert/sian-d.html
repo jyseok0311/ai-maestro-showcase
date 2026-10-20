@@ -12,8 +12,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css">
 <style>
 /* 시안 D: 사진을 좌우에 흩뿌리지 않고, 화면을 내리며 시간 순서대로 읽는 이야기 구성.
-   첫 화면(확정 포스터 디자인) → Ⅰ 교육 8회(연표) → Ⅱ 자율 스터디(숫자) → Ⅲ 10. 30. 성과공유회 */
-:root { --bg:#F3EEE3; --ink:#1A1916; --ink2:#5b564c; --muted:#908978; --gold:#A87B22; --gold2:rgba(168,123,34,.45); --paper:#FBF8F1; }
+   첫 화면(확정 포스터 디자인) → Ⅰ 교육 8회(연표) → Ⅱ 자율 스터디(숫자) → Ⅲ 마에스트로의 흔적 → Ⅳ 10. 30. 성과공유회 */
+:root { --bg:#F3EEE3; --ink:#1A1916; --ink2:#5b564c; --muted:#908978; --gold:#A87B22; --gold2:rgba(168,123,34,.45); --gold3:rgba(168,123,34,.16); --paper:#FBF8F1; }
 * { box-sizing:border-box; margin:0; padding:0; }
 html { background:var(--bg); scroll-behavior:smooth; -webkit-text-size-adjust:100%; -webkit-tap-highlight-color:transparent; }
 body { font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif; color:var(--ink);
@@ -89,11 +89,6 @@ h2 { margin-top:6px; font-size:clamp(26px, 7vw, 38px); font-weight:800; letter-s
 .stats span { display:block; margin-top:8px; font-size:13px; color:var(--ink2); }
 .stats .g b { color:var(--gold); }
 .staffline { margin:48px auto 0; display:block; width:100%; opacity:.5; }
-.more { margin-top:30px; text-align:center; }
-.more a { display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:999px; border:1.5px solid var(--gold); color:var(--gold);
-          text-decoration:none; font-size:16px; font-weight:800; background:var(--paper); transition:background .2s, color .2s; }
-.more a:hover { background:var(--gold); color:#fff; }
-.more p { margin-top:10px; font-size:13px; color:var(--muted); }
 
 /* ── Ⅲ 성과공유회 ── */
 .prog-hd { margin-top:44px; display:flex; justify-content:space-between; align-items:flex-end; padding:0 2px 9px; border-bottom:1px solid var(--gold); }
@@ -119,6 +114,103 @@ h2 { margin-top:6px; font-size:clamp(26px, 7vw, 38px); font-weight:800; letter-s
 .group img { display:block; width:100%; filter:sepia(.15); }
 .group figcaption { padding:9px 4px 10px; text-align:center; font-size:13px; color:var(--muted); }
 footer { padding:40px 0 calc(70px + env(safe-area-inset-bottom)); text-align:center; font-size:12px; color:var(--muted); line-height:1.7; }
+
+/* ── Ⅲ 마에스트로의 흔적 — traces.html 과 같은 모양 ── */
+/* ── Ⅰ 스무 개의 악보 — 한 사람이 한 줄의 오선, 미션 하나가 음표 하나. 회차가 오를수록 음도 올라갑니다 ── */
+.legend { margin-top:26px; display:flex; flex-wrap:wrap; justify-content:center; gap:8px 18px; font-size:13px; color:var(--ink2); }
+.legend span { display:inline-flex; align-items:center; gap:7px; }
+.legend i { width:11px; height:9px; border-radius:50%; transform:rotate(-18deg); display:inline-block; }
+.lg-live i { background:var(--gold); } .lg-link i { background:var(--ink); } .lg-none i { border:1.6px solid var(--ink); }
+.score { margin-top:26px; }
+.srow { display:grid; grid-template-columns:62px 1fr 34px; align-items:center; gap:10px; }
+.srow + .srow { margin-top:4px; }
+.srow .nm { font-size:14px; font-weight:700; text-align:right; white-space:nowrap; }
+.srow .ct { font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
+.srow .ct b { color:var(--gold); font-size:14px; }
+.ostaff { position:relative; height:44px; display:grid; grid-template-columns:repeat(8, 1fr);
+         background:linear-gradient(var(--gold2), var(--gold2)) 0 8px / 100% .8px no-repeat,
+                    linear-gradient(var(--gold2), var(--gold2)) 0 15px / 100% .8px no-repeat,
+                    linear-gradient(var(--gold2), var(--gold2)) 0 22px / 100% .8px no-repeat,
+                    linear-gradient(var(--gold2), var(--gold2)) 0 29px / 100% .8px no-repeat,
+                    linear-gradient(var(--gold2), var(--gold2)) 0 36px / 100% .8px no-repeat; }
+.ostaff::before, .ostaff::after { content:''; position:absolute; top:8px; height:28.8px; width:1.2px; background:var(--gold); }
+.ostaff::before { left:0; } .ostaff::after { right:0; width:3px; border-left:1px solid var(--gold); background:none; box-shadow:inset -2px 0 0 var(--gold); }
+.ostaff .c { position:relative; display:block; }
+.ostaff .c + .c::before { content:''; position:absolute; left:0; top:8px; height:28.8px; width:.6px; background:var(--gold3); }   /* 마디선 — 회차 경계 */
+.note { position:absolute; left:50%; width:12px; height:9.5px; margin-left:-6px; border-radius:50%; transform:rotate(-18deg) scale(.4); opacity:0;
+        transition:transform .55s cubic-bezier(.3,1.6,.5,1), opacity .3s; text-decoration:none; }
+.note::after { content:''; position:absolute; right:-.2px; bottom:4.5px; width:1.3px; height:22px; background:var(--ink); transform:rotate(18deg); transform-origin:bottom; }
+.note.live { background:var(--gold); } .note.live::after { background:var(--gold); }
+.note.link { background:var(--ink); }
+.note.none { border:1.6px solid var(--ink); background:transparent; } .note.none::after { right:-1.8px; bottom:2.9px; }
+.note::before { content:''; position:absolute; inset:-14px -10px; }   /* 손가락으로 누르기 쉽게 */
+.score.in .note { opacity:1; transform:rotate(-18deg) scale(1); }
+.note:hover, .note:focus-visible { outline:none; filter:drop-shadow(0 0 5px rgba(168,123,34,.7)); }
+.rest { position:absolute; left:50%; top:19px; width:8px; height:4px; margin-left:-4px; background:var(--gold3); border-radius:1px; }
+.rnum { display:grid; grid-template-columns:62px 1fr 34px; gap:10px; margin-top:6px; }
+.rnum div { display:grid; grid-template-columns:repeat(8, 1fr); text-align:center; font-family:Georgia,serif; font-style:italic; font-size:12px; color:var(--gold); }
+.foot { margin-top:22px; text-align:center; font-size:14px; color:var(--ink2); line-height:1.6; }
+.foot b { color:var(--gold); }
+.tip { position:fixed; z-index:30; max-width:240px; padding:9px 12px; border-radius:10px; background:var(--ink); color:var(--bg); font-size:12.5px; line-height:1.5;
+       pointer-events:none; opacity:0; transform:translateY(4px); transition:opacity .15s, transform .15s; }
+.tip.on { opacity:1; transform:none; } .tip b { color:#E9C46A; }
+
+/* ── Ⅱ 지금 열어 보는 결과물 ── */
+.gal { margin-top:34px; display:grid; grid-template-columns:repeat(2, 1fr); gap:16px; }
+.win { display:flex; flex-direction:column; background:#fff; border-radius:12px; overflow:hidden; text-decoration:none; color:var(--ink);
+       box-shadow:0 1px 0 var(--gold2), 0 10px 24px rgba(26,25,22,.08); transition:transform .25s, box-shadow .25s; }
+.win:hover { transform:translateY(-3px); box-shadow:0 1px 0 var(--gold), 0 16px 30px rgba(26,25,22,.14); }
+.win .bar { display:flex; align-items:center; gap:5px; padding:8px 10px; background:var(--paper); border-bottom:1px solid var(--gold3); }
+.win .bar i { width:7px; height:7px; border-radius:50%; background:var(--gold2); } .win .bar i:first-child { background:var(--gold); }
+.win .bar span { margin-left:6px; flex:1; min-width:0; font-size:11px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.win .bd { position:relative; padding:16px 16px 14px; flex:1; display:flex; flex-direction:column; gap:8px; overflow:hidden; }
+.win .bd::after { content:'♪'; position:absolute; right:12px; bottom:-14px; font-size:72px; line-height:1; color:var(--gold3); font-family:Georgia,serif; }
+.win .mi { font-size:12px; font-weight:700; color:var(--gold); }
+.win h3 { font-size:17px; font-weight:800; letter-spacing:-.015em; line-height:1.35; word-break:keep-all; overflow-wrap:anywhere; }
+.win .by { margin-top:auto; font-size:13px; color:var(--ink2); position:relative; z-index:1; }
+.win .by b { color:var(--ink); }
+.win .go { font-weight:700; color:var(--gold); float:right; text-decoration:none; }
+.win h3 a { text-decoration:none; } .win h3 a:hover { color:var(--gold); }
+.win .chips { display:flex; flex-wrap:wrap; gap:5px; position:relative; z-index:1; }
+.win .chips a { font-size:12px; font-weight:700; padding:3px 9px; border-radius:999px; border:1px solid var(--gold2); color:var(--gold); text-decoration:none; background:var(--paper); }
+.win .chips a:hover { background:var(--gold); color:#fff; border-color:var(--gold); }
+
+.gal-hd { margin-top:56px; display:flex; justify-content:space-between; align-items:flex-end; padding:0 2px 9px; border-bottom:1px solid var(--gold); }
+.gal-hd b { font-size:17px; font-weight:800; } .gal-hd i { font-family:Georgia,serif; font-weight:700; font-style:italic; font-size:14px; color:var(--gold); }
+.gal { margin-top:20px; }
+.tabs { position:sticky; top:calc(18px + env(safe-area-inset-top)); z-index:10; margin-top:30px; display:grid; grid-template-columns:repeat(8, 1fr); gap:4px;
+        padding:6px; border-radius:999px; background:rgba(251,248,241,.94); border:1px solid var(--gold2); backdrop-filter:blur(6px); box-shadow:0 6px 16px rgba(26,25,22,.06); }
+.tabs button { border:0; background:none; font:inherit; font-size:14px; font-weight:700; color:var(--ink2); padding:8px 0; border-radius:999px; cursor:pointer; }
+.tabs button[aria-selected="true"] { background:var(--ink); color:var(--bg); }
+.mhd { margin-top:28px; padding-bottom:12px; border-bottom:1px solid var(--gold); display:flex; align-items:flex-end; gap:12px; }
+.mhd .r { font-family:Georgia,serif; font-style:italic; font-weight:700; font-size:34px; color:var(--gold); line-height:.9; }
+.mhd h3 { font-size:20px; font-weight:800; letter-spacing:-.02em; line-height:1.3; }
+.mhd p { margin-top:3px; font-size:13px; color:var(--muted); }
+.mhd .n { margin-left:auto; flex:none; text-align:right; font-size:13px; color:var(--ink2); }
+.mhd .n b { display:block; font-size:24px; font-weight:800; color:var(--ink); line-height:1; }
+.recs { list-style:none; }
+.recs li { display:grid; grid-template-columns:58px 74px 1fr auto; align-items:center; gap:10px; padding:12px 2px; border-bottom:.8px solid var(--gold2); }
+.recs .w { font-weight:700; font-size:15px; }
+.recs .k { justify-self:start; font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; border:1px solid var(--gold2); color:var(--ink2); white-space:nowrap; }
+.recs .k.live { background:var(--gold); border-color:var(--gold); color:#fff; }
+.recs .k.code { background:var(--ink); border-color:var(--ink); color:var(--bg); }
+.recs .t { min-width:0; font-size:14.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.recs a.t { text-decoration:none; } .recs a.t:hover { color:var(--gold); text-decoration:underline; }
+.recs .t.dim { color:var(--muted); }
+.recs .d { font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
+.none-yet { padding:30px 0; text-align:center; color:var(--muted); font-size:14px; }
+.src { margin-top:22px; font-size:12.5px; color:var(--muted); line-height:1.7; text-align:center; }
+.tabs { margin-top:20px; }
+@media (max-width: 720px) {
+  .srow, .rnum { grid-template-columns:44px 1fr 22px; gap:6px; }
+  .srow .nm { font-size:12.5px; }
+  .srow .ct { font-size:0; } .srow .ct b { font-size:12px; }
+  .gal { grid-template-columns:1fr; gap:12px; }
+  .tabs { gap:2px; padding:4px; } .tabs button { font-size:13px; padding:8px 0; }
+  .recs li { grid-template-columns:48px 1fr auto; grid-template-areas:'w t d' 'w k k'; gap:4px 10px; }
+  .recs .w { grid-area:w; font-size:14px; align-self:start; padding-top:1px; } .recs .t { grid-area:t; } .recs .d { grid-area:d; } .recs .k { grid-area:k; }
+  .mhd .r { font-size:28px; } .mhd h3 { font-size:17px; }
+}
 
 /* 화면을 내릴 때 하나씩 떠오르기 */
 .rv { opacity:0; transform:translateY(26px); transition:opacity .9s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
@@ -189,14 +281,36 @@ footer { padding:40px 0 calc(70px + env(safe-area-inset-bottom)); text-align:cen
       <div class="g"><b data-to="4.71" data-dec="2">0<small>점</small></b><span>교육 만족도(5점)</span></div>
     </div>
     <img class="staffline rv" src="staff.webp" alt="">
-    <div class="more rv"><a href="traces.html">마에스트로의 흔적 보기 <span aria-hidden="true">→</span></a>
-      <p>마에스트로들이 미션마다 남긴 결과물을 악보처럼 모았습니다</p></div>
   </section>
 
-  <!-- Ⅲ 성과공유회 -->
+  <!-- Ⅲ 마에스트로의 흔적 — 대시보드 미션 제출 시트에서 바로 읽음(traces.js) -->
+  <section class="chap wrap" id="ch-traces">
+    <div class="chap-hd rv">
+      <div class="no">Ⅲ · Traces</div>
+      <h2>마에스트로의 <em>흔적</em></h2>
+      <p>한 사람이 한 줄의 악보입니다. 미션을 하나 낼 때마다 음표가 붙고,<br>회차가 오를수록 음도 한 칸씩 올라갑니다.</p>
+      <div class="dv"><b></b></div>
+    </div>
+    <div class="legend rv">
+      <span class="lg-live"><i></i>바로 열어 볼 수 있는 웹 결과물</span>
+      <span class="lg-link"><i></i>코드·문서·드라이브</span>
+      <span class="lg-none"><i></i>제출(링크 없음)</span>
+    </div>
+    <div class="score" id="score"></div>
+    <div class="rnum" aria-hidden="true"><span></span><div></div><span></span></div>
+    <p class="foot rv" id="scoreFoot"></p>
+    <div class="gal-hd rv"><b>지금 바로 열어 보는 결과물</b><i>Open Now</i></div>
+    <div class="gal" id="gal"></div>
+    <div class="gal-hd rv"><b>회차별 기록</b><i>Mission by Mission</i></div>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div id="panel"></div>
+    <p class="src" id="src"></p>
+  </section>
+
+  <!-- Ⅳ 성과공유회 -->
   <section class="chap wrap" id="ch3">
     <div class="chap-hd rv">
-      <div class="no">Ⅲ · October 30</div>
+      <div class="no">Ⅳ · October 30</div>
       <h2>그리고, 성과공유회</h2>
       <p>다섯 달의 결과와 시행착오를 함께 나누고, AX 특강으로 다음 단계를 준비합니다.</p>
       <div class="dv"><b></b></div>
@@ -230,6 +344,7 @@ footer { padding:40px 0 calc(70px + env(safe-area-inset-bottom)); text-align:cen
   </footer>
 </main>
 <div class="tag">시안 D · 시간 순서 스크롤</div>
+<div class="tip" id="tip" role="status"></div>
 <audio id="bgm" src="bgm.mp3" preload="none" playsinline></audio>
 
 <script>
@@ -274,5 +389,7 @@ btn.addEventListener('click', () => {
 });
 audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.textContent = '음악과 함께 보기'; });
 </script>
+<script src="traces-data.js"></script>
+<script src="traces.js"></script>
 </body>
 </html>

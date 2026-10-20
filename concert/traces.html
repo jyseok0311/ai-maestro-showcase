@@ -61,16 +61,16 @@ h2 { margin-top:6px; font-size:clamp(26px, 7vw, 38px); font-weight:800; letter-s
 .srow .nm { font-size:14px; font-weight:700; text-align:right; white-space:nowrap; }
 .srow .ct { font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
 .srow .ct b { color:var(--gold); font-size:14px; }
-.staff { position:relative; height:44px; display:grid; grid-template-columns:repeat(8, 1fr);
+.ostaff { position:relative; height:44px; display:grid; grid-template-columns:repeat(8, 1fr);
          background:linear-gradient(var(--gold2), var(--gold2)) 0 8px / 100% .8px no-repeat,
                     linear-gradient(var(--gold2), var(--gold2)) 0 15px / 100% .8px no-repeat,
                     linear-gradient(var(--gold2), var(--gold2)) 0 22px / 100% .8px no-repeat,
                     linear-gradient(var(--gold2), var(--gold2)) 0 29px / 100% .8px no-repeat,
                     linear-gradient(var(--gold2), var(--gold2)) 0 36px / 100% .8px no-repeat; }
-.staff::before, .staff::after { content:''; position:absolute; top:8px; height:28.8px; width:1.2px; background:var(--gold); }
-.staff::before { left:0; } .staff::after { right:0; width:3px; border-left:1px solid var(--gold); background:none; box-shadow:inset -2px 0 0 var(--gold); }
-.staff .c { position:relative; display:block; }
-.staff .c + .c::before { content:''; position:absolute; left:0; top:8px; height:28.8px; width:.6px; background:var(--gold3); }   /* 마디선 — 회차 경계 */
+.ostaff::before, .ostaff::after { content:''; position:absolute; top:8px; height:28.8px; width:1.2px; background:var(--gold); }
+.ostaff::before { left:0; } .ostaff::after { right:0; width:3px; border-left:1px solid var(--gold); background:none; box-shadow:inset -2px 0 0 var(--gold); }
+.ostaff .c { position:relative; display:block; }
+.ostaff .c + .c::before { content:''; position:absolute; left:0; top:8px; height:28.8px; width:.6px; background:var(--gold3); }   /* 마디선 — 회차 경계 */
 .note { position:absolute; left:50%; width:12px; height:9.5px; margin-left:-6px; border-radius:50%; transform:rotate(-18deg) scale(.4); opacity:0;
         transition:transform .55s cubic-bezier(.3,1.6,.5,1), opacity .3s; text-decoration:none; }
 .note::after { content:''; position:absolute; right:-.2px; bottom:4.5px; width:1.3px; height:22px; background:var(--ink); transform:rotate(18deg); transform-origin:bottom; }
@@ -211,179 +211,7 @@ footer a { color:var(--gold); font-weight:700; text-decoration:none; }
 </main>
 <div class="tip" id="tip" role="status"></div>
 
-<script>
-// 미션 8개 — 대시보드 MISSIONS 와 같은 내용
-const MISSIONS = [
-  [1, '내 업무용 Skill 개선', 'Skill v2 + 적용 전후 기록'],
-  [2, '엑셀 대시보드 만들기', 'raw data 자동연동 대시보드'],
-  [3, '작은 업무 에이전트 시제품', '에이전트 + Padlet 공유'],
-  [4, '문서 작성 에이전트 + 서브에이전트·Skill', '문서 작성 에이전트'],
-  [5, '공시자료 분석 에이전트 보완', '부서장 시연 가능 수준'],
-  [6, 'GAS 자동화 앱 1개 배포', '배포된 GAS 앱 1개'],
-  [7, '나만의 에이전트 다듬기', '확실히 동작하는 한 기능'],
-  [8, 'AI Agent 도입 가능성 검토 및 확장 토의', '도입 검토 + 확장 아이디어 2~3개'],
-];
-// 대시보드가 읽는 미션 제출 시트(폼 응답 원본). 이름은 시트에 이미 가려져(김*수) 있고, 자유 서술 '비고'는 쓰지 않습니다
-const SHEET = 'https://docs.google.com/spreadsheets/d/1YCycv99P_M8DGI6bHcStGk-AMSycYCKT-qOilKqpUko/gviz/tq?tqx=out:csv&gid=2145842306';
-const SNAP = {"at":"10. 20. 14:45","rows":[["김*혁",1,"https://drive.google.com/drive/folders/1LXi5Wn083GUeZ4VRZ4myU5tT6Advf-qy","8/26/2026 15:01:49"],["김*혁",1,"https://drive.google.com/drive/folders/1LXi5Wn083GUeZ4VRZ4myU5tT6Advf-qy","8/26/2026 15:04:23"],["김*수",1,"https://aimaestroresearch.github.io/ai-maestro-study/week1.html","8/27/2026 10:32:50"],["장*빈",1,"http://119.66.100.125/sharing/ihuuBAJcQ","8/28/2026 16:04:55"],["손*희",1,"https://drive.google.com/file/d/1tKGtKKFJ9A1RmHbp8ySkyFZ_W5p7Drly/view?usp=sharing","8/28/2026 16:34:53"],["이*현",1,"https://docs.google.com/document/d/1zDjrQXxGxj39laZxmJp_6WkoPYK4Nzqc/edit?usp=sharing&ouid=118370642588851949838&rtpof=true&sd=true","8/28/2026 19:43:28"],["김*목",1,"https://github.com/themoka7/loadrunner_report","8/28/2026 19:51:49"],["김*혁",2,"https://drive.google.com/drive/u/0/folders/1Ls9_sCdGBE87ZhAB_NNXE0DKunx-9QKl","9/1/2026 17:29:13"],["김*수",2,"https://aimaestroresearch.github.io/ai-maestro-study/week2.html","9/2/2026 11:11:22"],["진*룡",2,"https://drive.google.com/file/d/165sfvp8E4Um6ZQoGaW4_FhfUHRQ0SnFA/view?usp=sharing","9/2/2026 15:59:21"],["김*수",2,"https://aimaestroresearch.github.io/ai-maestro-study/week2.html","9/4/2026 14:21:03"],["김*현",2,"https://drive.google.com/drive/folders/1P_xK9j77FwxfmhDSrxiMMmSuVkwDc2a1?usp=drive_link","9/4/2026 15:52:31"],["지*현",2,"네","9/4/2026 18:14:19"],["지*현",1,"네","9/4/2026 18:14:39"],["이*대",1,"https://github.com/sdlee95-bit/ai-maestro-portfolio/tree/main/01-work-report-ppt","9/6/2026 17:38:31"],["이*대",2,"https://github.com/sdlee95-bit/ai-maestro-portfolio/tree/main/02-hr-dashboard-excel","9/7/2026 11:28:46"],["이*대",2,"https://github.com/sdlee95-bit/ai-maestro-portfolio/tree/main/02-hr-dashboard-excel","9/7/2026 11:35:21"],["김*목",2,"https://github.com/themoka7/AI_Maestro_Self_02","9/8/2026 17:27:55"],["진*룡",3,"https://github.com/jinhr5744/health-triage-agent","9/9/2026 10:35:17"],["김*목",3,"https://github.com/themoka7/AI_Maestro_Self_03","9/11/2026 13:09:02"],["김*수",3,"https://aimaestroresearch.github.io/ai-maestro-study/week3.html","9/11/2026 17:15:22"],["이*대",3,"https://github.com/sdlee95-bit/ai-maestro-portfolio/tree/main/03-training-poster-agent","9/13/2026 18:52:59"],["김*현",3,"https://drive.google.com/drive/folders/1EmDdrb8TaSgvgILbO3Ojp574pEtBEWGJ?usp=drive_link","9/14/2026 8:29:01"],["노*유",2,"https://noheunyu1126-spec.github.io/VibeCodingPrj-work-dashboard/","9/14/2026 17:27:58"],["박*우",1,"https://drive.google.com/file/d/1J0AS4IPaR82pOkP0GuoPZF9zeQjWE5_c/view?usp=drive_link","9/15/2026 10:32:29"],["김*목",4,"https://github.com/themoka7/AI_Maestro_Self_04/","9/15/2026 13:16:05"],["박*언",4,"https://drive.google.com/drive/folders/1uMkfn5eGQYhGDV0BsI2DZm-MFoD_lwim?usp=drive_link","9/15/2026 14:01:43"],["최*주",1,"네","9/15/2026 14:33:51"],["최*주",1,"https://github.com/muju48choi-cmyk/AI-maestro-missions/blob/main/contest-notice-hwpx.skill.zip","9/15/2026 15:03:34"],["최*주",2,"https://github.com/muju48choi-cmyk/AI-maestro-missions/blob/main/%EA%B5%90%EA%B3%BC%EB%AA%A9_%EC%9D%B4%EC%88%98%ED%98%84%ED%99%A9_%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C.xlsx","9/15/2026 15:24:26"],["김*수",4,"https://aimaestroresearch.github.io/ai-maestro-study/week4.html","9/16/2026 10:43:05"],["김*혁",3,"https://drive.google.com/drive/u/0/folders/1YubPWm33EWECm_QpoTN_4LM0wHHB-O-d","9/16/2026 15:51:52"],["김*혁",4,"https://drive.google.com/drive/u/0/folders/1GJuyboMe4clseV44qlFJNHUqC7BfC7Mf","9/16/2026 16:16:42"],["장*빈",2,"http://forsythia.asuscomm.com/sharing/W4u0fXcLA","9/16/2026 19:13:08"],["조*",1,"https://github.com/nugohc/pnu","9/21/2026 10:41:40"],["조*",2,"https://github.com/nugohc/pnu","9/21/2026 10:41:56"],["조*",3,"https://github.com/nugohc/pnu","9/21/2026 10:42:10"],["조*",4,"https://github.com/nugohc/pnu","9/21/2026 10:42:32"],["김*수",5,"https://aimaestroresearch.github.io/ai-maestro-study/week5.html","9/22/2026 10:27:47"],["김*수",5,"https://aimaestroresearch.github.io/ai-maestro-study/week5.html","9/22/2026 10:28:23"],["김*수",5,"https://aimaestroresearch.github.io/ai-maestro-study/week5.html","9/22/2026 10:29:52"],["노*유",4,"https://github.com/noheunyu1126-spec/claude-meeting-minutes-hwpx","9/22/2026 11:18:12"],["노*유",4,"https://github.com/noheunyu1126-spec/claude-meeting-minutes-hwpx","9/22/2026 11:18:45"],["진*룡",5,"https://github.com/jinhr5744/book-universe","9/22/2026 11:37:58"],["김*수",5,"https://aimaestroresearch.github.io/ai-maestro-study/week5.html","9/22/2026 13:08:17"],["노*유",4,"https://noheunyu1126-spec.github.io/claude-meeting-minutes-hwpx/","9/22/2026 14:30:57"],["박*우",4,"https://drive.google.com/file/d/1q_Pi_bJFy_-yXUuyYPTnb50yFqQk_VE1/view?usp=drive_link","9/23/2026 17:52:00"],["박*우",3,"https://docs.google.com/spreadsheets/d/10-M7TCDqx-WInjXLxl98Em_CBiLBRTZH/edit?usp=drive_link&ouid=109949608220752955037&rtpof=true&sd=true","9/23/2026 18:03:13"],["이*대",4,"https://github.com/sdlee95-bit/ai-maestro-portfolio/tree/main/04-research-agents","9/25/2026 21:52:27"],["이*대",5,"https://github.com/sdlee95-bit/ai-maestro-portfolio/tree/main/05-disclosure-agent","9/27/2026 17:22:55"],["조*",5,"https://github.com/nugohc/pnu-issue-report","9/29/2026 13:18:16"],["김*수",6,"https://aimaestroresearch.github.io/ai-maestro-study/week6.html","9/30/2026 15:01:16"],["김*현",3,"https://drive.google.com/drive/folders/11AxwgAci1zYdiFW2b-h22lommYqOwfNT?usp=drive_link","10/2/2026 14:13:23"],["김*현",4,"https://drive.google.com/drive/folders/1n1h2ItEqsJBZKLPdgEZKPgW2_4_s5Z4M?usp=drive_link","10/2/2026 14:13:57"],["김*현",5,"https://drive.google.com/drive/folders/1wy-XyyZm7jkLzI_sUts9d6sUE54fm4qZ?usp=drive_link","10/2/2026 14:14:26"],["이*대",6,"https://github.com/sdlee95-bit/ai-maestro-portfolio/tree/main/06-gas-survey-app","10/3/2026 18:08:59"],["홍*섭",8,"https://docs.google.com/document/d/1t_n3elMcUkFj0tYIoZQ07O2LuEkQ09tEfn8y_0VSX8c/edit?tab=t.0","10/6/2026 10:16:35"],["송*화",1,"https://drive.google.com/drive/folders/16Z-NnZvlRTk0zh3_hpjN3-hlwMjLGWaY?usp=drive_link","10/6/2026 10:29:17"],["송*학",7,"https://github.com/Song-Jae-Hak/wos-scopus-export","10/6/2026 11:08:30"],["송*학",3,"https://github.com/Song-Jae-Hak/nature-index-scholar-agent","10/6/2026 11:20:47"],["노*유",1,"https://noheunyu1126-spec.github.io/","10/6/2026 13:07:36"],["노*유",3,"https://noheunyu1126-spec.github.io/","10/6/2026 13:07:49"],["노*유",5,"https://noheunyu1126-spec.github.io/","10/6/2026 13:08:00"],["노*유",6,"https://noheunyu1126-spec.github.io/","10/6/2026 13:08:27"],["김*수",7,"https://aimaestroresearch.github.io/ai-maestro-study/week7.html","10/8/2026 9:45:54"],["김*수",7,"https://aimaestroresearch.github.io/ai-maestro-study/week7.html","10/8/2026 10:09:49"],["이*대",7,"https://github.com/sdlee95-bit/ai-maestro-portfolio/tree/main/07-report-auditor","10/10/2026 12:44:04"],["박*언",5,"https://drive.google.com/drive/folders/1xV1G2OZv5Sd5ij39724iSdLxZgGfqdVk?usp=drive_link","10/12/2026 9:46:09"],["박*언",7,"https://drive.google.com/drive/folders/1idewLfwzvwB4jEtXQRh3UdOtjxnl-uy6?usp=sharing","10/12/2026 9:47:00"],["박*언",1,"https://drive.google.com/drive/folders/1rE4QvL_SsJIBvHp-KL1hv91oqtWtz0tj?usp=sharing","10/12/2026 9:48:41"],["이*대",8,"https://github.com/sdlee95-bit/ai-maestro-portfolio/tree/main/08-archive-search","10/12/2026 13:07:33"],["박*진",1,"file:///C:/Users/user/Downloads/%EB%B6%80%EC%82%B0%EB%8C%80_%EC%B6%A9%EC%9B%90_%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C.html","10/12/2026 13:15:07"],["김*목",5,"https://github.com/themoka7/AI_Maestro_Self_07/settings/pages","10/12/2026 18:47:38"],["김*목",6,"https://github.com/themoka7/AI_Maestro_Self_08/","10/12/2026 18:49:54"],["김*목",7,"https://github.com/themoka7/AI_Maestro_Self_09","10/12/2026 18:55:00"],["김*목",5,"https://themoka7.github.io/AI_Maestro_Self_07/","10/12/2026 19:04:23"],["김*목",8,"https://github.com/themoka7/AI_Maestro_Self_10","10/12/2026 19:54:38"],["김*목",1,"https://github.com/themoka7/AI_Maestro_Self_01","10/12/2026 20:31:15"],["조*",6,"https://github.com/nugohc/pnu","10/13/2026 10:18:16"],["조*",7,"https://github.com/nugohc/pnu","10/13/2026 10:18:48"],["조*",8,"https://github.com/nugohc/pnu","10/13/2026 10:23:16"],["최*주",3,"https://claude.ai/artifacts/latest/4ee6b0f9-6c93-4048-964b-aca577afde1e","10/13/2026 10:59:10"],["최*주",4,"https://claude.ai/customize/skills/id/plugin_01CmMb2pJZh8nACbzFgwE1zH","10/13/2026 14:13:47"],["최*주",4,"https://github.com/muju48choi-cmyk/AI-maestro-missions/blob/main/handover-process-xlsx.skill","10/13/2026 14:18:43"],["최*주",4,"https://github.com/muju48choi-cmyk/AI-maestro-missions/blob/main/handover-process-xlsx.skill","10/13/2026 14:18:58"],["최*주",7,"https://claude.ai/artifact/PDaogonWxjKjqxrmK15McG?sk=M33sULvVQUE1I4Sl2ZJTJw","10/13/2026 14:27:27"],["김*수",8,"https://aimaestroresearch.github.io/ai-maestro-study/week8.html","10/13/2026 15:18:55"],["이*욱",1,"https://drive.google.com/drive/folders/1fLttocYTzLtN31_ro_JA09tdRRFAxrRC?usp=sharing","10/13/2026 15:38:21"],["이*욱",2,"https://drive.google.com/drive/folders/1fLttocYTzLtN31_ro_JA09tdRRFAxrRC?usp=sharing","10/13/2026 15:38:45"],["이*욱",3,"https://drive.google.com/drive/folders/1fLttocYTzLtN31_ro_JA09tdRRFAxrRC?usp=sharing","10/13/2026 15:39:05"],["이*욱",4,"https://drive.google.com/drive/folders/1fLttocYTzLtN31_ro_JA09tdRRFAxrRC?usp=sharing","10/13/2026 15:39:22"],["이*욱",5,"https://drive.google.com/drive/folders/1fLttocYTzLtN31_ro_JA09tdRRFAxrRC?usp=sharing","10/13/2026 15:39:37"],["이*욱",6,"https://drive.google.com/drive/folders/1fLttocYTzLtN31_ro_JA09tdRRFAxrRC?usp=sharing","10/13/2026 15:39:58"],["이*욱",7,"https://drive.google.com/drive/folders/1fLttocYTzLtN31_ro_JA09tdRRFAxrRC?usp=sharing","10/13/2026 15:40:35"],["이*욱",8,"https://drive.google.com/drive/folders/1fLttocYTzLtN31_ro_JA09tdRRFAxrRC?usp=sharing","10/13/2026 15:42:29"],["이*현",2,"https://drive.google.com/file/d/1lH53nNU2OJHECVvuR4nCfv9XQuhHw8OO/view?usp=sharing","10/13/2026 20:49:48"],["이*현",3,"https://docs.google.com/document/d/1TRDy_8M-ybzWYKwAQwAPfEFMPkxy98qa/edit?usp=sharing&ouid=118370642588851949838&rtpof=true&sd=true","10/13/2026 21:01:31"],["이*현",8,"https://docs.google.com/document/d/1nweLQxqqHXkzU54Swf_1Udq9G4GA4J1v/edit?usp=sharing&ouid=118370642588851949838&rtpof=true&sd=true","10/13/2026 21:05:54"],["노*유",7,"https://it-briefing.pages.dev/2026-10-13/","10/14/2026 8:39:38"],["박*우",2,"https://docs.google.com/spreadsheets/d/1P1XvokvUQGVEhGgcH2GyAcPzSXQmO-7F/edit?usp=drive_link&ouid=109949608220752955037&rtpof=true&sd=true","10/14/2026 10:12:04"],["장*빈",3,"http://forsythia.asuscomm.com/sharing/1yIgFz6Zi","10/14/2026 14:35:38"],["장*빈",4,"http://forsythia.asuscomm.com/sharing/1yIgFz6Zi","10/14/2026 14:36:04"],["장*빈",5,"http://forsythia.asuscomm.com/sharing/1yIgFz6Zi","10/14/2026 14:36:27"],["장*빈",6,"http://forsythia.asuscomm.com/sharing/1yIgFz6Zi","10/14/2026 14:37:14"],["장*빈",7,"http://forsythia.asuscomm.com/sharing/1yIgFz6Zi","10/14/2026 14:37:37"],["장*빈",8,"http://forsythia.asuscomm.com/sharing/1yIgFz6Zi","10/14/2026 14:39:00"],["박*진",2,"file:///C:/Users/user/Downloads/summer-leave-poster%20(1).html","10/14/2026 16:37:53"],["박*진",3,"https://padlet.com/hamsterthemerciless/260619_-ai-_-_1-a70yapbeunhyjhrm/wish/Ae2Rav0OEqA9Znz4","10/14/2026 16:41:01"],["박*진",1,"file:///C:/Users/user/Downloads/%EB%B6%80%EC%82%B0%EB%8C%80_%EC%B6%A9%EC%9B%90_%EC%9E%90%EA%B8%B0%EC%A7%84%EB%8B%A8_%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C.html","10/14/2026 16:51:15"],["손*희",2,"네","10/15/2026 10:41:57"],["손*희",3,"네","10/15/2026 10:43:38"],["손*희",4,"네","10/15/2026 10:45:30"],["손*희",5,"네","10/15/2026 10:45:59"],["손*희",6,"네","10/15/2026 10:46:20"],["손*희",7,"네","10/15/2026 10:46:50"],["손*희",8,"네","10/15/2026 10:47:24"],["손*희",2,"https://drive.google.com/drive/folders/1YqM-yy7kSrDgV8NMP2mvwSzOCEbkpqUS?usp=drive_link","10/15/2026 13:39:47"],["손*희",3,"https://drive.google.com/drive/folders/1lRjYFI_hSRXczYzx1ZWYqs4JktOcSfXF?usp=drive_link","10/15/2026 13:40:56"],["손*희",4,"https://drive.google.com/drive/folders/15kY2sb00zR2ZsVW_2uSKxCeLA58H-ZFA?usp=drive_link","10/15/2026 13:41:19"],["손*희",5,"https://drive.google.com/drive/folders/1YpV69PVw9mHf-VMxYG8Xe1Ms75zGt_w3?usp=sharing","10/15/2026 13:41:46"],["손*희",6,"https://drive.google.com/drive/folders/1JXigZIYUlCmJjrsA68dsBUVV2rnJsHOb?usp=drive_link","10/15/2026 13:42:13"],["손*희",7,"https://drive.google.com/drive/folders/1ZXCLZOBd8MsVqSJElNaYKN0GbprQKmf1?usp=drive_link","10/15/2026 13:45:02"],["손*희",8,"https://drive.google.com/drive/folders/1f7lwGTHvvNCuw-adS40zT-1iyh2wQG7y?usp=sharing","10/15/2026 13:45:24"],["박*우",5,"https://drive.google.com/file/d/1PAwjxFR1PNHyasSbNJOsRzfSTNEiePP4/view?usp=drive_link","10/15/2026 17:59:28"],["박*우",6,"https://drive.google.com/file/d/1Gd-uA3YlvIe7ZhBYY1DpBemg0VEPsK5N/view?usp=drivesdk","10/15/2026 18:00:58"],["박*우",7,"https://drive.google.com/file/d/1aXjtXg3sHNNPapDZPQkRFa2RaHT3Dr2v/view?usp=drivesdk","10/15/2026 18:01:43"],["박*우",8,"https://drive.google.com/file/d/1vm1EzsST8_wGvVzYXJuoVhPFAk49QcvW/view?usp=drivesdk","10/15/2026 18:02:19"],["박*우",7,"https://drive.google.com/file/d/1aXjtXg3sHNNPapDZPQkRFa2RaHT3Dr2v/view?usp=drivesdk","10/16/2026 11:13:21"]]};   // [이름, 회차, 링크, 제출시각] — 시트를 못 읽을 때 쓰는 마지막 저장본
-
-const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
-const csv = text => {   // 따옴표 안 쉼표·줄바꿈까지 처리하는 작은 CSV 해석기
-  const rows = []; let row = [], f = '', q = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (q) { if (c === '"') { if (text[i + 1] === '"') { f += '"'; i++; } else q = false; } else f += c; }
-    else if (c === '"') q = true; else if (c === ',') { row.push(f); f = ''; }
-    else if (c === '\n') { row.push(f); rows.push(row); row = []; f = ''; } else if (c !== '\r') f += c;
-  }
-  if (f || row.length) { row.push(f); rows.push(row); }
-  return rows;
-};
-const fromSheet = text => {
-  const [h, ...rs] = csv(text), ix = k => h.findIndex(x => x.trim() === k);
-  const iT = ix('Timestamp'), iN = ix('이름'), iR = ix('회차'), iL = ix('제출링크');
-  return rs.map(r => [r[iN] || '', +((r[iR] || '').match(/(\d)\s*회차/) || [])[1] || 0, r[iL] || '', r[iT] || '']).filter(r => r[0] && r[1]);
-};
-
-// 링크 종류 — live: 누구나 바로 열리는 웹 / link: 코드·문서·드라이브 / none: 링크 없음·내 PC 파일·본인만 보이는 주소
-function kindOf(raw) {
-  const m = (raw || '').match(/https?:\/\/[^\s<>"]+/i);
-  if (!m) return { k:'none', label:/file:\/\//i.test(raw) ? '내 PC 파일' : '링크 없음' };
-  const u = m[0]; let h = ''; try { h = new URL(u).hostname; } catch (e) {}
-  if (/claude\.ai\/(customize|settings)/.test(u)) return { k:'none', label:'Claude 스킬' };
-  if (/\.github\.io$|\.pages\.dev$|\.vercel\.app$|\.netlify\.app$/.test(h) || /claude\.ai\/(public\/)?artifacts?\//.test(u)) return { k:'live', label:'웹 페이지', u };
-  if (h === 'github.com') return { k:'code', label:'GitHub', u };
-  if (h === 'drive.google.com') return { k:'link', label:'드라이브', u };
-  if (h === 'docs.google.com') return { k:'link', label:/spreadsheets/.test(u) ? '구글 시트' : /presentation/.test(u) ? '슬라이드' : /forms/.test(u) ? '구글 폼' : '구글 문서', u };
-  if (/padlet\.com$/.test(h)) return { k:'link', label:'패들렛', u };
-  if (/asuscomm\.com$|^\d+\.\d+\.\d+\.\d+$|synology|quickconnect/.test(h)) return { k:'link', label:'공유 폴더', u };
-  return { k:'link', label:'웹 링크', u };
-}
-const pretty = s => decodeURIComponent(s).replace(/\.(html?|zip|skill|md)$/i, '').replace(/^\d+[-_]/, '').replace(/[-_]+/g, ' ').trim()
-  .replace(/\b([a-z])/g, c => c.toUpperCase()).replace(/\bAi\b/g, 'AI').replace(/\bGas\b/g, 'GAS').replace(/\bHr\b/g, 'HR');
-function titleOf(raw, kd) {
-  if (!kd.u) return kd.label;
-  let p; try { p = new URL(kd.u); } catch (e) { return kd.label; }
-  const seg = p.pathname.split('/').filter(Boolean);
-  if (kd.label === 'GitHub') {
-    if (seg.length < 2) return seg[0] || 'GitHub';
-    const tail = (seg[2] === 'tree' || seg[2] === 'blob') && seg[4] ? seg[seg.length - 1] : seg[2] === 'settings' ? '' : '';
-    return pretty(tail || seg[1]);
-  }
-  if (/\.github\.io$/.test(p.hostname)) {
-    const last = seg[seg.length - 1] || '';
-    const wk = last.match(/^week(\d+)/i);
-    if (wk) return `${pretty(seg[0] || '')} · ${wk[1]}주차 기록`;
-    return seg.length ? pretty(seg[seg.length - 1]) : '결과물 모음 홈페이지';
-  }
-  if (/\.pages\.dev$/.test(p.hostname)) return pretty(p.hostname.split('.')[0]) + (seg[0] ? ' · ' + seg[0] : '');
-  if (/claude\.ai/.test(p.hostname)) return 'Claude 아티팩트';
-  if (kd.label === '드라이브') return /folders/.test(p.pathname) ? '드라이브 폴더' : '드라이브 파일';
-  return kd.label;
-}
-const md = ts => { const m = String(ts).match(/^(\d+)\/(\d+)\//) || String(ts).match(/\d{4}-(\d+)-(\d+)/); return m ? `${+m[1]}. ${+m[2]}.` : ''; };
-const tsn = ts => { const d = new Date(ts); return isNaN(d) ? 0 : +d; };
-
-function build(rows) {
-  // 같은 사람·같은 회차·같은 링크를 여러 번 낸 것은 마지막 것 하나로
-  const seen = new Map();
-  rows.forEach(([who, r, link, ts]) => {
-    const kd = kindOf(link), key = who + '|' + r + '|' + (kd.u || kd.label);
-    const o = { who, r, kd, title: titleOf(link, kd), ts, t: tsn(ts) };
-    if (!seen.has(key) || seen.get(key).t <= o.t) seen.set(key, o);
-  });
-  const recs = [...seen.values()];
-  const people = [...new Set(recs.map(x => x.who))];
-  const cell = new Map();   // 사람·회차 → 대표 기록(웹 > 코드·문서 > 없음)
-  const rank = { live:3, code:2, link:2, none:1 };
-  recs.forEach(x => { const k = x.who + '|' + x.r, c = cell.get(k); if (!c || rank[x.kd.k] > rank[c.kd.k] || (rank[x.kd.k] === rank[c.kd.k] && x.t > c.t)) cell.set(k, x); });
-  const doneOf = p => MISSIONS.filter(([r]) => cell.has(p + '|' + r)).length;
-  people.sort((a, b) => doneOf(b) - doneOf(a) || a.localeCompare(b, 'ko'));
-
-  // 숫자
-  const lives = new Map(); recs.filter(x => x.kd.k === 'live').forEach(x => { const c = lives.get(x.kd.u); if (!c || x.t > c.t) lives.set(x.kd.u, x); });
-  const site = u => { try { const p = new URL(u), s0 = p.pathname.split('/').filter(Boolean)[0] || '';
-    return p.hostname + (/\.github\.io$/.test(p.hostname) && s0 && !/\.html?$/.test(s0) ? '/' + s0 : ''); } catch (e) { return u; } };
-  const groups = new Map();
-  recs.filter(x => x.kd.k === 'live').forEach(x => { const k = x.who + '|' + site(x.kd.u); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(x); });
-  const full = people.filter(p => doneOf(p) === 8).length;
-  document.getElementById('stats').innerHTML = [
-    [people.length, '명', '미션을 낸 마에스트로', ''],
-    [cell.size, '칸', `채워진 악보 (전체 ${people.length * 8}칸)`, 'g'],
-    [full, '명', '여덟 미션 완주', ''],
-    [lives.size, '개', '바로 열리는 웹 결과물', 'g'],
-  ].map(([n, u, l, g]) => `<div class="${g}"><b>${n}<small>${u}</small></b><span>${l}</span></div>`).join('');
-
-  // Ⅰ 악보
-  const PITCH = [34, 31, 27.5, 24, 20.5, 17, 13.5, 10];   // 1회차 아랫줄 → 8회차 윗줄(음표 머리 위쪽 위치, px)
-  document.getElementById('score').innerHTML = people.map((p, i) => `
-    <div class="srow"><div class="nm">${esc(p)}</div><div class="staff">${MISSIONS.map(([r]) => {
-      const x = cell.get(p + '|' + r);
-      if (!x) return `<span class="c"><i class="rest" title="${r}회차 미제출"></i></span>`;
-      const tag = x.kd.u ? 'a' : 'span', href = x.kd.u ? ` href="${esc(x.kd.u)}" target="_blank" rel="noopener noreferrer"` : ' tabindex="0"';
-      return `<span class="c"><${tag} class="note ${x.kd.k === 'live' ? 'live' : x.kd.k === 'none' ? 'none' : 'link'}"${href}
-        style="top:${PITCH[r - 1] - 4.75}px; transition-delay:${(i * 0.04 + r * 0.07).toFixed(2)}s"
-        data-tip="<b>${esc(p)}</b> · ${r}회차 ${esc(MISSIONS[r - 1][1])}<br>${esc(x.kd.label)} — ${esc(x.title)}"
-        aria-label="${esc(p)} ${r}회차 ${esc(x.kd.label)}"></${tag}></span>`;
-    }).join('')}</div><div class="ct"><b>${doneOf(p)}</b>/8</div></div>`).join('');
-  document.querySelector('.rnum div').innerHTML = MISSIONS.map(([r]) => `<span>${r}</span>`).join('');
-  document.getElementById('scoreFoot').innerHTML = `${people.length}명 × 8회차, <b>${people.length * 8}칸 중 ${cell.size}칸</b>이 음표로 채워졌습니다.<br>음표를 누르면 그 결과물이 열립니다.`;
-
-  // Ⅱ 웹 결과물 갤러리 — 최근 회차부터
-  document.getElementById('gal').innerHTML = [...groups.values()].map(g => g.sort((a, b) => a.r - b.r || a.t - b.t))
-    .sort((a, b) => b.length - a.length || b[b.length - 1].r - a[a.length - 1].r).map(g => {
-      const x = g[g.length - 1], many = new Set(g.map(y => y.r)).size > 1;
-      const name = many ? x.title.replace(/\s*·\s*\d+주차 기록$/, '') : x.title;
-      const rs = [...new Set(g.map(y => y.r))];
-      return `
-    <div class="win rv">
-      <div class="bar"><i></i><i></i><i></i><span>${esc(site(x.kd.u))}</span></div>
-      <div class="bd"><div class="mi">${rs.length > 1 ? `${rs.length}개 회차에 걸쳐 쌓은 기록` : `${x.r}회차 · ${esc(MISSIONS[x.r - 1][1])}`}</div>
-        <h3><a href="${esc(x.kd.u)}" target="_blank" rel="noopener noreferrer">${esc(name)}</a></h3>
-        ${many ? `<div class="chips">${g.filter((y, i) => g.findIndex(z => z.r === y.r) === i).map(y =>
-            `<a href="${esc(y.kd.u)}" target="_blank" rel="noopener noreferrer" title="${y.r}회차 ${esc(MISSIONS[y.r - 1][1])}">${y.r}회차</a>`).join('')}</div>` : ''}
-        <div class="by"><b>${esc(x.who)}</b> 마에스트로<a class="go" href="${esc(x.kd.u)}" target="_blank" rel="noopener noreferrer">열기 ↗</a></div></div>
-    </div>`; }).join('') || '<p class="none-yet">아직 웹에 올린 결과물이 없습니다.</p>';
-
-  // Ⅲ 회차별 기록
-  const tabs = document.getElementById('tabs'), panel = document.getElementById('panel');
-  tabs.innerHTML = MISSIONS.map(([r]) => `<button type="button" role="tab" aria-selected="false" data-r="${r}">${r}<span style="font-size:.78em;opacity:.7">회</span></button>`).join('');
-  const show = r => {
-    tabs.querySelectorAll('button').forEach(b => b.setAttribute('aria-selected', String(+b.dataset.r === r)));
-    const [, t, out] = MISSIONS[r - 1];
-    const list = recs.filter(x => x.r === r).sort((a, b) => ({ live:0, code:1, link:1, none:2 }[a.kd.k] - { live:0, code:1, link:1, none:2 }[b.kd.k]) || a.who.localeCompare(b.who, 'ko'));
-    const n = new Set(list.map(x => x.who)).size;
-    panel.innerHTML = `<div class="mhd"><div class="r">${r}</div><div><h3>${esc(t)}</h3><p>결과물 · ${esc(out)}</p></div><div class="n"><b>${n}</b>명 제출</div></div>
-      <ul class="recs">${list.map(x => `<li><span class="w">${esc(x.who)}</span><span class="k ${x.kd.k}">${esc(x.kd.label)}</span>
-        ${x.kd.u ? `<a class="t" href="${esc(x.kd.u)}" target="_blank" rel="noopener noreferrer">${esc(x.title)} ↗</a>` : `<span class="t dim">${esc(x.title === x.kd.label ? '결과물 제출' : x.title)}</span>`}
-        <span class="d">${md(x.ts)}</span></li>`).join('') || '<li class="none-yet">아직 제출이 없습니다.</li>'}</ul>`;
-  };
-  tabs.onclick = e => { const b = e.target.closest('button'); if (b) show(+b.dataset.r); };
-  show(1);
-  observe();
-}
-
-// 화면에 들어오면 떠오르기, 악보는 음표가 차례로 붙기
-const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
-  { threshold: .12, rootMargin: '0px 0px -6% 0px' });
-const observe = () => document.querySelectorAll('.rv:not(.in), .score:not(.in)').forEach(el => io.observe(el));
-
-// 음표 설명 말풍선(마우스·포커스)
-const tip = document.getElementById('tip');
-const showTip = el => { tip.innerHTML = el.dataset.tip; const r = el.getBoundingClientRect(); tip.classList.add('on');
-  const w = tip.offsetWidth; tip.style.left = Math.max(10, Math.min(innerWidth - w - 10, r.left + r.width / 2 - w / 2)) + 'px';
-  tip.style.top = (r.top - tip.offsetHeight - 14 < 10 ? r.bottom + 12 : r.top - tip.offsetHeight - 14) + 'px'; };
-document.addEventListener('mouseover', e => { const n = e.target.closest('.note'); n ? showTip(n) : tip.classList.remove('on'); });
-document.addEventListener('focusin', e => { const n = e.target.closest('.note'); n ? showTip(n) : tip.classList.remove('on'); });
-addEventListener('scroll', () => tip.classList.remove('on'), { passive: true });
-
-const stamp = d => document.getElementById('src').textContent =
-  `자율 스터디 대시보드 미션 제출 기준 · ${d} · 드라이브·시트 등은 공유 권한에 따라 열리지 않을 수 있습니다.`;
-build(SNAP.rows); stamp(SNAP.at + ' 저장본');
-fetch(SHEET, { cache: 'no-store' }).then(r => r.ok ? r.text() : Promise.reject()).then(t => {
-  const rows = fromSheet(t); if (!rows.length) return;
-  build(rows); const d = new Date(); stamp(`${d.getMonth() + 1}. ${d.getDate()}. ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} 실시간`);
-}).catch(() => {});
-</script>
+<script src="traces-data.js"></script>
+<script src="traces.js"></script>
 </body>
 </html>
