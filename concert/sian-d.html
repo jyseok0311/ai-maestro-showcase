@@ -89,6 +89,11 @@ h2 { margin-top:6px; font-size:clamp(26px, 7vw, 38px); font-weight:800; letter-s
 .stats span { display:block; margin-top:8px; font-size:13px; color:var(--ink2); }
 .stats .g b { color:var(--gold); }
 .staffline { margin:48px auto 0; display:block; width:100%; opacity:.5; }
+.more { margin-top:30px; text-align:center; }
+.more a { display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:999px; border:1.5px solid var(--gold); color:var(--gold);
+          text-decoration:none; font-size:16px; font-weight:800; background:var(--paper); transition:background .2s, color .2s; }
+.more a:hover { background:var(--gold); color:#fff; }
+.more p { margin-top:10px; font-size:13px; color:var(--muted); }
 
 /* ── Ⅲ 성과공유회 ── */
 .prog-hd { margin-top:44px; display:flex; justify-content:space-between; align-items:flex-end; padding:0 2px 9px; border-bottom:1px solid var(--gold); }
@@ -184,6 +189,8 @@ footer { padding:40px 0 calc(70px + env(safe-area-inset-bottom)); text-align:cen
       <div class="g"><b data-to="4.71" data-dec="2">0<small>점</small></b><span>교육 만족도(5점)</span></div>
     </div>
     <img class="staffline rv" src="staff.webp" alt="">
+    <div class="more rv"><a href="traces.html">마에스트로의 흔적 보기 <span aria-hidden="true">→</span></a>
+      <p>마에스트로들이 미션마다 남긴 결과물을 악보처럼 모았습니다</p></div>
   </section>
 
   <!-- Ⅲ 성과공유회 -->
