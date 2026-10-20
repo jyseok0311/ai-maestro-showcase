@@ -106,6 +106,37 @@ h2 { margin-top:6px; font-size:clamp(26px, 7vw, 38px); font-weight:800; letter-s
 .prog .who { margin:10px 0 2px 40px; list-style:none; display:grid; gap:6px; }
 .prog .who li { font-size:14px; color:var(--ink2); line-height:1.5; } .prog .who li b { color:var(--ink); }
 .prog .who li::before { content:attr(data-n); color:var(--gold); font-weight:700; margin-right:6px; }
+.peek { display:inline-flex; gap:6px; margin:8px 0 2px 40px; font-size:13.5px; color:var(--ink2); text-decoration:none; }
+.peek b { color:var(--gold); }
+/* ── AX 특강 미리보기 ── */
+.ax { margin-top:44px; padding:26px 22px 22px; border-radius:18px; background:var(--ink); color:var(--bg); position:relative; overflow:hidden; scroll-margin-top:30px; }
+.ax::before { content:''; position:absolute; inset:7px; border:1px solid rgba(231,196,120,.35); border-radius:13px; pointer-events:none; }
+.ax-hd { text-align:center; }
+.ax-k { font-size:12px; font-weight:800; letter-spacing:.3em; color:#E2B85C; margin-right:-.3em; }
+.ax h3 { margin-top:10px; font-size:clamp(23px, 6.2vw, 30px); font-weight:800; line-height:1.3; letter-spacing:-.02em; }
+.ax h3 em { font-style:normal; color:#E2B85C; }
+.ax-hd p { margin-top:8px; font-size:14px; font-weight:700; } .ax-hd p span { font-weight:500; color:rgba(243,238,227,.62); margin-left:4px; }
+.ax-tabs { margin-top:20px; display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; position:relative; }
+.ax-tabs button { border:1px solid rgba(231,196,120,.35); background:transparent; color:rgba(243,238,227,.75); font:inherit; cursor:pointer;
+                  padding:9px 4px 8px; border-radius:10px; line-height:1.2; transition:background .2s, color .2s; }
+.ax-tabs button i { display:block; font-family:Georgia,serif; font-style:italic; font-weight:700; font-size:11px; color:#E2B85C; letter-spacing:.06em; }
+.ax-tabs button b { display:block; margin-top:3px; font-size:13px; font-weight:700; }
+.ax-tabs button[aria-selected="true"] { background:#E2B85C; border-color:#E2B85C; color:var(--ink); } .ax-tabs button[aria-selected="true"] i { color:var(--ink); }
+.ax-card { position:relative; margin-top:14px; display:grid; grid-template-columns:1.05fr 1fr; gap:18px; align-items:center; text-align:left; }
+.ax-card.swap { animation:axIn .45s cubic-bezier(.2,.8,.2,1); }
+@keyframes axIn { from { opacity:0; transform:translateY(8px); } }
+.ax-shot { position:relative; margin:0; border-radius:8px; overflow:hidden; background:#fff; box-shadow:0 10px 24px rgba(0,0,0,.35); }
+.ax-shot img { display:block; width:100%; aspect-ratio:16 / 9; object-fit:cover; }
+.ax-shot::after { content:''; position:absolute; left:0; right:0; bottom:0; height:46%; background:linear-gradient(rgba(26,25,22,0), rgba(26,25,22,.72)); }
+.ax-shot span { position:absolute; left:10px; bottom:8px; z-index:1; font-size:11.5px; font-weight:700; color:#fff; letter-spacing:.02em; }
+.ax-t { font-size:12.5px; font-weight:700; color:#E2B85C; }
+.ax-q { margin-top:6px; font-size:19px; font-weight:800; line-height:1.4; letter-spacing:-.015em; }
+.ax-l { margin-top:10px; list-style:none; display:grid; gap:5px; }
+.ax-l li { font-size:13.5px; line-height:1.5; color:rgba(243,238,227,.82); padding-left:14px; position:relative; }
+.ax-l li::before { content:''; position:absolute; left:0; top:.6em; width:5px; height:5px; background:#E2B85C; transform:rotate(45deg); }
+.ax-kw { margin-top:11px; display:flex; flex-wrap:wrap; gap:5px; }
+.ax-kw span { font-size:12px; font-weight:700; padding:3px 9px; border-radius:999px; border:1px solid rgba(231,196,120,.45); color:#E2B85C; }
+.ax-ft { position:relative; margin-top:18px; text-align:center; font-size:13.5px; color:rgba(243,238,227,.7); } .ax-ft b { color:var(--bg); }
 .info { margin-top:52px; text-align:center; }
 .when { font-size:clamp(40px, 11vw, 56px); font-weight:900; letter-spacing:-.04em; line-height:1.05; }
 .time { margin-top:4px; font-size:clamp(24px, 6.4vw, 32px); font-weight:800; color:var(--gold); }
@@ -229,6 +260,8 @@ footer { padding:40px 0 calc(100px + env(safe-area-inset-bottom)); text-align:ce
   .stats { grid-template-columns:repeat(2, 1fr); }
   .chap-hd p br, .hint br { display:none; }   /* 좁은 화면에서는 억지 줄바꿈을 빼고 낱말 단위로 흐르게 */
   .prog .t { display:none; } .prog .who { margin-left:40px; }
+  .ax { padding:22px 16px 18px; } .ax-card { grid-template-columns:1fr; gap:14px; } .ax-q { font-size:18px; }
+  .ax-tabs { gap:4px; } .ax-tabs button b { font-size:12px; }
 }
 @media (prefers-reduced-motion: reduce) { .rv, .tl li.rv .ph { transition-duration:.01s; } .band .staff { clip-path:none; } .down::after { animation:none; } }
 .tag { position:fixed; left:50%; bottom:calc(16px + env(safe-area-inset-bottom)); transform:translateX(-50%); z-index:40; padding:5px 12px; border-radius:999px;
@@ -328,9 +361,22 @@ footer { padding:40px 0 calc(100px + env(safe-area-inset-bottom)); text-align:ce
           <li data-n="③"><b>이현지</b> AX혁신과 — 반복 업무는 스킬에, 자취방 고르기는 구글 시트에</li>
           <li data-n="④"><b>김정목</b> 정보화기획운영과 — 계획에서 화면까지, 그리고 나만의 에이전트로</li>
         </ul></li>
-      <li class="rv"><div class="row"><span class="m">Ⅲ</span><span class="t">14:35 – 16:50</span><span class="nm">AX 특강</span><span class="ld"></span><span class="by">AI 그라운드 장병준</span></div></li>
+      <li class="rv"><div class="row"><span class="m">Ⅲ</span><span class="t">14:35 – 16:50</span><span class="nm">AX 특강</span><span class="ld"></span><span class="by">AI 그라운드 장병준</span></div>
+        <a class="peek" href="#ax">무엇을 듣게 될까요? <b>특강 미리보기 ↓</b></a></li>
       <li class="rv"><div class="row"><span class="m">Ⅳ</span><span class="t">16:50 – 17:00</span><span class="nm">피날레</span><span class="ld"></span><span class="by">성과조사 · 단체사진</span></div></li>
     </ol>
+
+    <!-- AX 특강 미리보기 — 자료는 공개하지 않고, 세션마다 장면 하나와 질문 하나로 궁금증만 건넵니다 -->
+    <div class="ax rv" id="ax">
+      <div class="ax-hd">
+        <div class="ax-k">AX 특강 미리보기</div>
+        <h3>질문하는 AI에서,<br><em>일을 끝내는 AI</em>로</h3>
+        <p>장병준 <span>AI 그라운드 대표 · ‘일잘러 장피엠’</span></p>
+      </div>
+      <div class="ax-tabs" role="tablist" id="axTabs"></div>
+      <div class="ax-card" id="axCard" role="tabpanel"></div>
+      <p class="ax-ft">나머지 이야기는 <b>10. 30.(금) 14:35</b>, 대강당에서 이어집니다.</p>
+    </div>
     <div class="info rv">
       <div class="when">10. 30.(금)</div>
       <div class="time">오후 2시</div>
@@ -390,6 +436,42 @@ btn.addEventListener('click', () => {
   else { audio.pause(); btn.classList.remove('playing'); lab.textContent = '음악과 함께 보기'; }
 });
 audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.textContent = '음악과 함께 보기'; });
+</script>
+<script>
+// AX 특강 미리보기 — 강의 자료(92쪽)의 네 세션을 장면 하나 · 질문 하나로 소개합니다. 자료 원본은 싣지 않습니다
+(() => {
+  const AX = [
+    { s:'Session 1', tab:'AI의 방향', t:'AI는 어디로 가고 있는가 — 질문에서 실행으로', img:'docs/ax_s1.webp', cap:'지시 한 줄로 업무 도구를 여는 AI',
+      q:'지시 한 줄에 AI가 업무 도구를 직접 열고, 결과물까지 만들어 낸다면?',
+      l:['AI 활용이 ‘답을 주는 것’에서 ‘직접 실행하는 것’으로 바뀌는 흐름', '강사 팀이 실제로 AI 에이전트 팀과 일하는 모습 시연'],
+      k:['증강', '자동화', '조직화'] },
+    { s:'Session 2', tab:'기업 AX 현장', t:'기업 AX의 현재 — 도구 경쟁에서 업무·데이터·운영의 경쟁으로', img:'docs/ax_s2.webp', cap:'도면 분석 에이전트의 결과물',
+      q:'도면 한 장으로 시공계획서 41장을 만드는 에이전트, 어떻게 일할까?',
+      l:['국내 기업들이 AI 에이전트를 업무에 들이는 방식', '연구·구매·영업·현장·경영 단계별 에이전트 결과물 20여 가지'],
+      k:['산업별 사례', '보안과 검증', '에이전트 도구'] },
+    { s:'Session 3', tab:'에이전트 만들기', t:'우리 조직 맞춤형 AI 에이전트 만들기', img:'docs/ax_s3.webp', cap:'하네스 엔지니어링',
+      q:'야생마 같은 AI에 안장과 고삐를 채우는 법, ‘하네스 엔지니어링’이란?',
+      l:['원하는 것을 AI와 함께 정의하는 메타 프롬프팅', '영수증 정리 에이전트를 처음부터 만드는 과정 시연'],
+      k:['하네스 엔지니어링', '메타 프롬프팅', '제작 시연'] },
+    { s:'Session 4', tab:'AX 로드맵', t:'어디서부터 시작할 것인가 — AX 실행 로드맵', img:'docs/ax_s4.webp', cap:'우리 조직의 1호 에이전트 찾기',
+      q:'우리 조직에서 90일 안에 에이전트에게 맡길 업무, 딱 한 가지를 고른다면?',
+      l:['사례를 만들고 나누는 ‘AI 챔피언’을 키우는 조직의 조건', '작은 성공 하나를 조직의 자산으로 쌓는 단계'],
+      k:['AI 챔피언', '리더의 질문', '자산화'] },
+  ];
+  const tabs = document.getElementById('axTabs'), card = document.getElementById('axCard');
+  tabs.innerHTML = AX.map((x, i) => `<button type="button" role="tab" aria-selected="false" data-i="${i}"><i>${x.s}</i><b>${x.tab}</b></button>`).join('');
+  const show = i => {
+    const x = AX[i];
+    tabs.querySelectorAll('button').forEach(b => b.setAttribute('aria-selected', String(+b.dataset.i === i)));
+    card.innerHTML = `<figure class="ax-shot"><img src="${x.img}" alt="${x.s} 강의 화면 일부" loading="lazy"><span>${x.cap}</span></figure>
+      <div><div class="ax-t">${x.s} · ${x.t}</div><div class="ax-q">${x.q}</div>
+        <ul class="ax-l">${x.l.map(s => `<li>${s}</li>`).join('')}</ul>
+        <div class="ax-kw">${x.k.map(s => `<span>#${s}</span>`).join('')}</div></div>`;
+    card.classList.remove('swap'); void card.offsetWidth; card.classList.add('swap');
+  };
+  tabs.addEventListener('click', e => { const b = e.target.closest('button'); if (b) show(+b.dataset.i); });
+  show(0);
+})();
 </script>
 <script src="traces-data.js"></script>
 <script src="traces.js"></script>
