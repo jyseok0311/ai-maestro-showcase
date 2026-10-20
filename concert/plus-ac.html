@@ -278,16 +278,18 @@ footer { padding:40px 0 calc(100px + env(safe-area-inset-bottom)); text-align:ce
 .pa-prog { position:fixed; left:0; right:0; top:0; height:3px; z-index:60; pointer-events:none; }
 .pa-prog i { display:block; height:100%; width:100%; transform-origin:left; transform:scaleX(0); background:linear-gradient(90deg, var(--gold), #E2B85C); }
 .pa-nav { position:fixed; left:50%; top:calc(22px + env(safe-area-inset-top)); z-index:50; transform:translate(-50%, -16px); opacity:0; pointer-events:none;
-          display:flex; gap:2px; padding:4px; border-radius:999px; background:rgba(251,248,241,.94); border:1px solid var(--gold2);
-          box-shadow:0 8px 20px rgba(26,25,22,.10); backdrop-filter:blur(8px); transition:opacity .3s, transform .3s; }
+          display:flex; gap:2px; padding:4px; border-radius:999px; background:rgba(251,248,241,.42); border:1px solid rgba(168,123,34,.35);
+          box-shadow:0 8px 20px rgba(26,25,22,.08); -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4); transition:opacity .3s, transform .3s; }
 .pa-nav.on { opacity:1; transform:translate(-50%, 0); pointer-events:auto; }
-.pa-nav a { display:flex; align-items:center; gap:5px; padding:7px 12px; border-radius:999px; text-decoration:none; font-size:13px; font-weight:700; color:var(--ink2); white-space:nowrap; }
+.pa-nav a { display:flex; align-items:center; gap:5px; padding:7px 12px; border-radius:999px; text-decoration:none; font-size:13px; font-weight:750; color:var(--ink); white-space:nowrap; text-shadow:0 0 6px rgba(251,248,241,.9); }
 .pa-nav a b { font-family:Georgia,serif; font-style:italic; color:var(--gold); font-size:12px; }
-.pa-nav a.cur { background:var(--ink); color:var(--bg); } .pa-nav a.cur b { color:#E2B85C; }
+.pa-nav a.cur { background:rgba(26,25,22,.86); color:var(--bg); } .pa-nav a.cur b { color:#E2B85C; }
 .pa-bar { position:fixed; left:50%; bottom:calc(22px + env(safe-area-inset-bottom)); z-index:50; width:min(520px, calc(100% - 40px));
           transform:translate(-50%, 24px); opacity:0; pointer-events:none; transition:opacity .3s, transform .3s;
-          display:flex; align-items:center; gap:8px; padding:7px 7px 7px 16px; border-radius:999px; background:var(--ink); color:var(--bg);
-          box-shadow:0 12px 28px rgba(26,25,22,.28); }
+          display:flex; align-items:center; gap:8px; padding:7px 7px 7px 16px; border-radius:999px; background:rgba(26,25,22,.58); color:var(--bg);
+          border:1px solid rgba(231,196,120,.28); box-shadow:0 12px 28px rgba(26,25,22,.22);
+          -webkit-backdrop-filter:blur(16px) saturate(1.5); backdrop-filter:blur(16px) saturate(1.5); }
+.pa-bar .d b, .pa-bar .d span { text-shadow:0 1px 2px rgba(0,0,0,.35); }   /* 밝은 사진 위를 지날 때도 글자가 읽히게 */
 .pa-bar.on { opacity:1; transform:translate(-50%, 0); pointer-events:auto; }
 .pa-bar .d { flex:1; min-width:0; line-height:1.2; }
 .pa-bar .d b { display:block; font-size:15px; font-weight:900; color:#E2B85C; letter-spacing:.02em; }
@@ -296,7 +298,7 @@ footer { padding:40px 0 calc(100px + env(safe-area-inset-bottom)); text-align:ce
 .pa-bar .sh svg { width:18px; height:18px; }
 .pa-bar .go { flex:none; padding:11px 18px; border-radius:999px; background:#E2B85C; color:var(--ink); font-weight:800; font-size:14.5px; text-decoration:none; }
 .pa-top { position:fixed; right:22px; bottom:calc(92px + env(safe-area-inset-bottom)); z-index:49; width:42px; height:42px; border-radius:50%;
-          border:1px solid var(--gold2); background:rgba(251,248,241,.94); color:var(--gold); font-size:18px; font-weight:800; cursor:pointer;
+          border:1px solid rgba(168,123,34,.35); background:rgba(251,248,241,.45); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); color:var(--gold); font-size:18px; font-weight:800; cursor:pointer;
           opacity:0; transform:translateY(10px); pointer-events:none; transition:opacity .3s, transform .3s; box-shadow:0 6px 14px rgba(26,25,22,.1); }
 .pa-top.on { opacity:1; transform:none; pointer-events:auto; }
 .tabs { top:calc(74px + env(safe-area-inset-top)) !important; }   /* 흔적 장의 회차 탭이 장 바로가기 아래에 붙도록 */
@@ -344,13 +346,22 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
 .pc-mp.paused .pc-eq s { animation:none; height:3px; }
 footer { padding-bottom:calc(120px + env(safe-area-inset-bottom)) !important; }
 
-/* A+C — 아래쪽 층 정리 */
-.pc-mp { width:min(520px, calc(100% - 40px)); transition:opacity .3s, transform .3s, bottom .3s; }
-body.pa-bar-on .pc-mp { bottom:calc(84px + env(safe-area-inset-bottom)); }
-.pa-top { bottom:calc(92px + env(safe-area-inset-bottom)); transition:opacity .3s, transform .3s, bottom .3s; }
-body.pa-bar-on:has(.pc-mp.on) .pa-top { bottom:calc(150px + env(safe-area-inset-bottom)); }
-.px-toast { bottom:calc(150px + env(safe-area-inset-bottom)); }
-footer { padding-bottom:calc(190px + env(safe-area-inset-bottom)) !important; }
+/* A+C — 음악 + 신청 통합 바 */
+.pa-bar { padding-left:7px; overflow:hidden; }
+.pa-bar .mu { flex:none; width:40px; height:40px; border-radius:50%; border:0; background:#E2B85C; color:var(--ink); cursor:pointer; display:grid; place-items:center; }
+.pa-bar .mu svg { width:16px; height:16px; }
+.pa-bar .mu .ps { display:none; } .pa-bar.playing .mu .pl { display:none; } .pa-bar.playing .mu .ps { display:block; }
+.pa-bar .d b span { display:inline; font-size:inherit; color:inherit; overflow:visible; }   /* 아래 줄 설명용 span 규칙이 D-day 에 번지지 않게 */
+.pa-bar .d b .pc-eq { display:none; vertical-align:-1px; margin:0 0 0 6px; }
+.pa-bar.playing .d b .pc-eq { display:inline-flex; }
+.pa-bar .pr { position:absolute; left:22px; right:22px; bottom:3px; height:2px; border-radius:2px; background:rgba(243,238,227,.14); opacity:0; transition:opacity .3s; }
+.pa-bar .pr u { display:block; height:100%; width:0; border-radius:2px; background:#E2B85C; }
+.pa-bar.playing .pr, .pa-bar.paused-mid .pr { opacity:1; }
+.pa-bar .go { transition:opacity .25s, max-width .3s, padding .3s; max-width:140px; white-space:nowrap; overflow:hidden; }
+.pa-bar.compact .go { max-width:0; padding-left:0; padding-right:0; opacity:0; pointer-events:none; }
+.pa-top { bottom:calc(92px + env(safe-area-inset-bottom)); }
+.px-toast { bottom:calc(92px + env(safe-area-inset-bottom)); }
+footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
 </style>
 </head>
 <body>
@@ -566,13 +577,15 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
   <a href="#ch1"><b>Ⅰ</b>수업</a><a href="#ch2"><b>Ⅱ</b>미션</a><a href="#ch-traces"><b>Ⅲ</b>흔적</a><a href="#ch3"><b>Ⅳ</b>공유회</a>
 </nav>
 <div class="pa-bar" id="paBar">
-  <div class="d"><b id="paDd">D-10</b><span>10. 30.(금) 14:00 · 본관 3층 대강당</span></div>
+  <button class="mu" id="paMu" type="button" aria-label="음악 켜기"><svg class="pl" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg><svg class="ps" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></svg></button>
+  <div class="d"><b><span id="paDd">D-10</span><span class="pc-eq" aria-hidden="true"><s></s><s></s><s></s></span></b><span id="paSub">10. 30.(금) 14:00 · 본관 3층 대강당</span></div>
+  <i class="pr" aria-hidden="true"><u id="paPr"></u></i>
   <button class="sh" id="paShare" type="button" aria-label="공유하기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
   <a class="go" href="https://ai-maestro-showcase.vercel.app/apply/" target="_blank" rel="noopener">참석 신청</a>
 </div>
 <button class="pa-top" id="paTop" type="button" aria-label="맨 위로">↑</button>
 
-<div class="tag">A+C — 바로가기 · 신청 바 · 카운트다운 · 사진 크게 · 캘린더/길찾기</div>
+<div class="tag">A+C — 바로가기 · 음악+신청 바 · 카운트다운 · 사진 크게 · 캘린더/길찾기</div>
 <script>
 (() => {
   const EVENT = new Date('2026-10-30T14:00:00+09:00');
@@ -609,7 +622,7 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
   document.getElementById('paDd').textContent = dday() === '종료' ? '행사 종료' : dday();
   document.getElementById('paShare').addEventListener('click', share);
   top.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
-  let ctaSeen = false;
+  let ctaSeen = false, keepBar = () => false;   // keepBar: 본문 신청 버튼이 보여도 바를 남길 조건(A+C: 음악 재생 중)
   new IntersectionObserver(es => es.forEach(e => { ctaSeen = e.isIntersecting; tick(); })).observe(cta);
   const secs = ['ch1', 'ch2', 'ch-traces', 'ch3'].map(id => document.getElementById(id));
   const links = [...nav.querySelectorAll('a')];
@@ -618,7 +631,8 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
     prog.style.transform = `scaleX(${H > 0 ? y / H : 0})`;
     const past = hero.getBoundingClientRect().bottom < 80;
     nav.classList.toggle('on', past); top.classList.toggle('on', y > innerHeight * 1.5);
-    bar.classList.toggle('on', past && !ctaSeen); document.body.classList.toggle('pa-bar-on', past && !ctaSeen);
+    const showBar = past && (!ctaSeen || keepBar());
+    bar.classList.toggle('on', showBar); bar.classList.toggle('compact', ctaSeen); document.body.classList.toggle('pa-bar-on', showBar);
     let cur = -1; secs.forEach((s, i) => { if (s.getBoundingClientRect().top < innerHeight * .4) cur = i; });
     links.forEach((a, i) => a.classList.toggle('cur', i === cur));
   }
@@ -670,19 +684,21 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
   mb.onclick = e => { e.stopPropagation(); const o = !mp.classList.contains('on'); mp.classList.toggle('on', o); mb.setAttribute('aria-expanded', String(o)); };
   document.addEventListener('click', e => { if (!e.target.closest('#pcMap')) { mp.classList.remove('on'); mb.setAttribute('aria-expanded', 'false'); } });
 
-  // ④ 떠 있는 음악 플레이어
+
+  // ④ 음악 — 첫 화면 '음악과 함께 보기'와 같은 음악을 바에서 켜고 끈다
   const audio = document.getElementById('bgm'), play = document.getElementById('play');
-  const pl = document.createElement('div'); pl.className = 'pc-mp'; pl.setAttribute('aria-label', '배경 음악');
-  pl.innerHTML = '<button class="pp" type="button" aria-label="일시정지">❚❚</button><div class="ti"><b><span class="pc-eq"><s></s><s></s><s></s></span>수고했어요, 여름의 마에스트로</b><i><u></u></i></div><div class="tm">0:00</div>';
-  document.body.appendChild(pl);
-  const fmt = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
-  pl.querySelector('.pp').onclick = () => play.click();
-  const syncP = () => { const on = !audio.paused; if (on || audio.currentTime > 0) pl.classList.add('on');
-    pl.classList.toggle('paused', !on); pl.querySelector('.pp').textContent = on ? '❚❚' : '▶'; pl.querySelector('.pp').setAttribute('aria-label', on ? '일시정지' : '재생'); };
-  audio.addEventListener('play', syncP); audio.addEventListener('pause', syncP);
-  audio.addEventListener('ended', () => pl.classList.remove('on'));
-  audio.addEventListener('timeupdate', () => { pl.querySelector('.tm').textContent = fmt(audio.currentTime);
-    pl.querySelector('u').style.width = (audio.duration ? audio.currentTime / audio.duration * 100 : 0) + '%'; });
+  const mu = document.getElementById('paMu'), sub = document.getElementById('paSub'), pr = document.getElementById('paPr');
+  const SUB0 = sub.textContent, fmt = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+  keepBar = () => !audio.paused;
+  mu.addEventListener('click', () => play.click());
+  const syncM = () => { const on = !audio.paused;
+    bar.classList.toggle('playing', on); bar.classList.toggle('paused-mid', !on && audio.currentTime > 0 && !audio.ended);
+    mu.setAttribute('aria-label', on ? '음악 멈추기' : '음악 켜기');
+    sub.textContent = on || audio.currentTime > 0 ? `♪ 수고했어요, 여름의 마에스트로 · ${fmt(audio.currentTime)}` : SUB0; tick(); };
+  ['play', 'pause', 'ended'].forEach(ev => audio.addEventListener(ev, syncM));
+  audio.addEventListener('ended', () => { sub.textContent = SUB0; bar.classList.remove('paused-mid'); pr.style.width = '0'; });
+  audio.addEventListener('timeupdate', () => { if (!audio.paused) sub.textContent = `♪ 수고했어요, 여름의 마에스트로 · ${fmt(audio.currentTime)}`;
+    pr.style.width = (audio.duration ? audio.currentTime / audio.duration * 100 : 0) + '%'; });
 })();
 </script>
 </body>
