@@ -65,14 +65,17 @@
   .brand-text { display: block; min-width: 0; }
   .brand small { display: block; color: var(--muted); font-size: 12px; letter-spacing: .02em; }
   .brand strong { font-family: var(--serif); font-size: 16px; font-weight: 800; }
-  nav { display: flex; gap: 4px; }
-  nav button {
-    border: 0; background: none; padding: 8px 12px; border-radius: 0;
-    color: var(--muted); font: inherit; font-size: 14px; cursor: pointer;
-    border-bottom: 2px solid transparent;
-  }
-  nav button:hover { color: var(--fg); }
-  nav button[aria-current="page"] { color: var(--fg); font-weight: 700; border-bottom-color: var(--accent); }
+  /* 메뉴: 포스터 톤의 둥근 세그먼트 — 금색 테두리 안에 세 칸, 고른 칸은 먹색 알약 + 금색 로마 숫자 */
+  nav { display: flex; gap: 2px; padding: 4px; border: 1px solid rgba(168,123,34,.45); border-radius: 999px;
+        background: rgba(255,255,255,.55); box-shadow: inset 0 1px 2px rgba(26,25,22,.05); }
+  nav button { display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+               border: 0; background: transparent; color: var(--muted); font: inherit; font-size: 14px; font-weight: 600;
+               padding: 8px 16px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+               transition: background .25s ease, color .25s ease, box-shadow .25s ease; }
+  nav button .no { font-family: var(--serif); font-size: 11.5px; font-weight: 800; color: var(--accent); opacity: .75; }
+  nav button:hover { color: var(--fg); background: rgba(168,123,34,.08); }
+  nav button[aria-current="page"] { background: var(--fg); color: var(--bg); font-weight: 700; box-shadow: 0 2px 8px rgba(26,25,22,.18); }
+  nav button[aria-current="page"] .no { color: #D9B460; opacity: 1; }
 
   main { padding: 34px 0 72px; }
   section[hidden] { display: none; }
@@ -274,8 +277,8 @@
     .choices.two { grid-template-columns: 1fr; }
     .done dl > div { grid-template-columns: 1fr; gap: 2px; }
     .site-header .wrap { height: auto; padding-top: 12px; padding-bottom: 6px; flex-direction: column; align-items: flex-start; gap: 6px; }
-    nav { width: 100%; justify-content: space-between; }
-    nav button { flex: 1; padding: 8px 4px; }
+    nav { width: 100%; justify-content: space-between; margin-bottom: 4px; }
+    nav button { flex: 1; padding: 9px 4px; font-size: 13.5px; gap: 5px; }
     .btn.lg { width: 100%; }
     .banner .actions .btn { flex: 1; }
     .stat .v { font-size: 52px; }
@@ -326,9 +329,9 @@
       </span>
     </div>
     <nav>
-      <button type="button" data-page="안내" aria-current="page">안내</button>
-      <button type="button" data-page="신청">참석 신청</button>
-      <button type="button" data-page="현황">신청 현황</button>
+      <button type="button" data-page="안내" aria-current="page"><span class="no" aria-hidden="true">Ⅰ</span>안내</button>
+      <button type="button" data-page="신청"><span class="no" aria-hidden="true">Ⅱ</span>참석 신청</button>
+      <button type="button" data-page="현황"><span class="no" aria-hidden="true">Ⅲ</span>신청 현황</button>
     </nav>
   </div>
 </header>
