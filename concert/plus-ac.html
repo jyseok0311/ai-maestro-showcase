@@ -354,7 +354,7 @@ footer { padding:40px 0 calc(100px + env(safe-area-inset-bottom)); text-align:ce
 @media (min-width: 1024px) {
   .wrap { max-width:1040px; padding:0 56px; }
   .chap-hd, .press-hd, .legend, .foot, .info, .src { max-width:680px; margin-left:auto; margin-right:auto; }
-  .hero { padding-left:calc((100% - 860px) / 2); padding-right:calc((100% - 860px) / 2); }
+  .hero > *:not(.down) { max-width:860px; width:100%; margin-left:auto; margin-right:auto; }   /* 첫 화면 글줄은 860px 안에서 가운데 — 창 폭과 무관 */
   h1 { font-size:84px; } .head { font-size:40px; }
   section.chap { padding-top:110px; }
   .tl li { gap:0 84px; margin-bottom:64px; } .tl .tx h3 { font-size:24px; } .tl .tx p { font-size:15px; }
