@@ -17,7 +17,7 @@
 * { box-sizing:border-box; margin:0; padding:0; }
 html { background:var(--bg); scroll-behavior:smooth; -webkit-text-size-adjust:100%; -webkit-tap-highlight-color:transparent; }
 body { font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif; color:var(--ink);
-       background:radial-gradient(ellipse 80% 50% at 50% 0%, #FAF7F2 0%, rgba(250,247,242,0) 70%), var(--bg); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+       background:radial-gradient(ellipse 80% 50% at 50% 0%, #FAF7F2 0%, rgba(250,247,242,0) 70%), var(--bg); -webkit-font-smoothing:antialiased; overflow-x:hidden; word-break:keep-all; }
 a { color:inherit; }
 .frame { position:fixed; inset:calc(12px + env(safe-area-inset-top)) 12px 12px; border:1.5px solid var(--gold); pointer-events:none; z-index:5; }
 .frame::after { content:''; position:absolute; inset:6px; border:.8px solid var(--gold2); }
@@ -113,7 +113,7 @@ h2 { margin-top:6px; font-size:clamp(26px, 7vw, 38px); font-weight:800; letter-s
 .group { margin:60px 0 0; background:#fff; padding:8px 8px 0; box-shadow:0 12px 30px rgba(26,25,22,.14); }
 .group img { display:block; width:100%; filter:sepia(.15); }
 .group figcaption { padding:9px 4px 10px; text-align:center; font-size:13px; color:var(--muted); }
-footer { padding:40px 0 calc(70px + env(safe-area-inset-bottom)); text-align:center; font-size:12px; color:var(--muted); line-height:1.7; }
+footer { padding:40px 0 calc(100px + env(safe-area-inset-bottom)); text-align:center; font-size:12px; color:var(--muted); line-height:1.7; }
 
 /* ── Ⅲ 마에스트로의 흔적 — traces.html 과 같은 모양 ── */
 /* ── Ⅰ 스무 개의 악보 — 한 사람이 한 줄의 오선, 미션 하나가 음표 하나. 회차가 오를수록 음도 올라갑니다 ── */
@@ -225,6 +225,7 @@ footer { padding:40px 0 calc(70px + env(safe-area-inset-bottom)); text-align:cen
   .tl li:nth-child(even) .tx { text-align:left; } .tl li:nth-child(even) .tx .n { flex-direction:row; }
   .tl li .tx { order:1; } .tl li .ph, .tl li:nth-child(even) .ph { order:2; }
   .stats { grid-template-columns:repeat(2, 1fr); }
+  .chap-hd p br, .hint br { display:none; }   /* 좁은 화면에서는 억지 줄바꿈을 빼고 낱말 단위로 흐르게 */
   .prog .t { display:none; } .prog .who { margin-left:40px; }
 }
 @media (prefers-reduced-motion: reduce) { .rv, .tl li.rv .ph { transition-duration:.01s; } .band .staff { clip-path:none; } .down::after { animation:none; } }
@@ -268,8 +269,8 @@ footer { padding:40px 0 calc(70px + env(safe-area-inset-bottom)); text-align:cen
   <section class="chap wrap" id="ch2">
     <div class="chap-hd rv">
       <div class="no">Ⅱ · August – October</div>
-      <h2>부서로 퍼진<br><em>여덟 번의 미션</em></h2>
-      <p>수업이 끝난 뒤에도 마에스트로들은 매주 미션을 이어 가며<br>부서 동료들과 함께 업무에 AI를 들였습니다.</p>
+      <h2>부서로 퍼진 <br><em>여덟 번의 미션</em></h2>
+      <p>수업이 끝난 뒤에도 마에스트로들은 매주 미션을 이어 가며 <br>부서 동료들과 함께 업무에 AI를 들였습니다.</p>
       <div class="dv"><b></b></div>
     </div>
     <div class="stats rv">
@@ -288,7 +289,7 @@ footer { padding:40px 0 calc(70px + env(safe-area-inset-bottom)); text-align:cen
     <div class="chap-hd rv">
       <div class="no">Ⅲ · Traces</div>
       <h2>마에스트로의 <em>흔적</em></h2>
-      <p>한 사람이 한 줄의 악보입니다. 미션을 하나 낼 때마다 음표가 붙고,<br>회차가 오를수록 음도 한 칸씩 올라갑니다.</p>
+      <p>한 사람이 한 줄의 악보입니다. 미션을 하나 낼 때마다 음표가 붙고, <br>회차가 오를수록 음도 한 칸씩 올라갑니다.</p>
       <div class="dv"><b></b></div>
     </div>
     <div class="legend rv">
