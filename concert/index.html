@@ -122,6 +122,13 @@ main { z-index:1; }
   .curtain h2 { font-size:40px; } .start { margin-top:20px; padding:14px 28px; }
 }
 .silent { margin-top:10px; background:none; border:none; color:var(--ink2); text-decoration:underline; font-size:14px; cursor:pointer; }
+/* 시작 화면에서 공연을 보지 않고 바로 신청 */
+.quick { display:inline-flex; align-items:center; gap:6px; margin-top:26px; padding:11px 22px; border-radius:999px;
+         border:1.5px solid var(--ink); color:var(--ink); font-size:15px; font-weight:800; text-decoration:none; background:rgba(251,248,241,.7); }
+.quick:hover { background:var(--ink); color:var(--bg); }
+.quick:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+.quick small { font-weight:600; color:var(--gold); }
+.quick:hover small { color:#E8C987; }
 
 .pop { position:fixed; z-index:26; pointer-events:none; transform:translate(-50%,-50%); font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Malgun Gothic','Apple SD Gothic Neo',sans-serif; font-weight:800;
        font-size:26px; font-style:italic; letter-spacing:.02em; color:var(--gold); text-shadow:0 2px 12px rgba(255,214,140,.8); animation:pop 1.4s ease-out forwards; white-space:nowrap; }
@@ -149,6 +156,7 @@ main { z-index:1; }
     <button class="start sans" id="start"><span class="tri" aria-hidden="true"></span>공연 시작</button>
     <div class="hint sans">♪ 「수고했어요, 여름의 마에스트로」와 함께 · 약 4분</div>
     <button class="silent sans" id="silent">소리 없이 보기</button>
+    <div><a class="quick sans" href="https://script.google.com/macros/s/AKfycbys6p3dIgzhe-x_EWW6IiSTuMl24F_tFx0424BLlk_cGY-4oNPF9lhDC3y9zkFyikdV6g/exec" target="_blank" rel="noopener">바로 참석 신청하기 → <small>10. 29.(목)까지</small></a></div>
   </div>
 </div>
 
