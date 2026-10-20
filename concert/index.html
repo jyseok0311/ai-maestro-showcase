@@ -47,6 +47,11 @@ h1 { margin-top:8px; font-size:clamp(46px, 13vw, 76px); font-weight:800; letter-
             transform:translateY(calc(var(--dy, 0) * -1px)) rotate(-22deg) scale(var(--sc, 1)); }
 .note .hd::after { content:''; position:absolute; right:0; bottom:45%; width:2px; height:330%; background:inherit; }
 .note.last .hd { background:var(--gold); box-shadow:0 0 calc(var(--gl, 0) * 1px) calc(var(--gl, 0) * .3px) rgba(214,160,60,.55); }
+/* 다큐 영상 배경: 소리 없이 흐리고 옅게(아이보리에 녹아들게), 공연 시작 뒤에만 나타남 */
+#docbg { position:fixed; left:0; top:0; width:100%; height:100lvh; object-fit:cover; z-index:0; pointer-events:none;
+         opacity:0; filter:blur(2.5px) saturate(.85); transition:opacity 2s ease; }
+.played #docbg.ready { opacity:.18; }
+@media (prefers-reduced-motion: reduce) { .played #docbg.ready { opacity:.12; } }
 #bg { position:fixed; left:0; top:0; width:100%; height:100lvh; z-index:0; pointer-events:none; }   /* 주소창이 접혀도 배경이 끊기지 않게 큰 높이 기준 */
 main { z-index:1; }
 .num { position:absolute; bottom:-2%; font-size:12px; color:var(--ink2); opacity:0; transition:opacity .6s; }
@@ -119,6 +124,8 @@ main { z-index:1; }
 </style>
 </head>
 <body>
+<video id="docbg" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
+       poster="https://ai-maestro-dashboard.vercel.app/media/maestro_doc_poster.jpg"></video>
 <canvas id="bg" aria-hidden="true"></canvas>
 <div class="frame" aria-hidden="true"></div>
 
@@ -364,8 +371,17 @@ function setMuted(m) {
   muteBtn.setAttribute('aria-label', m ? '소리 켜기' : '소리 끄기');
 }
 
+// 다큐 영상 배경(성과공유회 다큐, 소리 없음). 공연 시작을 누른 뒤에만 내려받는다(휴대폰 데이터 절약).
+const docbg = document.getElementById('docbg');
+const DOC_SRC = 'https://ai-maestro-dashboard.vercel.app/media/maestro_doc_web.mp4';
+function startDocBg() {
+  if (!docbg.src) { docbg.src = DOC_SRC; docbg.addEventListener('playing', () => docbg.classList.add('ready'), { once: true }); }
+  docbg.muted = true; docbg.play().catch(() => {});
+}
+
 function begin(withSound) {
   document.body.classList.add('played');
+  startDocBg();
   curtain.classList.add('gone'); ctrl.hidden = false;
   impacted = false;
   if (withSound) {
@@ -398,9 +414,11 @@ let pausedByHide = false;
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
     if (!audio.paused) { audio.pause(); pausedByHide = true; }
+    if (!docbg.paused) docbg.pause();
     running = false;
   } else if (document.body.classList.contains('played')) {
     if (pausedByHide) { pausedByHide = false; if (actx && actx.state === 'suspended') actx.resume(); audio.play().catch(() => {}); }
+    if (docbg.src) docbg.play().catch(() => {});
     if (!reduce && !running) { running = true; requestAnimationFrame(tick); }
   }
 });
