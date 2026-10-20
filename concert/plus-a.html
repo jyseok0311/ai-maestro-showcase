@@ -570,7 +570,7 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
     prog.style.transform = `scaleX(${H > 0 ? y / H : 0})`;
     const past = hero.getBoundingClientRect().bottom < 80;
     nav.classList.toggle('on', past); top.classList.toggle('on', y > innerHeight * 1.5);
-    bar.classList.toggle('on', past && !ctaSeen);
+    bar.classList.toggle('on', past && !ctaSeen); document.body.classList.toggle('pa-bar-on', past && !ctaSeen);
     let cur = -1; secs.forEach((s, i) => { if (s.getBoundingClientRect().top < innerHeight * .4) cur = i; });
     links.forEach((a, i) => a.classList.toggle('cur', i === cur));
   }
