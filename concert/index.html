@@ -266,6 +266,90 @@ footer { padding:40px 0 calc(100px + env(safe-area-inset-bottom)); text-align:ce
 @media (prefers-reduced-motion: reduce) { .rv, .tl li.rv .ph { transition-duration:.01s; } .band .staff { clip-path:none; } .down::after { animation:none; } }
 .tag { position:fixed; left:50%; bottom:calc(16px + env(safe-area-inset-bottom)); transform:translateX(-50%); z-index:40; padding:5px 12px; border-radius:999px;
        background:rgba(26,25,22,.78); color:#F3EEE3; font-size:12px; font-weight:600; pointer-events:none; }
+
+.px-toast { position:fixed; left:50%; bottom:calc(96px + env(safe-area-inset-bottom)); z-index:90; transform:translate(-50%, 10px); opacity:0; pointer-events:none;
+            padding:10px 16px; border-radius:999px; background:var(--ink); color:var(--bg); font-size:13.5px; font-weight:700; transition:opacity .2s, transform .2s; white-space:nowrap; }
+.px-toast.on { opacity:1; transform:translate(-50%, 0); }
+.tag { position:absolute; left:50%; top:calc(26px + env(safe-area-inset-top)); bottom:auto; transform:translateX(-50%); z-index:95; padding:4px 11px; border-radius:999px;
+       background:rgba(26,25,22,.78); color:#F3EEE3; font-size:11.5px; font-weight:600; pointer-events:none; white-space:nowrap; max-width:calc(100% - 40px); overflow:hidden; text-overflow:ellipsis; }
+
+/* 시안 A — 길잡이형: 어디쯤 읽고 있는지, 언제든 신청할 수 있게 */
+.pa-prog { position:fixed; left:0; right:0; top:0; height:3px; z-index:60; pointer-events:none; }
+.pa-prog i { display:block; height:100%; width:100%; transform-origin:left; transform:scaleX(0); background:linear-gradient(90deg, var(--gold), #E2B85C); }
+.pa-nav { position:fixed; left:50%; top:calc(22px + env(safe-area-inset-top)); z-index:50; transform:translate(-50%, -16px); opacity:0; pointer-events:none;
+          display:flex; gap:2px; padding:4px; border-radius:999px; background:rgba(251,248,241,.94); border:1px solid var(--gold2);
+          box-shadow:0 8px 20px rgba(26,25,22,.10); backdrop-filter:blur(8px); transition:opacity .3s, transform .3s; }
+.pa-nav.on { opacity:1; transform:translate(-50%, 0); pointer-events:auto; }
+.pa-nav a { display:flex; align-items:center; gap:5px; padding:7px 12px; border-radius:999px; text-decoration:none; font-size:13px; font-weight:700; color:var(--ink2); white-space:nowrap; }
+.pa-nav a b { font-family:Georgia,serif; font-style:italic; color:var(--gold); font-size:12px; }
+.pa-nav a.cur { background:var(--ink); color:var(--bg); } .pa-nav a.cur b { color:#E2B85C; }
+.pa-bar { position:fixed; left:50%; bottom:calc(22px + env(safe-area-inset-bottom)); z-index:50; width:min(520px, calc(100% - 40px));
+          transform:translate(-50%, 24px); opacity:0; pointer-events:none; transition:opacity .3s, transform .3s;
+          display:flex; align-items:center; gap:8px; padding:7px 7px 7px 16px; border-radius:999px; background:var(--ink); color:var(--bg);
+          box-shadow:0 12px 28px rgba(26,25,22,.28); }
+.pa-bar.on { opacity:1; transform:translate(-50%, 0); pointer-events:auto; }
+.pa-bar .d { flex:1; min-width:0; line-height:1.2; }
+.pa-bar .d b { display:block; font-size:15px; font-weight:900; color:#E2B85C; letter-spacing:.02em; }
+.pa-bar .d span { display:block; font-size:12px; color:rgba(243,238,227,.75); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pa-bar .sh { flex:none; width:40px; height:40px; border-radius:50%; border:1px solid rgba(231,196,120,.45); background:transparent; color:#E2B85C; cursor:pointer; display:grid; place-items:center; }
+.pa-bar .sh svg { width:18px; height:18px; }
+.pa-bar .go { flex:none; padding:11px 18px; border-radius:999px; background:#E2B85C; color:var(--ink); font-weight:800; font-size:14.5px; text-decoration:none; }
+.pa-top { position:fixed; right:22px; bottom:calc(92px + env(safe-area-inset-bottom)); z-index:49; width:42px; height:42px; border-radius:50%;
+          border:1px solid var(--gold2); background:rgba(251,248,241,.94); color:var(--gold); font-size:18px; font-weight:800; cursor:pointer;
+          opacity:0; transform:translateY(10px); pointer-events:none; transition:opacity .3s, transform .3s; box-shadow:0 6px 14px rgba(26,25,22,.1); }
+.pa-top.on { opacity:1; transform:none; pointer-events:auto; }
+.tabs { top:calc(74px + env(safe-area-inset-top)) !important; }   /* 흔적 장의 회차 탭이 장 바로가기 아래에 붙도록 */
+section.chap, #ax { scroll-margin-top:70px; }
+footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
+@media (max-width: 420px) { .pa-nav a { padding:7px 9px; font-size:12.5px; } .pa-nav a b { display:none; } }
+
+/* 시안 C — 체험형: 남은 시간이 흐르고, 사진을 크게 넘겨 보고, 일정·길·공유를 한 번에 */
+.pc-cd { margin:26px auto 0; display:inline-flex; align-items:flex-end; gap:10px; }
+.pc-cd .u { min-width:58px; padding:9px 6px 7px; border-radius:12px; background:var(--paper); border:1px solid var(--gold2); text-align:center; box-shadow:0 6px 14px rgba(26,25,22,.05); }
+.pc-cd .u b { display:block; font-size:clamp(24px, 6.4vw, 32px); font-weight:900; letter-spacing:-.03em; line-height:1; font-variant-numeric:tabular-nums; }
+.pc-cd .u span { display:block; margin-top:4px; font-size:11px; color:var(--muted); letter-spacing:.08em; }
+.pc-cd .u.g { background:var(--ink); border-color:var(--ink); color:var(--bg); } .pc-cd .u.g span { color:#E2B85C; }
+.hero { padding-bottom:130px; }   /* 카운트다운이 들어가 첫 화면이 길어진 만큼 SCROLL 표시와 띄운다 */
+.pc-cd-l { margin-top:8px; font-size:12.5px; color:var(--gold); font-weight:700; letter-spacing:.12em; }
+.tl .ph img, .group img { cursor:zoom-in; }
+.pc-zoom { position:absolute; right:14px; top:14px; padding:3px 8px; border-radius:999px; background:rgba(26,25,22,.62); color:#fff; font-size:11px; font-weight:700; pointer-events:none; }
+.tl .ph, .group { position:relative; }
+.pc-acts { margin-top:18px; display:flex; justify-content:center; flex-wrap:wrap; gap:8px; position:relative; }
+.pc-acts > button { display:inline-flex; align-items:center; gap:6px; padding:10px 15px; border-radius:999px; border:1.3px solid var(--gold2); background:var(--paper); color:var(--ink); font:inherit; font-size:14px; font-weight:700; cursor:pointer; }
+.pc-acts > button:hover { border-color:var(--gold); }
+.pc-map { position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%); z-index:20; display:none; min-width:220px; padding:8px; border-radius:14px; background:#fff; border:1px solid var(--gold2); box-shadow:0 14px 30px rgba(26,25,22,.16); text-align:left; }
+.pc-map.on { display:block; }
+.pc-map a { display:flex; justify-content:space-between; padding:11px 12px; border-radius:9px; text-decoration:none; font-weight:700; font-size:14px; }
+.pc-map a:hover { background:var(--bg); } .pc-map p { padding:4px 12px 6px; font-size:12px; color:var(--muted); }
+/* 사진 크게 보기 */
+.pc-lb { position:fixed; inset:0; z-index:200; display:none; flex-direction:column; align-items:center; justify-content:center; background:rgba(16,15,13,.94); padding:20px; }
+.pc-lb.on { display:flex; }
+.pc-lb img { max-width:min(1100px, 100%); max-height:78svh; border-radius:6px; box-shadow:0 20px 50px rgba(0,0,0,.5); touch-action:pan-y; }
+.pc-lb .cap { margin-top:14px; color:#F3EEE3; font-size:14.5px; font-weight:700; text-align:center; } .pc-lb .cap small { display:block; margin-top:3px; color:rgba(243,238,227,.6); font-size:12px; font-weight:500; }
+.pc-lb button { position:absolute; border:0; background:rgba(243,238,227,.12); color:#F3EEE3; width:46px; height:46px; border-radius:50%; font-size:22px; cursor:pointer; }
+.pc-lb .x { top:calc(18px + env(safe-area-inset-top)); right:18px; } .pc-lb .pv { left:18px; top:50%; } .pc-lb .nx { right:18px; top:50%; }
+@media (max-width: 720px) { .pc-lb .pv, .pc-lb .nx { top:auto; bottom:calc(26px + env(safe-area-inset-bottom)); } .pc-lb .pv { left:calc(50% - 56px); } .pc-lb .nx { right:calc(50% - 56px); } }
+/* 떠 있는 음악 플레이어 — 음악을 켜면 나타나 화면을 내려도 따라온다 */
+.pc-mp { position:fixed; left:50%; bottom:calc(22px + env(safe-area-inset-bottom)); z-index:60; transform:translate(-50%, 30px); opacity:0; pointer-events:none; transition:opacity .3s, transform .3s;
+         display:flex; align-items:center; gap:10px; padding:6px 8px 6px 6px; border-radius:999px; background:var(--ink); color:var(--bg); box-shadow:0 12px 28px rgba(26,25,22,.3); width:min(360px, calc(100% - 40px)); }
+.pc-mp.on { opacity:1; transform:translate(-50%, 0); pointer-events:auto; }
+.pc-mp .pp { flex:none; width:38px; height:38px; border-radius:50%; border:0; background:#E2B85C; color:var(--ink); font-size:14px; font-weight:900; cursor:pointer; }
+.pc-mp .ti { flex:1; min-width:0; } .pc-mp .ti b { display:block; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pc-mp .ti i { display:block; margin-top:5px; height:3px; border-radius:2px; background:rgba(243,238,227,.2); overflow:hidden; } .pc-mp .ti i u { display:block; height:100%; width:0; background:#E2B85C; }
+.pc-mp .tm { flex:none; font-size:12px; color:rgba(243,238,227,.7); font-variant-numeric:tabular-nums; padding-right:8px; }
+.pc-eq { display:inline-flex; gap:2px; align-items:flex-end; height:12px; margin-right:6px; } .pc-eq s { width:3px; background:#E2B85C; animation:eq .9s ease-in-out infinite; }
+.pc-eq s:nth-child(2) { animation-delay:.2s; } .pc-eq s:nth-child(3) { animation-delay:.45s; }
+@keyframes eq { 0%,100% { height:3px; } 50% { height:12px; } }
+.pc-mp.paused .pc-eq s { animation:none; height:3px; }
+footer { padding-bottom:calc(120px + env(safe-area-inset-bottom)) !important; }
+
+/* A+C — 아래쪽 층 정리 */
+.pc-mp { width:min(520px, calc(100% - 40px)); transition:opacity .3s, transform .3s, bottom .3s; }
+body.pa-bar-on .pc-mp { bottom:calc(84px + env(safe-area-inset-bottom)); }
+.pa-top { bottom:calc(92px + env(safe-area-inset-bottom)); transition:opacity .3s, transform .3s, bottom .3s; }
+body.pa-bar-on:has(.pc-mp.on) .pa-top { bottom:calc(150px + env(safe-area-inset-bottom)); }
+.px-toast { bottom:calc(150px + env(safe-area-inset-bottom)); }
+footer { padding-bottom:calc(190px + env(safe-area-inset-bottom)) !important; }
 </style>
 </head>
 <body>
@@ -475,5 +559,129 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
 </script>
 <script src="traces-data.js"></script>
 <script src="traces.js"></script>
+
+<div class="pa-prog" aria-hidden="true"><i id="paProg"></i></div>
+<nav class="pa-nav" id="paNav" aria-label="장 바로가기">
+  <a href="#ch1"><b>Ⅰ</b>수업</a><a href="#ch2"><b>Ⅱ</b>미션</a><a href="#ch-traces"><b>Ⅲ</b>흔적</a><a href="#ch3"><b>Ⅳ</b>공유회</a>
+</nav>
+<div class="pa-bar" id="paBar">
+  <div class="d"><b id="paDd">D-10</b><span>10. 30.(금) 14:00 · 본관 3층 대강당</span></div>
+  <button class="sh" id="paShare" type="button" aria-label="공유하기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
+  <a class="go" href="https://ai-maestro-showcase.vercel.app/apply/" target="_blank" rel="noopener">참석 신청</a>
+</div>
+<button class="pa-top" id="paTop" type="button" aria-label="맨 위로">↑</button>
+
+<script>
+(() => {
+  const EVENT = new Date('2026-10-30T14:00:00+09:00');
+  const URL0 = 'https://ai-maestro-showcase.vercel.app/concert/';
+  const APPLY = 'https://ai-maestro-showcase.vercel.app/apply/';
+  const left = () => Math.max(0, EVENT - Date.now());
+  const dday = () => { const d = Math.ceil((new Date(EVENT).setHours(0,0,0,0) - new Date().setHours(0,0,0,0)) / 864e5);
+                       return d > 0 ? 'D-' + d : d === 0 ? 'D-DAY' : '종료'; };
+  const toast = msg => { let t = document.getElementById('pxToast');
+    if (!t) { t = document.createElement('div'); t.id = 'pxToast'; t.className = 'px-toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 2200); };
+  const share = async () => {
+    const data = { title: 'AI 마에스트로 성과공유회', text: '10. 30.(금) 오후 2시 · 대학본부 본관 3층 대강당', url: URL0 };
+    if (navigator.share) { try { await navigator.share(data); return; } catch (e) { if (e.name === 'AbortError') return; } }
+    try { await navigator.clipboard.writeText(URL0); toast('페이지 주소를 복사했습니다'); } catch (e) { prompt('아래 주소를 복사하세요', URL0); }
+  };
+  const ics = () => {   // 휴대폰·PC 달력에 바로 넣을 수 있는 일정 파일
+    const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//PNU AX//AI Maestro//KO', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
+      'UID:ai-maestro-showcase-20261030@pusan.ac.kr', 'DTSTAMP:20261020T000000Z', 'DTSTART:20261030T050000Z', 'DTEND:20261030T080000Z',
+      'SUMMARY:AI 마에스트로 성과공유회', 'LOCATION:부산대학교 대학본부 본관 3층 대강당',
+      'DESCRIPTION:우수사례 발표 · AX 특강 (13:00부터 현장 등록)\\n' + URL0, 'URL:' + URL0,
+      'BEGIN:VALARM', 'TRIGGER:-PT1H', 'ACTION:DISPLAY', 'DESCRIPTION:AI 마에스트로 성과공유회 1시간 전', 'END:VALARM',
+      'END:VEVENT', 'END:VCALENDAR'];
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([L.join('\r\n')], { type: 'text/calendar;charset=utf-8' }));
+    a.download = 'AI마에스트로_성과공유회_1030.ics'; document.body.appendChild(a); a.click(); a.remove();
+    toast('캘린더 파일을 저장했습니다 — 열면 일정에 추가됩니다');
+  };
+  const MAPQ = encodeURIComponent('부산대학교 대학본부');
+  const MAPS = [['카카오맵', 'https://map.kakao.com/?q=' + MAPQ], ['네이버 지도', 'https://map.naver.com/p/search/' + MAPQ]];
+
+  const prog = document.getElementById('paProg'), nav = document.getElementById('paNav'), bar = document.getElementById('paBar'), top = document.getElementById('paTop');
+  const hero = document.querySelector('.hero'), cta = document.querySelector('.info .cta');
+  document.getElementById('paDd').textContent = dday() === '종료' ? '행사 종료' : dday();
+  document.getElementById('paShare').addEventListener('click', share);
+  top.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+  let ctaSeen = false;
+  new IntersectionObserver(es => es.forEach(e => { ctaSeen = e.isIntersecting; tick(); })).observe(cta);
+  const secs = ['ch1', 'ch2', 'ch-traces', 'ch3'].map(id => document.getElementById(id));
+  const links = [...nav.querySelectorAll('a')];
+  function tick() {
+    const y = scrollY, H = document.documentElement.scrollHeight - innerHeight;
+    prog.style.transform = `scaleX(${H > 0 ? y / H : 0})`;
+    const past = hero.getBoundingClientRect().bottom < 80;
+    nav.classList.toggle('on', past); top.classList.toggle('on', y > innerHeight * 1.5);
+    bar.classList.toggle('on', past && !ctaSeen); document.body.classList.toggle('pa-bar-on', past && !ctaSeen);
+    let cur = -1; secs.forEach((s, i) => { if (s.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => a.classList.toggle('cur', i === cur));
+  }
+  addEventListener('scroll', tick, { passive: true }); addEventListener('resize', tick); tick();
+
+  // ① 첫 화면 카운트다운
+  const hint = document.querySelector('.hero .hint');
+  const cdBox = document.createElement('div');
+  cdBox.innerHTML = `<div class="pc-cd" aria-label="성과공유회까지 남은 시간"><div class="u g"><b id="pcD">0</b><span>DAYS</span></div>
+    <div class="u"><b id="pcH">00</b><span>HOURS</span></div><div class="u"><b id="pcM">00</b><span>MIN</span></div><div class="u"><b id="pcS">00</b><span>SEC</span></div></div>
+    <div class="pc-cd-l">10. 30.(금) 오후 2시까지</div>`;
+  hint.after(cdBox);
+  const pad = n => String(n).padStart(2, '0');
+  const cd = () => { const s = Math.floor(left() / 1000);
+    pcD.textContent = Math.floor(s / 86400); pcH.textContent = pad(Math.floor(s % 86400 / 3600)); pcM.textContent = pad(Math.floor(s % 3600 / 60)); pcS.textContent = pad(s % 60); };
+  const pcD = document.getElementById('pcD'), pcH = document.getElementById('pcH'), pcM = document.getElementById('pcM'), pcS = document.getElementById('pcS');
+  cd(); setInterval(cd, 1000);
+
+  // ② 사진 크게 보기 — 교육 8회 사진과 단체 사진을 한 줄로 넘겨 본다
+  const lb = document.createElement('div'); lb.className = 'pc-lb'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true'); lb.setAttribute('aria-label', '사진 크게 보기');
+  lb.innerHTML = '<img alt=""><div class="cap"></div><button class="x" type="button" aria-label="닫기">✕</button><button class="pv" type="button" aria-label="이전 사진">‹</button><button class="nx" type="button" aria-label="다음 사진">›</button>';
+  document.body.appendChild(lb);
+  const photos = () => [...document.querySelectorAll('.tl .ph img, .group img')];
+  let idx = 0, back = null;
+  const capOf = im => { const f = im.closest('figure'); const c = f && f.querySelector('figcaption'); const li = im.closest('li');
+    const h = li && li.querySelector('h3'); return [h ? h.textContent : (c ? c.textContent : ''), h && c ? c.textContent : '']; };
+  const showAt = i => { const ps = photos(); idx = (i + ps.length) % ps.length; const im = ps[idx];
+    lb.querySelector('img').src = im.currentSrc || im.src; lb.querySelector('img').alt = im.alt;
+    const [a, b] = capOf(im); lb.querySelector('.cap').innerHTML = `${a}${b ? `<small>${b} · ${idx + 1} / ${ps.length}</small>` : `<small>${idx + 1} / ${ps.length}</small>`}`; };
+  const open = i => { back = document.activeElement; showAt(i); lb.classList.add('on'); document.body.style.overflow = 'hidden'; lb.querySelector('.x').focus(); };
+  const close = () => { lb.classList.remove('on'); document.body.style.overflow = ''; back && back.focus && back.focus(); };
+  document.addEventListener('click', e => { const im = e.target.closest('.tl .ph img, .group img'); if (im) open(photos().indexOf(im)); });
+  lb.querySelector('.x').onclick = close; lb.querySelector('.pv').onclick = () => showAt(idx - 1); lb.querySelector('.nx').onclick = () => showAt(idx + 1);
+  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+  addEventListener('keydown', e => { if (!lb.classList.contains('on')) return;
+    if (e.key === 'Escape') close(); else if (e.key === 'ArrowLeft') showAt(idx - 1); else if (e.key === 'ArrowRight') showAt(idx + 1); });
+  let sx = null; lb.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', e => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 45) showAt(idx + (dx < 0 ? 1 : -1)); sx = null; });
+  const mark = () => document.querySelectorAll('.tl .ph, .group').forEach(f => { if (!f.querySelector('.pc-zoom')) f.insertAdjacentHTML('beforeend', '<span class="pc-zoom">⤢ 크게</span>'); });
+  mark();
+
+  // ③ 신청 버튼 아래 — 캘린더 · 길찾기 · 공유
+  const acts = document.createElement('div'); acts.className = 'pc-acts';
+  acts.innerHTML = `<button type="button" id="pcCal">📅 캘린더에 추가</button><button type="button" id="pcMapB" aria-expanded="false">🗺 길찾기</button><button type="button" id="pcShare">🔗 공유하기</button>
+    <div class="pc-map" id="pcMap"><p>부산대학교 대학본부 본관 3층 대강당</p>${MAPS.map(([n, u]) => `<a href="${u}" target="_blank" rel="noopener">${n}에서 보기 <span>↗</span></a>`).join('')}</div>`;
+  document.querySelector('.info .due').after(acts);
+  document.getElementById('pcCal').onclick = ics; document.getElementById('pcShare').onclick = share;
+  const mb = document.getElementById('pcMapB'), mp = document.getElementById('pcMap');
+  mb.onclick = e => { e.stopPropagation(); const o = !mp.classList.contains('on'); mp.classList.toggle('on', o); mb.setAttribute('aria-expanded', String(o)); };
+  document.addEventListener('click', e => { if (!e.target.closest('#pcMap')) { mp.classList.remove('on'); mb.setAttribute('aria-expanded', 'false'); } });
+
+  // ④ 떠 있는 음악 플레이어
+  const audio = document.getElementById('bgm'), play = document.getElementById('play');
+  const pl = document.createElement('div'); pl.className = 'pc-mp'; pl.setAttribute('aria-label', '배경 음악');
+  pl.innerHTML = '<button class="pp" type="button" aria-label="일시정지">❚❚</button><div class="ti"><b><span class="pc-eq"><s></s><s></s><s></s></span>수고했어요, 여름의 마에스트로</b><i><u></u></i></div><div class="tm">0:00</div>';
+  document.body.appendChild(pl);
+  const fmt = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+  pl.querySelector('.pp').onclick = () => play.click();
+  const syncP = () => { const on = !audio.paused; if (on || audio.currentTime > 0) pl.classList.add('on');
+    pl.classList.toggle('paused', !on); pl.querySelector('.pp').textContent = on ? '❚❚' : '▶'; pl.querySelector('.pp').setAttribute('aria-label', on ? '일시정지' : '재생'); };
+  audio.addEventListener('play', syncP); audio.addEventListener('pause', syncP);
+  audio.addEventListener('ended', () => pl.classList.remove('on'));
+  audio.addEventListener('timeupdate', () => { pl.querySelector('.tm').textContent = fmt(audio.currentTime);
+    pl.querySelector('u').style.width = (audio.duration ? audio.currentTime / audio.duration * 100 : 0) + '%'; });
+})();
+</script>
 </body>
 </html>
