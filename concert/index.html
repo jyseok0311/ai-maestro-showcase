@@ -47,6 +47,23 @@ h1 { margin-top:8px; font-size:clamp(46px, 13vw, 76px); font-weight:800; letter-
             transform:translateY(calc(var(--dy, 0) * -1px)) rotate(-22deg) scale(var(--sc, 1)); }
 .note .hd::after { content:''; position:absolute; right:0; bottom:45%; width:2px; height:330%; background:inherit; }
 .note.last .hd { background:var(--gold); box-shadow:0 0 calc(var(--gl, 0) * 1px) calc(var(--gl, 0) * .3px) rgba(214,160,60,.55); }
+/* 교육 사진 배경: 음표(=교육 회차)가 떠오를 때마다 그 회차 사진이 가장자리에 빛바랜 폴라로이드로 놓인다 */
+#memories { position:fixed; left:0; top:0; width:100%; height:100lvh; z-index:0; pointer-events:none; overflow:hidden; }
+.mem { position:absolute; margin:0; width:clamp(130px, 14vw, 220px); padding:7px 7px 24px; background:#FBF8F1;
+       box-shadow:0 12px 30px rgba(26,25,22,.16); opacity:0; transform:translateY(24px) rotate(var(--r)) scale(.92);
+       transition:opacity 1.8s ease, transform 1.8s cubic-bezier(.2,.8,.2,1); }
+.mem img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; filter:sepia(.55) saturate(.8) contrast(.95) brightness(1.03); }
+.mem span { position:absolute; left:0; right:0; bottom:5px; text-align:center; font-size:11px; font-weight:700; color:var(--ink2); letter-spacing:.02em; }
+.mem.on { opacity:.62; transform:rotate(var(--r)); }
+/* 피날레: 8차 단체사진이 화면 전체에 은은하게 */
+#finale { position:fixed; left:0; top:0; width:100%; height:100lvh; z-index:0; pointer-events:none;
+          background:url(photos/edu_group.webp) center 35% / cover no-repeat; filter:sepia(.5) saturate(.85);
+          opacity:0; transition:opacity 3.5s ease;
+          -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.25) 0%, rgba(0,0,0,.6) 45%, #000 80%);
+                  mask-image:linear-gradient(to bottom, rgba(0,0,0,.25) 0%, rgba(0,0,0,.6) 45%, #000 80%); }
+#finale.on { opacity:.20; }
+@media (max-width: 900px) { .mem.on { opacity:.38; } }
+@media (max-width: 480px) { .mem { width:96px; padding:4px 4px 16px; } .mem span { font-size:9px; bottom:3px; } .mem.on { opacity:.30; } }
 #bg { position:fixed; left:0; top:0; width:100%; height:100lvh; z-index:0; pointer-events:none; }   /* 주소창이 접혀도 배경이 끊기지 않게 큰 높이 기준 */
 main { z-index:1; }
 .num { position:absolute; bottom:-2%; font-size:12px; color:var(--ink2); opacity:0; transition:opacity .6s; }
@@ -119,6 +136,8 @@ main { z-index:1; }
 </style>
 </head>
 <body>
+<div id="memories" aria-hidden="true"></div>
+<div id="finale" aria-hidden="true"></div>
 <canvas id="bg" aria-hidden="true"></canvas>
 <div class="frame" aria-hidden="true"></div>
 
@@ -199,6 +218,25 @@ reveals.forEach((r, i) => { r.dataset.at = at(REVEAL_BEATS[i]).toFixed(2); });  
 const audio = document.getElementById('bgm');
 const curtain = document.getElementById('curtain'), ctrl = document.getElementById('ctrl');
 const muteBtn = document.getElementById('mute'), flash = document.getElementById('flash');
+// ---------------------------------------------------------------- 교육 사진(8회차) 배치
+// 음표 k 가 떠오르는 순간 k차 교육 사진이 놓인다. 3차(7. 3.)는 사진이 없어 1차 다른 장면으로 대신한다.
+const MEMS = [
+  ['photos/edu_1.webp', '1차 · 6. 19.'], ['photos/edu_2.webp', '2차 · 6. 26.'], ['photos/edu_3.webp', '교육 현장'],
+  ['photos/edu_4.webp', '4차 · 7. 10.'], ['photos/edu_5.webp', '5차 · 7. 24.'], ['photos/edu_6.webp', '6차 · 7. 31.'],
+  ['photos/edu_7.webp', '7차 · 8. 7.'],  ['photos/edu_8.webp', '8차 · 8. 21.'],
+];
+// 화면 가장자리 자리(가운데 글자는 비워 둔다): [왼쪽 %, 위 %, 기울기]
+const MEM_POS = [[3, 9, -6], [85, 13, 5], [5, 34, 4], [83, 39, -4], [2, 60, -3], [86, 64, 6], [6, 82, 5], [82, 85, -5]];
+const MEM_POS_M = [[-6, 3, -7], [74, 6, 6], [-8, 30, 5], [76, 33, -5], [-6, 58, -4], [75, 61, 6], [-5, 84, 5], [74, 87, -6]];
+const memWrap = document.getElementById('memories'), finale = document.getElementById('finale');
+const narrow = matchMedia('(max-width: 480px)').matches;
+const mems = MEMS.map(([src, cap], k) => {
+  const [x, y, r] = (narrow ? MEM_POS_M : MEM_POS)[k];
+  const d = document.createElement('figure'); d.className = 'mem';
+  d.style.left = x + '%'; d.style.top = y + '%'; d.style.setProperty('--r', r + 'deg');
+  d.innerHTML = '<img alt="" decoding="async" src="' + src + '"><span>' + cap + '</span>';
+  memWrap.appendChild(d); return d;
+});
 // 움직임 줄이기 설정이면 화면은 고정(주소 끝에 ?motion=1 을 붙이면 강제로 움직임)
 // '움직임 줄이기'(Windows 애니메이션 끄기 등)를 켠 사람도 '공연 시작'을 직접 누른 것이므로 화면을 멈추지 않는다.
 // 대신 움직임 폭을 줄이고(GENTLE), 번쩍이는 섬광은 뺀다. 주소 끝 ?motion=1 이면 원래 세기로.
@@ -211,6 +249,8 @@ function now() { return silentStart === null ? audio.currentTime : (performance.
 function show(t) {
   notes.forEach((n, k) => { const on = t >= NOTE_AT(k); n.classList.toggle('on', on); nums[k].classList.toggle('on', on); });
   reveals.forEach(r => r.classList.toggle('on', t >= +r.dataset.at));
+  mems.forEach((m, k) => m.classList.toggle('on', t >= NOTE_AT(k)));
+  finale.classList.toggle('on', t >= IMPACT || audio.ended);
 }
 
 // ---------------------------------------------------------------- 실시간 소리 분석(Web Audio)
