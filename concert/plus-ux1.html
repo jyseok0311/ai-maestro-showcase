@@ -114,6 +114,10 @@ h2 { margin-top:6px; font-size:clamp(26px, 7vw, 38px); font-weight:800; letter-s
 .clip:hover, .clip:focus-visible { transform:rotate(0) translateY(-4px); box-shadow:0 1px 0 rgba(26,25,22,.06), 0 18px 34px rgba(26,25,22,.18); outline:none; }
 .clip::before { content:''; position:absolute; left:50%; top:-9px; width:78px; height:20px; margin-left:-39px; transform:rotate(-3deg);
                 background:rgba(226,184,92,.55); box-shadow:0 1px 2px rgba(26,25,22,.12); }   /* 마스킹테이프 */
+.clip .ph { position:relative; margin:-6px -6px 14px; overflow:hidden; border-radius:2px; background:#ddd; box-shadow:inset 0 0 0 1px rgba(26,25,22,.08); }
+.clip .ph img { display:block; width:100%; aspect-ratio:16 / 10; object-fit:cover; filter:sepia(.22) saturate(.85) contrast(1.02); transition:filter .4s, transform .6s; }
+.clip:hover .ph img, .clip:focus-visible .ph img { filter:none; transform:scale(1.04); }
+.clip .ph figcaption { position:absolute; left:8px; bottom:6px; font-size:10.5px; font-weight:700; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,.6); letter-spacing:.02em; }
 .clip .mast { display:flex; align-items:baseline; justify-content:space-between; gap:8px; padding-bottom:9px; border-bottom:2px solid var(--ink); }
 .clip .mast b { font-family:'Nanum Myeongjo', Georgia, 'Batang', serif; font-size:19px; font-weight:800; letter-spacing:-.02em; }
 .clip .mast span { font-size:11.5px; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap; }
@@ -590,21 +594,22 @@ document.querySelectorAll('.tl video').forEach(v => {
   bgm.addEventListener('play', () => v.pause());
 });
 
-// 언론 보도 — 대시보드 PRESS 와 같은 목록(2026. 9. 3. 보도자료)
+// 언론 보도 — 대시보드 PRESS 와 같은 목록(2026. 9. 3. 보도자료). 사진은 각 기사에 실린 학교 제공 교육 사진(기사 본문은 싣지 않음)
 const PRESS = [
-  ['부산일보', '2026. 9. 3.', "부산대, 실무자가 만든 'AI 에이전트'로 행정 AX 확산", 'https://www.busan.com/view/busan/view.php?code=2026090314112969824'],
-  ['국제신문', '2026. 9. 3.', '“내 업무에 필요한 AI는 내가 직접 설계·개발한다”', 'https://www.kookje.co.kr/news2011/asp/newsbody.asp?code=0300&key=20260903.99099001033'],
-  ['아시아경제', '2026. 9. 3.', "AI가 업무를 바꾼다… 부산대 직원들 직접 만든 'AI 에이전트'", 'https://view.asiae.co.kr/article/2026090310294345415'],
-  ['인더뉴스', '2026. 9. 3.', '부산대, 20개 부서 실무자 AI 에이전트 개발…상향식 AX 확산', 'https://www.inthenews.co.kr/news/article.html?no=91342'],
-  ['중도일보', '2026. 9. 3.', '부산대 직원 21명, 업무용 AI 에이전트 12건 개발', 'https://www.joongdo.co.kr/web/view.php?key=20260903010001009'],
-  ['인디포커스', '2026. 9. 3.', '부산대, 실무자가 만든 ‘AI 에이전트’로 행정 AX 확산', 'http://www.indifocus.kr/81577'],
-  ['이뉴스투데이', '2026. 9. 4.', "부산대 행정직원이 직접 'AI 직원' 만든다…대학 행정 AX 혁신 속도", 'https://www.enewstoday.co.kr/news/articleView.html?idxno=2466670'],
+  ['부산일보', '2026. 9. 3.', "부산대, 실무자가 만든 'AI 에이전트'로 행정 AX 확산", 'https://www.busan.com/view/busan/view.php?code=2026090314112969824', 'busan'],
+  ['국제신문', '2026. 9. 3.', '“내 업무에 필요한 AI는 내가 직접 설계·개발한다”', 'https://www.kookje.co.kr/news2011/asp/newsbody.asp?code=0300&key=20260903.99099001033', 'kookje'],
+  ['아시아경제', '2026. 9. 3.', "AI가 업무를 바꾼다… 부산대 직원들 직접 만든 'AI 에이전트'", 'https://view.asiae.co.kr/article/2026090310294345415', 'asiae'],
+  ['인더뉴스', '2026. 9. 3.', '부산대, 20개 부서 실무자 AI 에이전트 개발…상향식 AX 확산', 'https://www.inthenews.co.kr/news/article.html?no=91342', 'inthenews'],
+  ['중도일보', '2026. 9. 3.', '부산대 직원 21명, 업무용 AI 에이전트 12건 개발', 'https://www.joongdo.co.kr/web/view.php?key=20260903010001009', 'joongdo'],
+  ['인디포커스', '2026. 9. 3.', '부산대, 실무자가 만든 ‘AI 에이전트’로 행정 AX 확산', 'http://www.indifocus.kr/81577', 'indifocus'],
+  ['이뉴스투데이', '2026. 9. 4.', "부산대 행정직원이 직접 'AI 직원' 만든다…대학 행정 AX 혁신 속도", 'https://www.enewstoday.co.kr/news/articleView.html?idxno=2466670', 'enews'],
 ];
 (() => {
   const row = document.getElementById('pressRow'), dots = document.getElementById('pressDots');
   const tilt = [-1.6, 1.1, -0.8, 1.5, -1.2, 0.9, -1.4];
-  row.innerHTML = PRESS.map(([o, dt, t, u], i) => `
+  row.innerHTML = PRESS.map(([o, dt, t, u, img], i) => `
     <a class="clip" href="${u}" target="_blank" rel="noopener" style="--r:${tilt[i % tilt.length]}deg" aria-label="${o} 기사: ${t.replace(/"/g, '&quot;')}">
+      ${img ? `<figure class="ph"><img src="press/${img}.webp" alt="${o} 기사에 실린 AI 마에스트로 교육 사진" loading="lazy"><figcaption>${o} 보도 사진</figcaption></figure>` : ''}
       <div class="mast"><b>${o}</b><span>${dt}</span></div><div class="rule"></div>
       <h4>${t}</h4>
       <div class="go">기사 원문 보기 ↗<i>${i + 1} / ${PRESS.length}</i></div>
