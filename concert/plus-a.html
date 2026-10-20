@@ -107,10 +107,10 @@ h2 { margin-top:6px; font-size:clamp(26px, 7vw, 38px); font-weight:800; letter-s
 .prog .who { margin:10px 0 2px 40px; list-style:none; display:grid; gap:6px; }
 .prog .who li { font-size:14px; color:var(--ink2); line-height:1.5; } .prog .who li b { color:var(--ink); }
 .prog .who li::before { content:attr(data-n); color:var(--gold); font-weight:700; margin-right:6px; }
-.peek { display:inline-flex; gap:6px; margin:8px 0 2px 40px; font-size:13.5px; color:var(--ink2); text-decoration:none; }
+.peek { display:flex; gap:6px; margin:8px 0 0 40px; font-size:13.5px; color:var(--ink2); }
 .peek b { color:var(--gold); }
 /* ── AX 특강 미리보기 ── */
-.ax { margin-top:44px; padding:26px 22px 22px; border-radius:18px; background:var(--ink); color:var(--bg); position:relative; overflow:hidden; scroll-margin-top:30px; }
+.ax { margin:10px 0 6px 40px; padding:26px 22px 22px; border-radius:18px; background:var(--ink); color:var(--bg); position:relative; overflow:hidden; scroll-margin-top:30px; }
 .ax::before { content:''; position:absolute; inset:7px; border:1px solid rgba(231,196,120,.35); border-radius:13px; pointer-events:none; }
 .ax-hd { text-align:center; }
 .ax-k { font-size:12px; font-weight:800; letter-spacing:.3em; color:#E2B85C; margin-right:-.3em; }
@@ -261,7 +261,7 @@ footer { padding:40px 0 calc(100px + env(safe-area-inset-bottom)); text-align:ce
   .stats { grid-template-columns:repeat(2, 1fr); }
   .chap-hd p br, .hint br { display:none; }   /* 좁은 화면에서는 억지 줄바꿈을 빼고 낱말 단위로 흐르게 */
   .prog .t { display:none; } .prog .who { margin-left:40px; }
-  .ax { padding:22px 16px 18px; } .ax-card { grid-template-columns:1fr; gap:14px; } .ax-q { font-size:18px; }
+  .ax { margin-left:0; padding:22px 16px 18px; } .peek { margin-left:0; } .ax-card { grid-template-columns:1fr; gap:14px; } .ax-q { font-size:18px; }
   .ax-tabs { gap:4px; } .ax-tabs button b { font-size:12px; }
 }
 @media (prefers-reduced-motion: reduce) { .rv, .tl li.rv .ph { transition-duration:.01s; } .band .staff { clip-path:none; } .down::after { animation:none; } }
@@ -401,21 +401,22 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
           <li data-n="④"><b>김정목</b> 정보화기획운영과 — 계획에서 화면까지, 그리고 나만의 에이전트로</li>
         </ul></li>
       <li class="rv"><div class="row"><span class="m">Ⅲ</span><span class="t">14:35 – 16:50</span><span class="nm">AX 특강</span><span class="ld"></span><span class="by">AI 그라운드 장병준</span></div>
-        <a class="peek" href="#ax">무엇을 듣게 될까요? <b>특강 미리보기 ↓</b></a></li>
+        <div class="peek">무엇을 듣게 될까요? <b>특강 미리보기 ↓</b></div>
+        <!-- AX 특강 미리보기 — 자료는 공개하지 않고, 세션마다 장면 하나와 질문 하나로 궁금증만 건넵니다 -->
+        <div class="ax" id="ax">
+          <div class="ax-hd">
+            <div class="ax-k">AX 특강 미리보기</div>
+            <h3>질문하는 AI에서,<br><em>일을 끝내는 AI</em>로</h3>
+            <p>장병준 <span>AI 그라운드 대표 · ‘일잘러 장피엠’</span></p>
+          </div>
+          <div class="ax-tabs" role="tablist" id="axTabs"></div>
+          <div class="ax-card" id="axCard" role="tabpanel"></div>
+          <p class="ax-ft">나머지 이야기는 <b>10. 30.(금) 14:35</b>, 대강당에서 이어집니다.</p>
+        </div>
+      </li>
       <li class="rv"><div class="row"><span class="m">Ⅳ</span><span class="t">16:50 – 17:00</span><span class="nm">피날레</span><span class="ld"></span><span class="by">성과조사 · 단체사진</span></div></li>
     </ol>
 
-    <!-- AX 특강 미리보기 — 자료는 공개하지 않고, 세션마다 장면 하나와 질문 하나로 궁금증만 건넵니다 -->
-    <div class="ax rv" id="ax">
-      <div class="ax-hd">
-        <div class="ax-k">AX 특강 미리보기</div>
-        <h3>질문하는 AI에서,<br><em>일을 끝내는 AI</em>로</h3>
-        <p>장병준 <span>AI 그라운드 대표 · ‘일잘러 장피엠’</span></p>
-      </div>
-      <div class="ax-tabs" role="tablist" id="axTabs"></div>
-      <div class="ax-card" id="axCard" role="tabpanel"></div>
-      <p class="ax-ft">나머지 이야기는 <b>10. 30.(금) 14:35</b>, 대강당에서 이어집니다.</p>
-    </div>
     <div class="info rv">
       <div class="when">10. 30.(금)</div>
       <div class="time">오후 2시</div>
