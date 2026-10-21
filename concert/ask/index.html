@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 마에스트로 · 객석 참여</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root { --navy:#19213D; --sky:#2A8DE0; --hl:#76D4F2; --mag:#D7014D; --bg:#EFF2F7; --ink:#1F2937; --muted:#6B7280; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Pretendard', 'Malgun Gothic', sans-serif; background:var(--bg); color:var(--ink); min-height:100vh; word-break:keep-all; }
+header { background:var(--navy); color:#fff; padding:28px 22px 30px; }
+header .k { font-size:12px; font-weight:700; letter-spacing:.24em; color:var(--hl); }
+header h1 { margin-top:10px; font-size:26px; font-weight:800; line-height:1.35; }
+main { padding:22px 18px 40px; max-width:520px; margin:0 auto; }
+.card { background:#fff; border-radius:14px; padding:20px; box-shadow:0 4px 18px rgba(25,33,61,.08); }
+label { font-weight:800; font-size:15px; }
+.hint { color:var(--muted); font-size:13px; margin-top:4px; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 12px; }
+.chips button { border:1px solid #D7DDEA; background:#fff; border-radius:20px; padding:8px 12px; font:600 14px 'Pretendard'; color:var(--navy); }
+input { width:100%; border:2px solid #E1E4ED; border-radius:10px; padding:14px; font:600 18px 'Pretendard'; color:var(--ink); outline:none; }
+input:focus { border-color:var(--sky); }
+.go { width:100%; margin-top:14px; border:0; border-radius:10px; padding:15px; background:var(--mag); color:#fff; font:800 17px 'Pretendard'; }
+.go:disabled { opacity:.5; }
+.msg { margin-top:12px; font-weight:700; font-size:14px; min-height:20px; }
+.ok { color:#0899A5; } .err { color:var(--mag); }
+.done { display:none; text-align:center; padding:26px 10px; }
+.done b { display:block; font-size:22px; color:var(--navy); margin-bottom:6px; }
+.done p { color:var(--muted); font-size:14px; }
+.more { margin-top:16px; background:none; border:1px solid var(--sky); color:var(--sky); border-radius:10px; padding:11px 16px; font:700 14px 'Pretendard'; }
+.foot { margin-top:18px; color:var(--muted); font-size:12px; line-height:1.6; text-align:center; }
+</style>
+</head>
+<body>
+<header>
+  <div class="k">AI MAESTRO · LIVE</div>
+  <h1>AI에게 가장<br>맡기고 싶은 업무는?</h1>
+</header>
+<main>
+  <div class="card" id="form">
+    <label for="ans">한 단어나 짧은 말로 적어 주세요</label>
+    <p class="hint">예) 회의록 정리, 공문 초안, 엑셀 취합 · 15자 이내</p>
+    <div class="chips" id="chips"></div>
+    <input id="ans" maxlength="15" autocomplete="off" placeholder="여기에 입력">
+    <button class="go" id="go" type="button">스크린에 보내기</button>
+    <p class="msg" id="msg"></p>
+  </div>
+  <div class="card done" id="done">
+    <b>스크린을 봐 주세요!</b>
+    <p>보내 주신 답이 단어 구름에 더해졌습니다.</p>
+    <button class="more" id="more" type="button">하나 더 보내기</button>
+  </div>
+  <p class="foot">이름·연락처 등 개인정보는 적지 마세요.<br>모인 답은 2기 AI 마에스트로 과제 후보로 활용합니다.</p>
+</main>
+<script>
+// 응답 저장소: 신청 페이지와 같은 Apps Script(Words.js). 배포 전 시안에서는 ?demo=1 로 저장 없이 동작
+const API = 'https://script.google.com/macros/s/AKfycbys6p3dIgzhe-x_EWW6IiSTuMl24F_tFx0424BLlk_cGY-4oNPF9lhDC3y9zkFyikdV6g/exec';
+const DEMO = new URLSearchParams(location.search).has('demo');
+const $ = id => document.getElementById(id);
+const ans = $('ans'), go = $('go'), msg = $('msg');
+let client = '';
+try { client = localStorage.getItem('am.client') || ''; if (!client) { client = Math.random().toString(36).slice(2, 12); localStorage.setItem('am.client', client); } } catch (e) {}
+['회의록 정리', '공문 초안', '엑셀 취합', '규정 찾기', '보고서 요약'].forEach(t => {
+  const b = document.createElement('button'); b.type = 'button'; b.textContent = t;
+  b.onclick = () => { ans.value = t; ans.focus(); }; $('chips').appendChild(b);
+});
+async function send() {
+  const v = ans.value.replace(/\s+/g, ' ').trim();
+  if (!v) { msg.className = 'msg err'; msg.textContent = '내용을 적어 주세요.'; return; }
+  go.disabled = true; msg.className = 'msg'; msg.textContent = '보내는 중…';
+  try {
+    let r = { ok: true };
+    if (!DEMO) {
+      r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                             body: JSON.stringify({ action: 'word', payload: { word: v, client } }) }).then(x => x.json());
+    }
+    if (!r.ok) throw new Error(r.message || '보내지 못했습니다.');
+    $('form').style.display = 'none'; $('done').style.display = 'block';
+  } catch (e) {
+    msg.className = 'msg err'; msg.textContent = e.message || '잠시 후 다시 시도해 주세요.';
+  } finally { go.disabled = false; }
+}
+go.onclick = send;
+ans.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+$('more').onclick = () => { ans.value = ''; msg.textContent = ''; $('done').style.display = 'none'; $('form').style.display = 'block'; ans.focus(); };
+</script>
+</body>
+</html>

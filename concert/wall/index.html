@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 마에스트로 · 실시간 객석 참여</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root { --navy:#19213D; --sky:#2A8DE0; --hl:#76D4F2; --mag:#D7014D; --bg:#EFF2F7; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html, body { height:100%; }
+body { font-family:'Pretendard', 'Malgun Gothic', sans-serif; background:#fff; color:#000; overflow:hidden; word-break:keep-all; }
+.hd { position:absolute; left:2.4vw; top:2vh; display:flex; align-items:center; gap:.7vw; font-weight:800; font-size:1.55vw; }
+.hd b { background:var(--navy); color:#fff; width:2.2vw; height:2.2vw; display:grid; place-items:center; font-size:1.3vw; }
+.q { position:absolute; left:0; right:0; top:6.2vh; text-align:center; font-weight:800; font-size:2.6vw; }
+.q em { font-style:normal; color:var(--mag); }
+.stage { position:absolute; left:2.4vw; right:2.4vw; top:15vh; bottom:3vh; background:var(--bg); border-radius:14px; overflow:hidden; }
+.w { position:absolute; font-weight:800; white-space:nowrap; line-height:1; transform:translate(-50%, -50%); transition:font-size .6s cubic-bezier(.2,.9,.3,1.3), left .6s, top .6s; }
+.w.new { animation:pop .9s cubic-bezier(.2,.9,.3,1.4); }
+@keyframes pop { 0% { transform:translate(-50%,-50%) scale(.2); opacity:0; } 60% { transform:translate(-50%,-50%) scale(1.25); opacity:1; } 100% { transform:translate(-50%,-50%) scale(1); } }
+.qr { position:absolute; right:1.6vw; bottom:2.2vh; background:#fff; border-radius:12px; padding:1vw; text-align:center; box-shadow:0 4px 16px rgba(25,33,61,.1); }
+.qr img { width:9vw; display:block; }
+.qr span { display:block; margin-top:.5vw; font-weight:700; font-size:.95vw; }
+.cnt { position:absolute; left:1.6vw; bottom:2.6vh; font-weight:700; color:#6B7280; font-size:1.2vw; }
+.cnt b { color:var(--mag); font-size:2.2vw; margin:0 .2vw; }
+.live { display:inline-block; width:.7vw; height:.7vw; border-radius:50%; background:#22c55e; margin-right:.4vw; animation:blink 1.4s infinite; }
+@keyframes blink { 50% { opacity:.25; } }
+.empty { position:absolute; inset:0; display:grid; place-items:center; color:#9CA3AF; font-weight:700; font-size:1.6vw; }
+</style>
+</head>
+<body>
+<div class="hd"><b>★</b>객석 참여 _ 지금 이 자리에서</div>
+<div class="q">"AI에게 가장 <em>맡기고 싶은 업무</em>는?"</div>
+<div class="stage" id="stage">
+  <div class="empty" id="empty">QR을 찍고 첫 번째 답을 보내 주세요</div>
+  <div class="cnt"><span class="live"></span>응답<b id="n">0</b>건 · 실시간 갱신 중</div>
+  <div class="qr"><img src="../photos/qr_ask.png" alt="객석 참여 QR"><span>QR 찍고 한 단어 입력</span></div>
+</div>
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbys6p3dIgzhe-x_EWW6IiSTuMl24F_tFx0424BLlk_cGY-4oNPF9lhDC3y9zkFyikdV6g/exec';
+const DEMO = new URLSearchParams(location.search).has('demo');   // 시안: 예시 답이 3초마다 들어오는 흉내
+const COLORS = ['#D7014D', '#2563EB', '#0899A5', '#5F3FE5', '#2A8DE0', '#5383EF'];
+const stage = document.getElementById('stage'), el = new Map();
+let last = {};
+
+// ── 배치: 많이 나온 답부터 가운데에서 나선형으로 빈자리를 찾는다 ──
+function layout(items) {
+  const W = stage.clientWidth, H = stage.clientHeight - 40, placed = [];
+  const max = Math.max(...items.map(i => i.count)), min = Math.min(...items.map(i => i.count));
+  const size = c => { const t = max === min ? 1 : (c - min) / (max - min); return Math.round(W * (0.017 + 0.038 * Math.sqrt(t))); };
+  const meas = document.createElement('span'); meas.className = 'w'; meas.style.visibility = 'hidden'; stage.appendChild(meas);
+  const out = [];
+  items.forEach((it, k) => {
+    let fs = size(it.count);
+    for (let tryN = 0; tryN < 4; tryN++, fs = Math.round(fs * 0.85)) {        // 자리가 없으면 글자를 줄여 다시
+      meas.style.fontSize = fs + 'px'; meas.textContent = it.word;
+      const w = meas.offsetWidth + 14, h = fs * 1.12 + 6;
+      let ok = false;
+      for (let s = 0; s < 5000 && !ok; s++) {
+        const a = s * 0.23, r = 1.6 * Math.sqrt(s) * (W / 700);
+        const x = W / 2 + r * Math.cos(a) * 1.6, y = H / 2 + r * Math.sin(a) * 0.85;
+        const box = { l: x - w / 2, r: x + w / 2, t: y - h / 2, b: y + h / 2 };
+        if (box.l < 6 || box.r > W - 6 || box.t < 6 || box.b > H) continue;
+        if (box.r > W - stage.clientWidth * 0.13 && box.b > H - stage.clientHeight * 0.30) continue;   // QR 자리 비움
+        if (placed.some(p => box.l < p.r && box.r > p.l && box.t < p.b && box.b > p.t)) continue;
+        placed.push(box); out.push({ ...it, x, y, fs, color: COLORS[k % COLORS.length] }); ok = true;
+      }
+      if (ok) break;
+    }
+  });
+  meas.remove();
+  return out;
+}
+
+function draw(items) {
+  document.getElementById('empty').style.display = items.length ? 'none' : 'grid';
+  document.getElementById('n').textContent = items.reduce((s, i) => s + i.count, 0);
+  const shown = layout(items.slice(0, 45)), keep = new Set();
+  shown.forEach(it => {
+    keep.add(it.word);
+    let d = el.get(it.word);
+    const isNew = !d, grew = last[it.word] !== undefined && it.count > last[it.word];
+    if (!d) { d = document.createElement('div'); d.className = 'w'; d.textContent = it.word; stage.appendChild(d); el.set(it.word, d); }
+    d.style.left = it.x + 'px'; d.style.top = it.y + 'px'; d.style.fontSize = it.fs + 'px'; d.style.color = it.color;
+    if (isNew || grew) { d.classList.remove('new'); void d.offsetWidth; d.classList.add('new'); }
+  });
+  el.forEach((d, w) => { if (!keep.has(w)) { d.remove(); el.delete(w); } });
+  last = Object.fromEntries(items.map(i => [i.word, i.count]));
+}
+
+// ── 시안용 예시 데이터 ──
+const SAMPLE = ['회의록 정리', '공문 초안', '엑셀 취합', '규정 찾기', '보고서 요약', '민원 답변', '일정 조율', '통계 작성', '출장 정산', '자료 검색',
+                '회의록 정리', '공문 초안', '엑셀 취합', '회의록 정리', '보고서 요약', '공문 초안', '회의록 정리', '계약 서류 검토', '예산 집행 확인', '이메일 답장',
+                '번역', '회의록 정리', '엑셀 취합', '공문 초안', '설문 분석', '홈페이지 공지', '규정 찾기', '보고서 요약', '회의록 정리', '증빙 정리'];
+const demo = {};
+function demoTick() {
+  for (let i = 0; i < 2 + Math.floor(Math.random() * 3); i++) {
+    const w = SAMPLE[Math.floor(Math.random() * SAMPLE.length)]; demo[w] = (demo[w] || 0) + 1;
+  }
+  draw(Object.entries(demo).map(([word, count]) => ({ word, count })).sort((a, b) => b.count - a.count));
+}
+
+async function tick() {
+  try {
+    const v = await fetch(API + '?api=words', { cache: 'no-store' }).then(r => r.json());
+    if (v && v.ok) draw(v.items);
+  } catch (e) { /* 다음 주기에 다시 */ }
+}
+if (DEMO) { for (let i = 0; i < 6; i++) demoTick(); setInterval(demoTick, 3000); }
+else { tick(); setInterval(tick, 3000); }
+addEventListener('resize', () => { el.forEach(d => d.remove()); el.clear(); last = {}; DEMO ? demoTick() : tick(); });
+</script>
+</body>
+</html>

@@ -294,31 +294,28 @@ footer { padding:40px 0 calc(100px + env(safe-area-inset-bottom)); text-align:ce
   .mhd .r { font-size:28px; } .mhd h3 { font-size:17px; }
 }
 
-/* ── 방명록 ── */
-.gb-form { margin:30px auto 0; max-width:620px; padding:18px; border-radius:18px; background:rgba(255,255,255,.55); border:1px solid rgba(168,123,34,.32);
-           box-shadow:inset 0 1px 0 rgba(255,255,255,.8), 0 10px 26px rgba(26,25,22,.06); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
-.gb-form input, .gb-form textarea { display:block; width:100%; border:1px solid rgba(168,123,34,.3); border-radius:12px; background:rgba(255,255,255,.75);
-           font:inherit; font-size:15px; color:var(--ink); padding:11px 13px; outline:none; transition:border-color .2s, box-shadow .2s; }
-.gb-form textarea { margin-top:8px; resize:vertical; min-height:84px; line-height:1.55; }
-.gb-form input:focus, .gb-form textarea:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(168,123,34,.15); }
-.gb-row { margin-top:10px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-.gb-row span { font-size:12.5px; color:var(--muted); font-variant-numeric:tabular-nums; }
-.gb-row button { border:0; border-radius:999px; padding:11px 22px; font:inherit; font-weight:800; font-size:15px; color:var(--bg); cursor:pointer;
-                 background:linear-gradient(180deg, rgba(42,40,35,.88), rgba(26,25,22,.8)); box-shadow:inset 0 0 0 1px rgba(217,180,96,.4), 0 4px 12px rgba(26,25,22,.14); }
-.gb-row button[disabled] { opacity:.55; cursor:wait; }
-.gb-note { margin-top:10px; font-size:12px; color:var(--muted); line-height:1.5; }
-.gb-msg { margin-top:6px; font-size:13.5px; font-weight:700; min-height:1em; } .gb-msg.err { color:#B03A2E; } .gb-msg.ok { color:var(--gold); }
-.gb-wall { margin-top:28px; columns:1; column-gap:14px; }
-.gb-card { break-inside:avoid; margin:0 0 14px; padding:16px 16px 13px; border-radius:4px; position:relative; background:#FFFBEF;
-           box-shadow:0 1px 0 rgba(26,25,22,.05), 0 8px 18px rgba(26,25,22,.08); transform:rotate(var(--r, 0deg)); }
-.gb-card:nth-child(3n+2) { background:#FFF6E3; } .gb-card:nth-child(3n) { background:#FAF7EE; }
-.gb-card::before { content:'♪'; position:absolute; right:12px; top:8px; font-family:Georgia,serif; font-size:18px; color:rgba(168,123,34,.35); }
-.gb-card p { font-size:15px; line-height:1.65; white-space:pre-wrap; word-break:keep-all; overflow-wrap:anywhere; }
-.gb-card .by { margin-top:10px; display:flex; justify-content:space-between; gap:8px; font-size:12.5px; }
-.gb-card .by b { color:var(--gold); } .gb-card .by span { color:var(--muted); font-variant-numeric:tabular-nums; }
-.gb-card.new { animation:gbIn .6s cubic-bezier(.2,.9,.3,1.3); } @keyframes gbIn { from { opacity:0; transform:translateY(-10px) scale(.96); } }
-.gb-empty { column-span:all; text-align:center; color:var(--muted); font-size:14px; padding:20px 0; }
-.gb-more { text-align:center; } .gb-more button { margin-top:6px; border:1px solid rgba(168,123,34,.4); border-radius:999px; padding:9px 20px; background:rgba(255,255,255,.55); font:inherit; font-weight:700; color:var(--ink); cursor:pointer; }
+/* ── 실시간 객석 참여 ── */
+.lv-form { margin:30px auto 0; max-width:620px; padding:18px; border-radius:18px; background:rgba(255,255,255,.55); border:1px solid rgba(168,123,34,.32);
+           -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
+.lv-form label { display:block; font-weight:800; font-size:16px; } .lv-form label b { color:var(--gold); }
+.lv-chips { margin:12px 0 10px; display:flex; flex-wrap:wrap; gap:7px; }
+.lv-chips button { border:1px solid rgba(168,123,34,.35); background:rgba(255,255,255,.7); border-radius:999px; padding:7px 12px; font:inherit; font-size:13.5px; font-weight:700; color:var(--ink); cursor:pointer; }
+.lv-row { display:flex; gap:8px; }
+.lv-row input { flex:1; min-width:0; border:1px solid rgba(168,123,34,.3); border-radius:12px; background:rgba(255,255,255,.8); padding:12px 14px; font:inherit; font-size:16px; color:var(--ink); outline:none; }
+.lv-row input:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(168,123,34,.15); }
+.lv-row button { border:0; border-radius:999px; padding:0 20px; font:inherit; font-weight:800; font-size:15px; color:var(--bg); background:var(--ink); cursor:pointer; white-space:nowrap; }
+.lv-row button[disabled] { opacity:.55; cursor:wait; }
+.lv-msg { margin-top:8px; font-size:13.5px; font-weight:700; min-height:1em; } .lv-msg.err { color:#B03A2E; } .lv-msg.ok { color:var(--gold); }
+.lv-stage { position:relative; margin-top:22px; height:min(78vw, 440px); border-radius:18px; overflow:hidden;
+            background:radial-gradient(circle at 50% 45%, #FFFBEF 0, #F7EFDB 60%, #F1E6CC 100%); border:1px solid rgba(168,123,34,.28); }
+.lv-w { position:absolute; font-weight:800; white-space:nowrap; line-height:1; transform:translate(-50%,-50%); transition:font-size .6s cubic-bezier(.2,.9,.3,1.3), left .6s, top .6s; }
+.lv-w.new { animation:lvPop .9s cubic-bezier(.2,.9,.3,1.4); }
+@keyframes lvPop { 0% { transform:translate(-50%,-50%) scale(.2); opacity:0; } 60% { transform:translate(-50%,-50%) scale(1.22); opacity:1; } 100% { transform:translate(-50%,-50%) scale(1); } }
+.lv-empty { position:absolute; inset:0; display:grid; place-items:center; color:var(--muted); font-size:15px; }
+.lv-cnt { position:absolute; left:14px; bottom:10px; font-size:12.5px; color:var(--muted); font-weight:700; }
+.lv-cnt b { color:var(--gold); font-size:18px; margin:0 2px; }
+.lv-cnt i { display:inline-block; width:7px; height:7px; border-radius:50%; background:#3BA55C; margin-right:5px; animation:lvBlink 1.4s infinite; } @keyframes lvBlink { 50% { opacity:.25; } }
+.lv-note { margin-top:10px; text-align:center; font-size:12px; color:var(--muted); line-height:1.5; }
 .visits { width:max-content; max-width:100%; margin:14px auto 0; display:flex; align-items:center; gap:6px; padding:6px 14px; border-radius:999px; font-size:12.5px; color:var(--ink2);
           background:rgba(255,255,255,.5); border:1px solid rgba(168,123,34,.28); }
 .visits i { font-style:normal; color:var(--gold); } .visits b { color:var(--ink); font-variant-numeric:tabular-nums; }
@@ -348,7 +345,6 @@ footer { padding:40px 0 calc(100px + env(safe-area-inset-bottom)); text-align:ce
    휴대폰(~720) 한 줄 · 태블릿(721~1023) 지금 배치 · PC(1024~) 넓은 판 · 큰 화면(1440~) 더 넓게.
    글줄은 읽기 좋은 폭(제목·설명 680px)을 지키고, 사진·카드·표처럼 '보는 것'만 넓게 펼친다 */
 @media (min-width: 721px) {
-  .gb-wall { columns:2; }
 }
 @media (min-width: 1024px) {
   .wrap { max-width:1040px; padding:0 56px; }
@@ -369,7 +365,6 @@ footer { padding:40px 0 calc(100px + env(safe-area-inset-bottom)); text-align:ce
   .tabs, #panel { max-width:900px; margin-left:auto; margin-right:auto; }
   .prog-hd, .prog { max-width:860px; margin-left:auto; margin-right:auto; }
   .group { max-width:820px; margin-left:auto; margin-right:auto; }
-  .gb-wall { columns:3; }
 }
 @media (min-width: 1440px) {
   .wrap { max-width:1200px; }
@@ -613,23 +608,25 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
     <figure class="group rv"><img src="photos/edu_group.webp" alt="2026. 8. 19. AI 교육 성과공유회 단체 사진" loading="lazy"><figcaption>2026. 8. 19. AI 교육 성과공유회</figcaption></figure>
   </section>
 
-  <!-- 방명록 — 신청 웹앱(Apps Script)의 「방명록」 시트에 쌓인다. 문제 글은 시트에서 '공개' 체크만 풀면 내려간다 -->
+  <!-- 실시간 객석 참여 — 신청 웹앱(Apps Script) 「객석참여」 시트에 쌓인다. 부적절한 답은 시트에서 '공개' 체크만 풀면 빠진다 -->
   <section class="chap wrap" id="guest">
     <div class="chap-hd rv">
-      <div class="no">Encore · Guestbook</div>
-      <h2>마에스트로에게 <em>한마디</em></h2>
-      <p>응원, 축하, 다음 기수에게 남기는 말 — 무엇이든 좋습니다.</p>
+      <div class="no">Encore · Live</div>
+      <h2>지금 이 자리에서, <em>객석 참여</em></h2>
+      <p>AI에게 가장 맡기고 싶은 업무는 무엇인가요? 보내 주신 답이 아래 단어 구름에 바로 더해집니다.</p>
       <div class="dv"><b></b></div>
     </div>
-    <form class="gb-form rv" id="gbForm" autocomplete="off">
-      <input id="gbName" maxlength="20" placeholder="닉네임 (비우면 '익명의 마에스트로')" aria-label="닉네임">
-      <textarea id="gbMsg" maxlength="200" rows="3" placeholder="한마디를 남겨 주세요 (200자 이내)" aria-label="남길 말" required></textarea>
-      <div class="gb-row"><span id="gbCount">0 / 200</span><button type="submit" id="gbSend">남기기 ♪</button></div>
-      <p class="gb-note">전화번호·메일·링크와 부적절한 표현은 남길 수 없습니다. 남긴 글은 이 페이지에 바로 공개됩니다.</p>
-      <p class="gb-msg" id="gbFeedback" role="status"></p>
+    <form class="lv-form rv" id="lvForm" autocomplete="off">
+      <label for="lvWord">AI에게 가장 <b>맡기고 싶은 업무</b>는?</label>
+      <div class="lv-chips" id="lvChips"></div>
+      <div class="lv-row"><input id="lvWord" maxlength="15" placeholder="예) 회의록 정리 · 15자 이내" aria-label="맡기고 싶은 업무"><button type="submit" id="lvSend">보내기 ♪</button></div>
+      <p class="lv-msg" id="lvFeedback" role="status"></p>
     </form>
-    <div class="gb-wall" id="gbWall" aria-live="polite"></div>
-    <div class="gb-more"><button type="button" id="gbMore" hidden>더 보기</button></div>
+    <div class="lv-stage rv" id="lvStage" aria-live="polite">
+      <p class="lv-empty" id="lvEmpty">첫 번째 답을 보내 주세요 ♪</p>
+      <div class="lv-cnt"><i></i>응답 <b id="lvN">0</b>건 · 실시간</div>
+    </div>
+    <p class="lv-note">이름·연락처 등 개인정보와 부적절한 표현은 보낼 수 없습니다. 모인 답은 2기 AI 마에스트로 과제 후보로 활용합니다.</p>
   </section>
 
   <footer class="wrap">
@@ -701,7 +698,7 @@ const PRESS = [
   mark();
 })();
 
-// 방명록 · 방문자 수 — 신청 웹앱(Apps Script)과 같은 주소의 JSON 통로를 쓴다
+// 방문자 수 · 실시간 객석 참여 — 신청 웹앱(Apps Script)과 같은 주소의 JSON 통로를 쓴다
 (() => {
   const API = 'https://script.google.com/macros/s/AKfycbys6p3dIgzhe-x_EWW6IiSTuMl24F_tFx0424BLlk_cGY-4oNPF9lhDC3y9zkFyikdV6g/exec';
   const st = { get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
@@ -714,31 +711,75 @@ const PRESS = [
     document.getElementById('vTotal').textContent = v.total.toLocaleString('ko-KR');
     document.getElementById('visits').hidden = false;
   }).catch(() => {});
-  // 방명록
-  const wall = document.getElementById('gbWall'), more = document.getElementById('gbMore'), form = document.getElementById('gbForm');
-  const nm = document.getElementById('gbName'), msg = document.getElementById('gbMsg'), cnt = document.getElementById('gbCount'), fb = document.getElementById('gbFeedback'), send = document.getElementById('gbSend');
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
-  const tilt = [-1.2, .8, -.5, 1.1, -.9, .6];
-  const card = (x, i, fresh) => `<article class="gb-card${fresh ? ' new' : ''}" style="--r:${tilt[i % tilt.length]}deg"><p>${esc(x.message)}</p><div class="by"><b>${esc(x.name)}</b><span>${esc(x.at)}</span></div></article>`;
-  let items = [], shown = 9;
-  const draw = () => { wall.innerHTML = items.length ? items.slice(0, shown).map((x, i) => card(x, i, x._new)).join('') : '<p class="gb-empty">첫 번째 한마디를 남겨 주세요 ♪</p>';
-    more.hidden = items.length <= shown; };
-  more.onclick = () => { shown += 9; draw(); };
-  fetch(`${API}?api=guestbook`).then(r => r.json()).then(v => { if (v && v.ok) { items = v.items; draw(); } }).catch(() => { wall.innerHTML = '<p class="gb-empty">방명록을 불러오지 못했습니다. 잠시 후 다시 열어 주세요.</p>'; });
-  draw();
-  msg.addEventListener('input', () => { cnt.textContent = `${msg.value.length} / 200`; });
+  // 실시간 객석 참여 — 「AI에게 가장 맡기고 싶은 업무는?」 답을 단어 구름으로(5초마다, 화면에 보일 때만 갱신). ?demo=1 은 예시 답으로 미리보기
+  const DEMO = new URLSearchParams(location.search).has('demo');
+  const stage = document.getElementById('lvStage'), form = document.getElementById('lvForm'), inp = document.getElementById('lvWord'),
+        fb = document.getElementById('lvFeedback'), send = document.getElementById('lvSend');
+  const COLORS = ['#A87B22', '#1A1916', '#B03A2E', '#6E5A2E', '#C99A3A', '#3D3A33'];
+  const el = new Map(); let last = {};
+  ['회의록 정리', '공문 초안', '엑셀 취합', '규정 찾기', '보고서 요약'].forEach(t => {
+    const b = document.createElement('button'); b.type = 'button'; b.textContent = t; b.onclick = () => { inp.value = t; inp.focus(); };
+    document.getElementById('lvChips').appendChild(b); });
+  const layout = items => {
+    const W = stage.clientWidth, H = stage.clientHeight - 30, placed = [], out = [];
+    const max = Math.max(...items.map(i => i.count)), min = Math.min(...items.map(i => i.count));
+    const size = c => { const t = max === min ? 1 : (c - min) / (max - min); return Math.round(Math.min(W, 900) * (0.032 + 0.05 * Math.sqrt(t))); };
+    const meas = document.createElement('span'); meas.className = 'lv-w'; meas.style.visibility = 'hidden'; stage.appendChild(meas);
+    items.forEach((it, k) => {
+      let fs = size(it.count);
+      for (let n = 0; n < 4; n++, fs = Math.round(fs * .85)) {
+        meas.style.fontSize = fs + 'px'; meas.textContent = it.word;
+        const w = meas.offsetWidth + 12, h = fs * 1.12 + 6; let ok = false;
+        for (let s = 0; s < 4000 && !ok; s++) {
+          const a = s * .23, r = 0.9 * Math.sqrt(s) * Math.max(1, Math.min(W, 1000) / 260), x = W / 2 + r * Math.cos(a) * (W > H ? 1.5 : 1), y = H / 2 + r * Math.sin(a) * .85;
+          const b = { l: x - w / 2, r: x + w / 2, t: y - h / 2, b: y + h / 2 };
+          if (b.l < 6 || b.r > W - 6 || b.t < 6 || b.b > H) continue;
+          if (placed.some(p => b.l < p.r && b.r > p.l && b.t < p.b && b.b > p.t)) continue;
+          placed.push(b); out.push({ ...it, x, y, fs, color: COLORS[k % COLORS.length] }); ok = true;
+        }
+        if (ok) break;
+      }
+    });
+    meas.remove(); return out;
+  };
+  const draw = items => {
+    document.getElementById('lvEmpty').style.display = items.length ? 'none' : 'grid';
+    document.getElementById('lvN').textContent = items.reduce((t, i) => t + i.count, 0).toLocaleString('ko-KR');
+    const keep = new Set();
+    layout(items.slice(0, 40)).forEach(it => {
+      keep.add(it.word); let d = el.get(it.word);
+      const fresh = !d || (last[it.word] !== undefined && it.count > last[it.word]);
+      if (!d) { d = document.createElement('div'); d.className = 'lv-w'; d.textContent = it.word; stage.appendChild(d); el.set(it.word, d); }
+      Object.assign(d.style, { left: it.x + 'px', top: it.y + 'px', fontSize: it.fs + 'px', color: it.color });
+      if (fresh) { d.classList.remove('new'); void d.offsetWidth; d.classList.add('new'); }
+    });
+    el.forEach((d, w) => { if (!keep.has(w)) { d.remove(); el.delete(w); } });
+    last = Object.fromEntries(items.map(i => [i.word, i.count]));
+  };
+  const SAMPLE = ['회의록 정리', '공문 초안', '엑셀 취합', '규정 찾기', '보고서 요약', '민원 답변', '일정 조율', '통계 작성', '출장 정산', '자료 검색', '회의록 정리', '공문 초안', '엑셀 취합', '회의록 정리', '보고서 요약', '계약 서류 검토', '예산 집행 확인', '이메일 답장', '설문 분석', '증빙 정리'];
+  const demo = {};
+  const asList = o => Object.entries(o).map(([word, count]) => ({ word, count })).sort((a, b) => b.count - a.count);
+  const load = () => {
+    if (DEMO) { for (let i = 0; i < 3; i++) { const w = SAMPLE[Math.floor(Math.random() * SAMPLE.length)]; demo[w] = (demo[w] || 0) + 1; } draw(asList(demo)); return; }
+    fetch(`${API}?api=words`, { cache: 'no-store' }).then(r => r.json()).then(v => { if (v && v.ok) draw(v.items); }).catch(() => {});
+  };
+  let timer = null;
+  new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting && !timer) { load(); timer = setInterval(load, 5000); }
+    if (!e.isIntersecting && timer) { clearInterval(timer); timer = null; }
+  })).observe(stage);
+  let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { el.forEach(d => d.remove()); el.clear(); last = {}; if (DEMO) draw(asList(demo)); else load(); }, 300); });
   let client = st.get('am.client'); if (!client) { client = Math.random().toString(36).slice(2) + Date.now().toString(36); st.set('am.client', client); }
   form.addEventListener('submit', e => {
-    e.preventDefault(); const text = msg.value.trim();
-    if (!text) { fb.className = 'gb-msg err'; fb.textContent = '한마디를 적어 주세요.'; msg.focus(); return; }
-    send.disabled = true; fb.className = 'gb-msg'; fb.textContent = '남기는 중…';
+    e.preventDefault(); const text = inp.value.replace(/\s+/g, ' ').trim();
+    if (!text) { fb.className = 'lv-msg err'; fb.textContent = '내용을 적어 주세요.'; inp.focus(); return; }
+    send.disabled = true; fb.className = 'lv-msg'; fb.textContent = '보내는 중…';
+    const done = () => { inp.value = ''; fb.className = 'lv-msg ok'; fb.textContent = '고맙습니다! 단어 구름에 더해졌습니다 ♪'; };
+    if (DEMO) { demo[text] = (demo[text] || 0) + 1; draw(asList(demo)); done(); send.disabled = false; return; }
     fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                 body: JSON.stringify({ action: 'guestbook', payload: { name: nm.value, message: text, client } }) })
-      .then(r => r.json()).then(v => {
-        if (!v.ok) { fb.className = 'gb-msg err'; fb.textContent = v.message || '남기지 못했습니다.'; return; }
-        items.unshift(Object.assign(v.item, { _new: true })); draw(); msg.value = ''; cnt.textContent = '0 / 200';
-        fb.className = 'gb-msg ok'; fb.textContent = '고맙습니다! 한마디가 벽에 붙었습니다 ♪';
-      }).catch(() => { fb.className = 'gb-msg err'; fb.textContent = '연결이 원활하지 않습니다. 잠시 후 다시 시도해 주세요.'; })
+                 body: JSON.stringify({ action: 'word', payload: { word: text, client } }) })
+      .then(r => r.json()).then(v => { if (!v.ok) { fb.className = 'lv-msg err'; fb.textContent = v.message || '보내지 못했습니다.'; return; } done(); load(); })
+      .catch(() => { fb.className = 'lv-msg err'; fb.textContent = '연결이 원활하지 않습니다. 잠시 후 다시 시도해 주세요.'; })
       .finally(() => { send.disabled = false; });
   });
 })();
