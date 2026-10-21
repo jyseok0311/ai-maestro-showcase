@@ -619,7 +619,7 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
     <form class="lv-form rv" id="lvForm" autocomplete="off">
       <label for="lvWord">AI에게 가장 <b>맡기고 싶은 업무</b>는?</label>
       <div class="lv-chips" id="lvChips"></div>
-      <div class="lv-row"><input id="lvWord" maxlength="15" placeholder="예) 회의록 정리 · 15자 이내" aria-label="맡기고 싶은 업무"><button type="submit" id="lvSend">보내기 ♪</button></div>
+      <div class="lv-row"><input id="lvWord" maxlength="15" placeholder="예) 회의록 정리" aria-label="맡기고 싶은 업무"><button type="submit" id="lvSend">보내기 ♪</button></div>
       <p class="lv-msg" id="lvFeedback" role="status"></p>
     </form>
     <div class="lv-stage rv" id="lvStage" aria-live="polite">
@@ -723,15 +723,15 @@ const PRESS = [
   const layout = items => {
     const W = stage.clientWidth, H = stage.clientHeight - 30, placed = [], out = [];
     const max = Math.max(...items.map(i => i.count)), min = Math.min(...items.map(i => i.count));
-    const size = c => { const t = max === min ? 1 : (c - min) / (max - min); return Math.round(Math.min(W, 900) * (0.032 + 0.05 * Math.sqrt(t))); };
+    const size = c => { const t = max === min ? 1 : (c - min) / (max - min); return Math.round(Math.max(13, Math.min(W, 900) * (W < 500 ? 0.045 : 0.032) + Math.min(W, 900) * 0.05 * Math.sqrt(t))); };
     const meas = document.createElement('span'); meas.className = 'lv-w'; meas.style.visibility = 'hidden'; stage.appendChild(meas);
     items.forEach((it, k) => {
       let fs = size(it.count);
-      for (let n = 0; n < 4; n++, fs = Math.round(fs * .85)) {
+      for (let n = 0; n < 6 && fs >= 11; n++, fs = Math.round(fs * .85)) {
         meas.style.fontSize = fs + 'px'; meas.textContent = it.word;
         const w = meas.offsetWidth + 12, h = fs * 1.12 + 6; let ok = false;
         for (let s = 0; s < 4000 && !ok; s++) {
-          const a = s * .23, r = 0.9 * Math.sqrt(s) * Math.max(1, Math.min(W, 1000) / 260), x = W / 2 + r * Math.cos(a) * (W > H ? 1.5 : 1), y = H / 2 + r * Math.sin(a) * .85;
+          const a = s * .23, r = Math.sqrt(s) * Math.max(2.2, Math.min(W, 1100) / 280), x = W / 2 + r * Math.cos(a) * (W > H ? 1.5 : 1), y = H / 2 + r * Math.sin(a) * .85;
           const b = { l: x - w / 2, r: x + w / 2, t: y - h / 2, b: y + h / 2 };
           if (b.l < 6 || b.r > W - 6 || b.t < 6 || b.b > H) continue;
           if (placed.some(p => b.l < p.r && b.r > p.l && b.t < p.b && b.b > p.t)) continue;
