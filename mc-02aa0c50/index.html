@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1A1916">
+<title>사회자 큐카드 · AI 마에스트로 성과공유회</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root { --bg:#F6F2EA; --card:#FFFFFF; --ink:#1A1916; --ink2:#4A463E; --muted:#8A8274; --gold:#A87B22; --gold2:#E2B85C; --line:#E6DFD0;
+        --tip:#FBF4E4; --ok:#2E8B57; --hot:#C0392B; --fs:19px; }
+:root[data-dark="1"] { --bg:#0F0E0C; --card:#1C1B18; --ink:#F3EEE3; --ink2:#CFC8B8; --muted:#8C8576; --line:#33302A; --tip:#2A2418; }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html, body { background:var(--bg); color:var(--ink); font-family:'Pretendard','Malgun Gothic',sans-serif; word-break:keep-all; }
+body { padding-bottom:calc(84px + env(safe-area-inset-bottom)); }
+button { font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+.top { position:sticky; top:0; z-index:20; background:var(--ink); color:#F3EEE3; padding:10px 14px 0; padding-top:calc(10px + env(safe-area-inset-top)); }
+:root[data-dark="1"] .top { background:#000; }
+.top .r1 { display:flex; align-items:center; gap:10px; }
+.top h1 { font-size:14px; font-weight:700; color:var(--gold2); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.clock { font-size:22px; font-weight:800; font-variant-numeric:tabular-nums; }
+.tools { display:flex; gap:6px; }
+.tools button { width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,.1); font-weight:800; font-size:14px; }
+.tools button.on { background:var(--gold2); color:var(--ink); }
+.now { margin-top:8px; display:flex; align-items:center; gap:8px; font-size:13.5px; }
+.now b { color:var(--gold2); } .now .left { margin-left:auto; font-variant-numeric:tabular-nums; font-weight:700; }
+.bar { height:3px; background:rgba(255,255,255,.15); margin:8px -14px 0; } .bar i { display:block; height:100%; width:0; background:var(--gold2); transition:width .5s; }
+.tabs { display:flex; margin:0 -14px; }
+.tabs button { flex:1; padding:10px 0 9px; font-size:14px; font-weight:700; color:#B9B2A3; border-bottom:3px solid transparent; }
+.tabs button.on { color:#fff; border-color:var(--gold2); }
+.view { display:none; } .view.on { display:block; }
+/* 큐카드 */
+.deck { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
+.deck::-webkit-scrollbar { display:none; }
+.card { flex:0 0 100%; scroll-snap-align:start; padding:14px 14px 20px; min-height:calc(100vh - 210px); }
+.ch { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.no { background:var(--ink); color:var(--bg); font-weight:800; font-size:13px; padding:4px 9px; border-radius:8px; }
+:root[data-dark="1"] .no { background:var(--gold2); color:#000; }
+.tm { font-weight:800; font-size:15px; font-variant-numeric:tabular-nums; color:var(--gold); }
+.st { margin-left:auto; font-size:12.5px; font-weight:800; padding:4px 9px; border-radius:20px; border:1px solid var(--line); color:var(--muted); }
+.st.live { background:var(--hot); border-color:var(--hot); color:#fff; } .st.done { background:var(--ok); border-color:var(--ok); color:#fff; }
+.card h2 { margin-top:8px; font-size:calc(var(--fs) + 6px); font-weight:800; line-height:1.3; }
+.who { margin-top:4px; font-size:14px; color:var(--ink2); font-weight:600; }
+.kw { margin-top:12px; display:flex; flex-wrap:wrap; gap:6px; }
+.kw span { background:var(--tip); border:1px solid var(--line); border-radius:8px; padding:5px 9px; font-size:13.5px; font-weight:700; }
+.ment { margin-top:14px; display:flex; flex-direction:column; gap:12px; }
+.ment p { font-size:var(--fs); line-height:1.65; font-weight:500; }
+.ment p.cue { font-size:calc(var(--fs) - 3px); line-height:1.5; font-weight:700; color:var(--gold); background:var(--tip); border-left:4px solid var(--gold2); padding:8px 10px; border-radius:0 8px 8px 0; }
+.blank { color:var(--hot); font-weight:800; background:rgba(192,57,43,.1); border-radius:4px; padding:0 2px; }
+.endm { margin-top:14px; font-size:13px; color:var(--muted); } .endm b { color:var(--ink); }
+details.stage { margin-top:16px; border:1px solid var(--line); border-radius:12px; background:var(--card); }
+details.stage summary { padding:11px 12px; font-weight:800; font-size:14px; list-style:none; } details.stage summary::-webkit-details-marker { display:none; }
+details.stage summary::after { content:'펼치기 ▾'; float:right; color:var(--muted); font-weight:600; font-size:12.5px; }
+details.stage[open] summary::after { content:'접기 ▴'; }
+.kv { padding:0 12px 10px; display:grid; grid-template-columns:52px 1fr; gap:6px 8px; font-size:14px; line-height:1.5; }
+.kv dt { color:var(--muted); font-weight:700; } .kv dd { color:var(--ink2); }
+.donebtn { margin-top:18px; width:100%; padding:15px; border-radius:14px; background:var(--ink); color:var(--bg); font-weight:800; font-size:17px; }
+:root[data-dark="1"] .donebtn { background:var(--gold2); color:#000; }
+.donebtn.is { background:var(--ok); color:#fff; }
+/* 아래 넘김 바 */
+.nav { position:fixed; left:0; right:0; bottom:0; z-index:20; display:flex; align-items:center; gap:8px; padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+       background:color-mix(in srgb, var(--bg) 88%, transparent); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-top:1px solid var(--line); }
+.nav button { height:50px; border-radius:14px; font-weight:800; font-size:16px; }
+.nav .pv, .nav .nx { flex:1; background:var(--card); border:1px solid var(--line); }
+.nav .go { padding:0 14px; background:var(--hot); color:#fff; font-size:14px; }
+.nav .pos { min-width:54px; text-align:center; font-weight:800; font-variant-numeric:tabular-nums; color:var(--muted); font-size:14px; }
+/* 목록형 */
+.list { padding:12px 14px; display:flex; flex-direction:column; gap:8px; }
+.row { display:flex; gap:10px; align-items:flex-start; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:11px 12px; text-align:left; width:100%; }
+.row .t { font-weight:800; font-variant-numeric:tabular-nums; color:var(--gold); min-width:46px; font-size:14.5px; }
+.row .b { flex:1; } .row .b b { display:block; font-size:15.5px; } .row .b span { font-size:13px; color:var(--muted); }
+.row.live { border-color:var(--hot); box-shadow:0 0 0 2px rgba(192,57,43,.25); } .row.done { opacity:.55; }
+.row .m { font-size:12px; font-weight:800; color:var(--muted); white-space:nowrap; } .row.live .m { color:var(--hot); } .row.done .m { color:var(--ok); }
+.chk { display:flex; gap:12px; align-items:flex-start; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; }
+.chk input { width:24px; height:24px; accent-color:var(--ok); flex:none; margin-top:2px; }
+.chk b { font-size:15.5px; } .chk p { font-size:14px; color:var(--ink2); line-height:1.5; margin-top:2px; } .chk em { font-style:normal; font-size:12px; color:var(--gold); font-weight:800; }
+.chk.ok { opacity:.55; }
+.sec { padding:14px; } .sec h3 { font-size:17px; font-weight:800; margin:6px 0 10px; }
+.box { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:10px; }
+.box p, .box li { font-size:15px; line-height:1.6; } .box ul { padding-left:18px; } .box .k { font-weight:800; color:var(--gold); font-size:13px; }
+.reset { margin:6px 14px 20px; padding:12px; width:calc(100% - 28px); border-radius:12px; border:1px solid var(--line); color:var(--muted); font-weight:700; }
+.toast { position:fixed; left:50%; bottom:96px; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:10px 14px; border-radius:10px; font-size:14px; font-weight:700; opacity:0; transition:opacity .3s; pointer-events:none; z-index:30; }
+.toast.on { opacity:1; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="r1">
+    <h1>사회자 큐카드 · AI 마에스트로</h1>
+    <div class="clock" id="clock">--:--</div>
+  </div>
+  <div class="r1" style="margin-top:6px">
+    <div class="tools">
+      <button id="fsDown" aria-label="글자 작게">가-</button><button id="fsUp" aria-label="글자 크게">가+</button>
+      <button id="dark" aria-label="어두운 화면">◐</button><button id="wake" aria-label="화면 꺼짐 방지">☀</button>
+    </div>
+    <div class="now" style="margin:0 0 0 auto"><span id="nowLabel">행사 전</span></div>
+  </div>
+  <div class="now"><span>다음 큐까지</span><span class="left" id="left">--:--</span></div>
+  <div class="bar"><i id="bar"></i></div>
+  <nav class="tabs" id="tabs">
+    <button data-v="deck" class="on">큐카드</button><button data-v="flow">진행표</button><button data-v="pre">사전 점검</button><button data-v="ref">참고</button>
+  </nav>
+</header>
+
+<main>
+  <section class="view on" id="v-deck"><div class="deck" id="deck"></div></section>
+  <section class="view" id="v-flow"><div class="list" id="flow"></div></section>
+  <section class="view" id="v-pre"><div class="list" id="pre"></div><button class="reset" id="reset">모든 체크 지우기</button></section>
+  <section class="view" id="v-ref"><div class="sec" id="ref"></div></section>
+</main>
+
+<div class="nav" id="nav">
+  <button class="pv" id="pv">‹ 이전</button><span class="pos" id="pos">1/1</span><button class="nx" id="nx">다음 ›</button><button class="go" id="go">지금</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const D = {"event": {"제목": "「AI 마에스트로」 성과공유회", "일시": "2026. 10. 30.(금) 14:00 ~ 17:00 (13:00 현장 세팅)", "장소": "대학본부 본관 3층 대강당", "주관": "부산대학교 AX·정보화혁신본부 AX혁신과", "참석": "100명 내외(AI 마에스트로 21명, 스터디 참여 동료, 교직원)"}, "facts": [["AI 교육", "'26. 6. 19. ~ 8. 21., 8회 24시간 / 만족도 4.71점, 동료 추천지수(NPS) +82"], ["역량 향상", "AI 활용역량 자가진단 2.85점 → 3.94점(38.2% 향상)"], ["자율 스터디", "'26. 8. 24. ~ 10. 15., 8개 미션 / 20명(95%) 참여, 결과물 100건, 부서 동료 69명 확산"], ["우수사례 선정", "업무 적용 40 · 확산성 30 · 완성도 20 · 공유 10, 1·2차 검토 후 발표자 4명 선정(순서 확정 10. 20.: 김근수 → 진한룡 → 이현지 → 김정목)"]], "cues": [{"번호": "0", "시작": "13:00", "끝": "13:40", "순서": "현장 세팅·리허설", "내용": "음향·영상 점검, 사회자·발표자 동선 리허설, 발표 자료 노트북 탑재", "진행": "AX혁신과, 사회자, 발표자", "음향": "마이크 전수 테스트(핸드 2, 핀 1, 객석 무선 1)", "영상": "발표 자료 4종 실행 확인(① 외장하드 영상 ② 노트북 연결 ③ 웹 라이브 시연 ④ PDF), 특강 자료, 클리커", "무대": "연단·사회자석 위치 표시", "비고": "발표자 13:30까지 도착, 행사장 인터넷(③ 라이브 시연) 확인", "카드": false}, {"번호": "1", "시작": "13:30", "끝": "14:00", "순서": "등록·입장", "내용": "참석자 등록, 다과 배부, 좌석 안내", "진행": "등록 데스크(AX혁신과)", "음향": "대기 BGM", "영상": "대기 화면(웹 포스터)", "무대": "객석 조명 ON", "비고": "명찰·등록부, 다과 100개", "카드": false}, {"번호": "2", "시작": "13:55", "끝": "14:00", "순서": "장내 안내", "내용": "시작 안내, 휴대전화 무음, 촬영 고지", "진행": "사회자(무대 밖 멘트 가능)", "음향": "BGM 작게", "영상": "대기 화면", "무대": "-", "비고": "", "카드": true, "멘트": ["잠시 후 오후 2시부터 「AI 마에스트로」 성과공유회를 시작하겠습니다.", "원활한 진행을 위해 휴대전화는 무음이나 진동으로 바꿔 주시고, 앞쪽 자리부터 채워 앉아 주시기 바랍니다.", "오늘 행사는 사진과 영상으로 기록되어 결과 보고와 홍보에 활용될 수 있음을 알려 드립니다.", "아직 등록하지 않으신 분은 입구 등록 데스크에서 등록 부탁드립니다."], "키워드": ["오후 2시 시작", "휴대전화 무음·진동", "앞자리부터 착석", "사진·영상 기록 고지", "입구에서 등록"]}, {"번호": "3", "시작": "14:00", "끝": "14:01", "순서": "개회", "내용": "오프닝 영상 → 개회 선언, 행사 취지 소개", "진행": "사회자", "음향": "BGM OUT → 영상 사운드 → 사회자 마이크 ON", "영상": "오프닝 영상(약 1분, 준비된 경우)", "무대": "객석 조명 DOWN → 무대 조명 UP", "비고": "", "카드": true, "멘트": ["▶ 오프닝 영상 재생(준비된 경우) → 영상이 끝나면 무대 조명, 마이크 ON", "안녕하십니까. 바쁘신 가운데 「AI 마에스트로」 성과공유회에 함께해 주신 여러분, 진심으로 환영합니다. 오늘 진행을 맡은 AX혁신과 한혜진입니다.", "지난 6월, 스물한 명의 교직원이 ‘AI 마에스트로’라는 이름으로 첫 수업에 모였습니다. 코딩을 배운 적 없는 행정 실무자들이 다섯 달 동안 대화만으로 자기 업무에 쓸 AI 에이전트를 직접 만들었습니다.", "오늘은 그 결과와 경험을 함께 나누는 자리입니다. 지금부터 「AI 마에스트로」 성과공유회를 시작하겠습니다.", "▶ 박수 유도"], "끝멘트": "지금부터 「AI 마에스트로」 성과공유회를 시작하겠습니다.", "키워드": ["환영 인사 · 사회자 소개", "6월, 교직원 21명 첫 수업", "코딩 몰라도 → 대화로 에이전트", "\"지금부터 시작하겠습니다\" ▶ 박수"]}, {"번호": "4", "시작": "14:01", "끝": "14:02", "순서": "내빈 소개(해당 시)", "내용": "참석 내빈 호명(직급 순)", "진행": "사회자", "음향": "-", "영상": "-", "무대": "-", "비고": "내빈 명단·직함·호명 순서 당일 오전 확정", "카드": true, "멘트": ["먼저 오늘 자리를 함께해 주신 분들을 소개해 드리겠습니다.", "【직함】 【성명】 님, 【직함】 【성명】 님께서 함께해 주셨습니다. 큰 박수 부탁드립니다.", "▶ 내빈이 없거나 시간이 부족하면 이 순서는 생략하고 바로 다음 순서로"], "키워드": ["【직함 · 성명】", "【직함 · 성명】", "【직함 · 성명】", "→ 한꺼번에 호명 후 박수 한 번"]}, {"번호": "5", "시작": "14:02", "끝": "14:05", "순서": "사업성과 발표", "내용": "AI 마에스트로 교육·자율 스터디 성과 보고(3분)", "진행": "AX혁신과 【성명】", "음향": "발표자 마이크 ON", "영상": "사업성과 PPT", "무대": "연단", "비고": "", "카드": true, "멘트": ["먼저 AI 마에스트로가 어떤 과정을 거쳐 왔는지 사업 성과를 간단히 보고드리겠습니다. AX혁신과 【성명】 님께서 발표해 주시겠습니다.", "▶ 발표 종료 후: 감사합니다."], "키워드": ["AX혁신과 【성명】 소개", "발표 3분", "끝나면 \"감사합니다\""]}, {"번호": "6", "시작": "14:05", "끝": "14:12", "순서": "우수사례 발표 ①", "내용": "동영상 + 부가 설명 약 7분(본인 신청 7~8분 → 7분 이내 편집 요청)", "진행": "연구진흥과 · 김근수", "음향": "발표자 마이크(핀) ON, 영상 소리 출력 확인", "영상": "① 김근수 영상(외장하드 USB → 단상 PC 재생)", "무대": "연단", "비고": "자료 링크 미제출 → 편집본 10. 28.까지 수합, 외장하드 재생 리허설", "카드": true, "멘트": ["이제 오늘의 주인공, 우수사례 발표 순서입니다.", "스물한 명의 마에스트로가 자율 스터디 동안 제출한 결과물 100건을 업무 적용, 확산성, 완성도, 공유 네 가지 기준으로 검토해 네 분을 모셨습니다. 발표는 한 분당 5분에서 7분 정도입니다.", "첫 번째 발표자는 연구진흥과 김근수 님입니다. 「연구진흥과 창구」 웹앱을 만들어 부서에 직접 배포하셨고, 오늘은 클로드 코드로 직접 만든 영상으로 다섯 달의 여정을 보여 주십니다. 발표 제목은 「한 편의 영상에 담은 AI 마에스트로」입니다.", "큰 박수로 맞아 주십시오. ▶ 박수", "▶ 발표 종료 후: 김근수 님, 감사합니다. ▶ 박수"], "끝멘트": "김근수 님, 감사합니다.", "키워드": ["결과물 100건 → 4개 기준 → 4명", "한 분당 5~7분", "① 연구진흥과 · 김근수 — 영상 7분", "「연구진흥과 창구」 웹앱 · 클로드 코드로 만든 영상"]}, {"번호": "7", "시작": "14:12", "끝": "14:18", "순서": "우수사례 발표 ②", "내용": "시연 + 부가 설명 5분 + 노트북 연결 1분", "진행": "정보개발과 · 진한룡", "음향": "마이크 교체", "영상": "② 진한룡 노트북 연결(HDMI) → 발표자료(구글 슬라이드)·시연", "무대": "연단", "비고": "①번 영상 중에 노트북 연결 준비", "카드": true, "멘트": ["두 번째 발표자는 정보개발과 진한룡 님입니다. 클로드 코드로 업무 자동화 도구와 도서관 신규 서비스 시제품을 만드신 분입니다. 발표 제목은 「도서관 일을 다시 짜보았습니다 — AI 바이브 코딩으로 만든 세 가지」입니다.", "큰 박수 부탁드립니다. ▶ 박수", "▶ 노트북 연결이 늦어지면: 화면을 준비하는 동안 잠시만 기다려 주십시오. 오늘 순서는 직접 시연으로 진행됩니다.", "▶ 발표 종료 후: 진한룡 님, 감사합니다. ▶ 박수"], "끝멘트": "진한룡 님, 감사합니다.", "키워드": ["② 정보개발과 · 진한룡 (발음 [진할룡]) — 시연 5분", "업무 자동화 + 도서관 서비스 시제품", "노트북 연결 지연 시 대기 멘트"]}, {"번호": "8", "시작": "14:18", "끝": "14:26", "순서": "우수사례 발표 ③", "내용": "짧은 슬라이드 + 실제 화면 라이브 시연 7분 30초", "진행": "AX혁신과 · 이현지", "음향": "마이크 교체", "영상": "③ 이현지 슬라이드 + 웹 라이브 시연(점검대장, 원룸 체크리스트)", "무대": "연단", "비고": "인터넷 연결 필수, 시연 주소 2개 미리 열어 두기", "카드": true, "멘트": ["세 번째 발표자는 AX혁신과 이현지 님입니다. 산지니 AI 챗봇의 답변 점검을 Claude Code 스킬로 바꿔, 사람은 판정만 하도록 만드신 분입니다. 실제 운영 화면으로 바로 보여 주십니다. 발표 제목은 「반복 업무는 스킬에, 자취방 고르기는 구글 시트에 — Claude Code로 만든 업무와 생활 도구」입니다.", "큰 박수로 맞아 주십시오. ▶ 박수", "▶ 발표 종료 후: 이현지 님, 감사합니다."], "끝멘트": "이현지 님, 감사합니다.", "키워드": ["③ AX혁신과 · 이현지 — 라이브 시연 7분 30초", "챗봇 점검 스킬(160문항) + 자취방 앱"]}, {"번호": "8-1", "시작": "14:26", "끝": "14:33", "순서": "우수사례 발표 ④", "내용": "PDF 슬라이드 발표 약 7분", "진행": "정보화기획운영과 · 김정목", "음향": "마이크 교체", "영상": "④ 김정목 PDF 슬라이드(Claude 아티팩트 링크)", "무대": "연단", "비고": "링크가 로그인 없이 열리는지 확인, PDF 사본 준비", "카드": true, "멘트": ["마지막 네 번째 발표자는 정보화기획운영과 김정목 님입니다. 개발 에이전트를 직접 만들어, 약 40시간이 걸릴 화면 개발을 4시간 만에 끝내신 분입니다. 발표 제목은 「계획에서 화면까지, 그리고 나만의 에이전트로」입니다.", "큰 박수로 맞아 주십시오. ▶ 박수", "▶ 발표 종료 후: 김정목 님, 감사합니다."], "끝멘트": "김정목 님, 감사합니다.", "키워드": ["④ 정보화기획운영과 · 김정목 — 7분", "개발 에이전트, 40시간 → 4시간"]}, {"번호": "9", "시작": "14:33", "끝": "14:34", "순서": "우수사례 마무리", "내용": "발표자·마에스트로 격려", "진행": "사회자", "음향": "연사 마이크 준비", "영상": "특강 자료로 전환 대기", "무대": "-", "비고": "", "카드": true, "멘트": ["네 분께 다시 한번 큰 박수 부탁드립니다. ▶ 박수", "오늘 발표하신 네 분뿐 아니라 스물한 명의 마에스트로 모두가 같은 고민과 시행착오를 거쳐 왔습니다. 객석에 계신 마에스트로 여러분께도 박수 부탁드립니다. ▶ 박수"], "끝멘트": "마에스트로 여러분께도 박수 부탁드립니다.", "키워드": ["발표자 4명께 박수", "마에스트로 21명께 박수"]}, {"번호": "9-1", "시작": "14:34", "끝": "14:35", "순서": "AX 특강 강사 소개", "내용": "장병준 대표 소개(약 1분)", "진행": "사회자", "음향": "연사 마이크 ON", "영상": "특강 표지 화면", "무대": "-", "비고": "약력: AI 그라운드 제안서·특강 자료 기준", "카드": true, "멘트": ["이어서 AX 특강 시간입니다. 오늘 강의는 기업 AI 교육 전문기업 ‘AI 그라운드’의 장병준 대표님께서 맡아 주셨습니다.", "장병준 대표님은 구독자 11만 명의 AI 활용 유튜브 채널 ‘일잘러 장피엠’을 운영하고 계시고, 한국노코드커뮤니티 리더로도 활동하고 계십니다.", "SK텔레콤, 사운들리, 팀블라인드에서 10년 동안 세일즈와 제품 기획, 사업개발을 해 오신 실무자 출신으로, 삼성전자와 GS그룹, 기아, 신한카드 등 국내 주요 기업에서 200회가 넘는 AI 활용 강의를 하셨습니다. 『일잘하는 사람은 챗GPT를 이렇게 씁니다』의 저자이시기도 합니다.", "오늘은 ‘질문에서 실행으로’ 넘어가는 AI의 흐름부터 기업 AX의 현재, 우리 조직에 맞는 AI 에이전트 시스템 만들기, 그리고 어디서부터 시작할지를 담은 AX 실행 로드맵까지 네 부분으로 말씀해 주시겠습니다.", "장병준 대표님을 큰 박수로 모시겠습니다. ▶ 박수 → 연사 등단"], "끝멘트": "장병준 대표님을 큰 박수로 모시겠습니다.", "키워드": ["AI 그라운드 대표 · 유튜브 ‘일잘러 장피엠’(11만)", "한국노코드커뮤니티 리더", "SKT·사운들리·팀블라인드 10년 → 기업 강의 200회+", "저서 『일잘하는 사람은 챗GPT를 이렇게 씁니다』(2025)", "특강 4부: 흐름 → 기업 AX → 에이전트 → 로드맵"]}, {"번호": "10", "시작": "14:35", "끝": "16:35", "순서": "AX 특강", "내용": "AI 트렌드 · 기업 AX 활용사례 · 에이전트 시연 및 업무 적용(120분)", "진행": "AI 그라운드 장병준", "음향": "연사 마이크(핀·핸드)", "영상": "연사 노트북 연결(시연 화면)", "무대": "-", "비고": "중간 휴식 여부·시각 연사와 협의", "카드": false}, {"번호": "11", "시작": "15:35", "끝": "15:45", "순서": "휴식(연사 협의 시)", "내용": "10분 휴식", "진행": "사회자", "음향": "휴식 BGM", "영상": "휴식 화면(재개 시각 표시)", "무대": "객석 조명 UP", "비고": "다과 위치 안내", "카드": true, "멘트": ["지금부터 10분간 쉬었다가 【15시 45분】에 특강을 이어가겠습니다.", "다과는 【위치】에 준비되어 있습니다. 시간 맞춰 자리로 돌아와 주시기 바랍니다.", "▶ 재개 1분 전: 곧 특강을 다시 시작하겠습니다. 자리로 돌아와 주시기 바랍니다."], "키워드": ["10분 휴식", "재개 【15:45】", "다과 위치 【 】"]}, {"번호": "12", "시작": "16:35", "끝": "16:50", "순서": "질의응답", "내용": "특강 질의응답(15분)", "진행": "사회자, 장병준 대표", "음향": "객석 무선 마이크 대기", "영상": "특강 자료 유지", "무대": "객석 조명 약하게 UP", "비고": "마이크 전달 요원 1명", "카드": true, "멘트": ["장병준 대표님, 좋은 말씀 감사합니다. ▶ 박수", "이어서 16시 50분까지 질의응답 시간을 갖겠습니다. 질문이 있으신 분은 손을 들어 주시면 마이크를 전해 드리겠습니다.", "소속과 성함을 먼저 말씀해 주시고, 질문은 한 분당 하나씩 부탁드립니다.", "▶ 질문이 없을 때(사회자 대기 질문)", "① 코딩을 모르는 실무자가 에이전트를 처음 만든다면 어떤 업무부터 시작하면 좋을까요?", "② 업무 데이터에 개인정보가 섞여 있을 때는 어떻게 다루는 것이 안전할까요?", "③ 부서 전체로 확산하려면 무엇이 가장 필요할까요?", "▶ 16:48 마무리: 시간 관계상 질의응답은 여기서 마치겠습니다. 장병준 대표님께 다시 한번 큰 박수 부탁드립니다."], "키워드": ["16:50까지", "소속·성함 먼저, 한 사람 한 질문", "대기 질문 ① 첫 업무 ② 개인정보 ③ 확산", "16:48 마무리 → 박수"]}, {"번호": "13", "시작": "16:50", "끝": "16:55", "순서": "성과조사(QR)", "내용": "만족도·성과 설문 QR 안내(2~3분)", "진행": "사회자", "음향": "BGM 작게", "영상": "설문 QR 화면(최소 2분 유지)", "무대": "객석 조명 UP", "비고": "QR 출력물 객석 배치", "카드": true, "멘트": ["자리에서 일어나시기 전에 꼭 부탁드릴 것이 있습니다.", "화면의 QR 코드를 휴대전화 카메라로 찍어 주시면 짧은 설문이 열립니다. 2~3분이면 충분합니다.", "여러분의 의견은 내년 AI 마에스트로 2기를 설계하는 데 그대로 반영됩니다. 잠시 시간을 내 주시면 감사하겠습니다."], "키워드": ["QR 촬영 → 설문", "2~3분", "2기 설계에 반영"]}, {"번호": "14", "시작": "16:55", "끝": "17:00", "순서": "단체사진 · 폐회", "내용": "단체사진 촬영 후 폐회 선언", "진행": "사회자, 촬영 담당", "음향": "폐회 BGM", "영상": "단체사진 배경 화면", "무대": "무대·객석 조명 FULL", "비고": "마에스트로 앞줄", "카드": true, "멘트": ["설문을 마치신 분들은 단체 사진 촬영을 위해 무대 앞으로 나와 주십시오. 마에스트로 여러분은 앞줄로 와 주시면 됩니다.", "▶ 촬영 후", "이상으로 「AI 마에스트로」 성과공유회를 모두 마치겠습니다.", "코딩을 몰라도 AI 에이전트를 만들 수 있다는 것, 오늘 여러분께서 직접 확인하셨습니다. 이 경험이 각 부서로 번져 가길 기대합니다.", "함께해 주셔서 감사합니다. 안녕히 가십시오."], "끝멘트": "함께해 주셔서 감사합니다. 안녕히 가십시오.", "키워드": ["무대 앞 단체사진", "마에스트로 앞줄", "폐회 선언", "\"코딩을 몰라도…\" 마무리 인사"]}], "spare": {"순서": "비상 멘트", "멘트": ["▶ 시간이 남을 때: 오늘 객석에 마에스트로 여러분이 많이 와 계십니다. 【성명】 님, 다섯 달 동안 가장 기억에 남는 순간 한 가지만 짧게 말씀해 주시겠습니까?", "▶ 시간이 남을 때: 숫자로 보면 더 실감이 납니다. 교육 만족도 4.71점, 자율 스터디 참여율 95%, 결과물 100건, 함께한 부서 동료 69명입니다.", "▶ 시간이 부족할 때: 내빈은 한꺼번에 호명, 질의응답은 두 질문까지만 받고 마무리", "▶ 화면·음향 문제: 잠시 화면을 준비하는 동안 기다려 주십시오. 그사이 오늘 성과를 숫자로 먼저 소개해 드리겠습니다. (위 수치 멘트)"], "키워드": ["남을 때: 마에스트로 즉석 인터뷰", "남을 때: 4.71점 · 95% · 100건 · 69명", "부족할 때: 내빈 일괄 · 질문 2개", "장비 문제: 수치 멘트로 연결"]}, "check": [["발표자", "확정(10. 20.): ① 김근수 ② 진한룡 ③ 이현지 ④ 김정목 — 이름 발음(진한룡 → [진할룡]), 한 줄 소개 본인 확인", "10. 27."], ["발표 자료", "① 김근수 영상 편집본(7분 이내) 미제출 → 수합 ② 진한룡 구글 슬라이드 ✓ ③ 이현지 웹 시연 주소 2개 ✓ ④ 김정목 아티팩트 슬라이드 ✓ — 파일명 순서_성명, 행사장 PC 사전 재생", "10. 28."], ["연사", "장병준 대표 소개 멘트 본인 확인(호칭·약력), 특강 중간 휴식 여부, 노트북·연결 단자", "10. 27."], ["내빈", "참석 내빈 명단·직함·호명 순서", "10. 30. 오전"], ["사회자", "대본·큐시트·큐카드 전달, 사회자 성명 기재, 리허설 시각 안내", "10. 27."], ["설문", "만족도 설문 구글폼 링크·QR 화면, QR 출력물", "10. 28."], ["영상", "오프닝 영상 사용 여부·길이, 대기·휴식·단체사진 화면", "10. 28."], ["음향", "핸드 마이크 2, 핀 마이크 1, 객석 무선 1, 예비 배터리", "10. 30. 13:00"], ["다과", "다과박스 100개·음료 100개 배치 위치(휴식 안내 멘트에 반영)", "10. 30. 13:00"]], "speaker": {"이름": "장병준", "호칭": "장병준 대표님", "소속": "AI 그라운드 대표(기업 AI 교육 전문기업)", "약력": ["(현) 기업 AI 교육 전문기업 ‘AI 그라운드’ 대표", "(현) AI 활용 유튜브 ‘일잘러 장피엠’ 운영(구독자 11만 명)", "(현) 한국노코드커뮤니티 리더", "(전) 팀블라인드 사업개발팀 리더", "(전) 사운들리 제품관리자", "(전) SK텔레콤 세일즈 매니저"], "경력": ["ICT·Tech 업계 10년(세일즈, 제품 기획, 프로젝트 매니저), 강의·컨설팅 3년 이상", "국내 주요 기업 대상 AI 활용 강의 200회 이상", "강의 이력: 삼성전자, GS그룹, 기아, 신한카드, 롯데홈쇼핑, 미래에셋, 아시아나, SK플래닛, KB국민은행, OK금융그룹, 아워홈, 대웅제약 등"], "저서": "『일잘하는 사람은 챗GPT를 이렇게 씁니다』(한빛미디어, 2025)", "특강": ["Session 1. AI는 어디로 가고 있는가: 질문에서 실행으로", "Session 2. 기업 AX의 현재: 도구 경쟁에서 업무·데이터·운영의 경쟁으로", "Session 3. 우리 회사 맞춤형 AI 에이전트 시스템 만들기", "Session 4. 우리 회사는 어디서부터 시작할 것인가: AX 실행 로드맵"]}};
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+const hl = s => esc(s).replace(/【[^】]*】/g, m => `<span class="blank">${m}</span>`);
+const store = { get(k, d) { try { const v = localStorage.getItem('mc.' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+                set(k, v) { try { localStorage.setItem('mc.' + k, JSON.stringify(v)); } catch (e) {} } };
+const toast = t => { const el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('on'), 1600); };
+const min = hm => { const [h, m] = hm.split(':').map(Number); return h * 60 + m; };
+
+// ── 시각: ?t=14:20 이면 그 시각으로 흉내(리허설용), 아니면 한국 시각 ──
+const T0 = new URLSearchParams(location.search).get('t');
+const startReal = Date.now();
+function nowMin() {
+  if (T0) return min(T0) + (Date.now() - startReal) / 60000;
+  const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).formatToParts(new Date());
+  const g = t => +p.find(x => x.type === t).value;
+  return g('hour') * 60 + g('minute') + g('second') / 60;
+}
+
+const CUES = D.cues, CARDS = CUES.filter(c => c.카드);
+let done = store.get('done', {}), checks = store.get('checks', {});
+let fs = store.get('fs', 19);
+const applyFs = () => document.documentElement.style.setProperty('--fs', fs + 'px');
+applyFs();
+if (store.get('dark', 0)) document.documentElement.dataset.dark = '1';
+$('dark').classList.toggle('on', !!store.get('dark', 0));
+
+// ── 큐카드 ──
+function cardHTML(c) {
+  const ment = (c.멘트 || []).map(p => p.trim().startsWith('▶') ? `<p class="cue">${hl(p)}</p>` : `<p>${hl(p)}</p>`).join('');
+  const kw = (c.키워드 || []).map(k => `<span>${hl(k)}</span>`).join('');
+  const kv = [['진행', c.진행], ['음향', c.음향], ['영상', c.영상], ['무대', c.무대], ['비고', c.비고], ['내용', c.내용]]
+    .filter(([, v]) => v && v !== '-').map(([k, v]) => `<dt>${k}</dt><dd>${hl(v)}</dd>`).join('');
+  return `<article class="card" data-no="${esc(c.번호)}">
+    <div class="ch"><span class="no">큐 ${esc(c.번호)}</span><span class="tm">${esc(c.시작)} ~ ${esc(c.끝)}</span><span class="st" data-st="${esc(c.번호)}"></span></div>
+    <h2>${hl(c.순서)}</h2><div class="who">${hl(c.진행 || '')}</div>
+    ${kw ? `<div class="kw">${kw}</div>` : ''}
+    <div class="ment">${ment}</div>
+    ${c.끝멘트 ? `<p class="endm">끝 멘트 → <b>${hl(c.끝멘트)}</b></p>` : ''}
+    <details class="stage"><summary>현장 지시(음향·영상·무대)</summary><dl class="kv">${kv}</dl></details>
+    <button class="donebtn" data-done="${esc(c.번호)}"></button>
+  </article>`;
+}
+$('deck').innerHTML = CARDS.map(cardHTML).join('');
+const deck = $('deck'), cards = [...deck.children];
+let cur = 0;
+const goCard = (i, smooth = true) => { cur = Math.max(0, Math.min(cards.length - 1, i)); deck.scrollTo({ left: cur * deck.clientWidth, behavior: smooth ? 'smooth' : 'auto' }); paintPos(); window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' }); };
+const paintPos = () => { $('pos').textContent = `${cur + 1}/${cards.length}`; };
+deck.addEventListener('scroll', () => { const i = Math.round(deck.scrollLeft / deck.clientWidth); if (i !== cur) { cur = i; paintPos(); store.set('cur', cur); } }, { passive: true });
+$('pv').onclick = () => goCard(cur - 1); $('nx').onclick = () => goCard(cur + 1);
+$('go').onclick = () => { const i = liveCardIndex(); if (i >= 0) { goCard(i); toast('지금 진행 중인 큐로 이동'); } else toast('지금 진행 중인 카드 큐가 없습니다'); };
+deck.addEventListener('click', e => {
+  const b = e.target.closest('[data-done]'); if (!b) return;
+  const no = b.dataset.done; done[no] = !done[no]; store.set('done', done); paint();
+  if (done[no]) { toast(`큐 ${no} 완료`); setTimeout(() => goCard(cur + 1), 350); }
+});
+
+// ── 진행표(카드 없는 큐 포함) ──
+function flowHTML() {
+  return CUES.map(c => `<button class="row" data-row="${esc(c.번호)}"><span class="t">${esc(c.시작)}</span>
+      <span class="b"><b>${hl(c.순서)}</b><span>${hl(c.진행 || '')}${c.카드 ? '' : ' · 카드 없음'}</span></span><span class="m" data-m="${esc(c.번호)}"></span></button>`).join('');
+}
+$('flow').innerHTML = flowHTML();
+$('flow').addEventListener('click', e => {
+  const r = e.target.closest('[data-row]'); if (!r) return;
+  const i = CARDS.findIndex(c => c.번호 === r.dataset.row);
+  if (i >= 0) { show('deck'); goCard(i, false); } else toast('이 순서는 사회자 멘트가 없습니다');
+});
+
+// ── 사전 점검 ──
+$('pre').innerHTML = D.check.map(([k, v, when], i) => `<label class="chk" data-c="${i}"><input type="checkbox" data-ck="${i}"><span><b>${esc(k)}</b> <em>${esc(when)}</em><p>${hl(v)}</p></span></label>`).join('');
+$('pre').addEventListener('change', e => { const i = e.target.dataset.ck; if (i === undefined) return; checks[i] = e.target.checked; store.set('checks', checks); paint(); });
+$('reset').onclick = () => { if (!confirm('완료 표시와 사전 점검 체크를 모두 지울까요?')) return; done = {}; checks = {}; store.set('done', done); store.set('checks', checks); paint(); toast('모두 지웠습니다'); };
+
+// ── 참고 ──
+const S = D.speaker;
+$('ref').innerHTML = `
+  <h3>비상 멘트</h3><div class="box">${D.spare.멘트.map(p => `<p style="margin-bottom:8px">${hl(p)}</p>`).join('')}</div>
+  <h3>사회자 참고 수치</h3>${D.facts.map(([k, v]) => `<div class="box"><div class="k">${esc(k)}</div><p>${hl(v)}</p></div>`).join('')}
+  <h3>AX 특강 강사 · ${esc(S.호칭)}</h3>
+  <div class="box"><div class="k">${esc(S.소속)}</div><ul>${S.약력.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+  <div class="box"><ul>${S.경력.map(x => `<li>${esc(x)}</li>`).join('')}</ul><p style="margin-top:6px">저서 ${esc(S.저서)}</p></div>
+  <div class="box"><div class="k">특강 구성</div><ul>${S.특강.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+  <h3>행사</h3><div class="box">${Object.entries(D.event).map(([k, v]) => `<p><b>${esc(k)}</b> ${esc(v)}</p>`).join('')}</div>`;
+
+// ── 탭 ──
+function show(v) {
+  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  document.querySelectorAll('.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + v));
+  $('nav').style.display = v === 'deck' ? 'flex' : 'none';
+  if (v === 'deck') goCard(cur, false);
+}
+$('tabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) show(b.dataset.v); });
+
+// ── 시각에 따라 상태 칠하기 ──
+const liveCue = t => CUES.filter(c => t >= min(c.시작) && t < min(c.끝)).pop();
+const liveCardIndex = () => { const t = nowMin(); const c = CARDS.filter(c => t >= min(c.시작) && t < min(c.끝)).pop(); return c ? CARDS.indexOf(c) : -1; };
+function paint() {
+  const t = nowMin(), live = liveCue(t);
+  document.querySelectorAll('[data-st]').forEach(el => { const no = el.dataset.st, c = CUES.find(x => x.번호 === no);
+    const isLive = live && live.번호 === no;
+    el.className = 'st' + (done[no] ? ' done' : isLive ? ' live' : ''); el.textContent = done[no] ? '완료' : isLive ? '지금 진행' : t < min(c.시작) ? '예정' : '지남'; });
+  document.querySelectorAll('[data-done]').forEach(b => { const d = !!done[b.dataset.done]; b.classList.toggle('is', d); b.textContent = d ? '✓ 완료 (누르면 취소)' : '이 큐 완료 → 다음 카드'; });
+  document.querySelectorAll('[data-row]').forEach(r => { const no = r.dataset.row, c = CUES.find(x => x.번호 === no), isLive = live && live.번호 === no;
+    r.classList.toggle('live', !!isLive); r.classList.toggle('done', !!done[no]);
+    r.querySelector('.m').textContent = done[no] ? '완료' : isLive ? '진행 중' : t >= min(c.끝) ? '지남' : ''; });
+  document.querySelectorAll('[data-ck]').forEach(i => { i.checked = !!checks[i.dataset.ck]; i.closest('.chk').classList.toggle('ok', i.checked); });
+}
+function tick() {
+  const t = nowMin(), h = Math.floor(t / 60), m = Math.floor(t % 60);
+  $('clock').textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  const live = liveCue(t), next = CUES.find(c => min(c.시작) > t);
+  $('nowLabel').innerHTML = live ? `지금 <b>${esc(live.순서)}</b>` : next ? '행사 전 · 대기' : '행사 종료';
+  if (next) { const s = Math.max(0, Math.round((min(next.시작) - t) * 60)); $('left').textContent = `${esc(next.순서)} · ${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; }
+  else $('left').textContent = '-';
+  $('bar').style.width = live ? Math.min(100, (t - min(live.시작)) / (min(live.끝) - min(live.시작)) * 100) + '%' : '0';
+  paint();
+}
+setInterval(tick, 1000); tick();
+
+// ── 글자 크기 · 어두운 화면 · 화면 켜짐 유지 ──
+$('fsUp').onclick = () => { fs = Math.min(30, fs + 2); store.set('fs', fs); applyFs(); };
+$('fsDown').onclick = () => { fs = Math.max(15, fs - 2); store.set('fs', fs); applyFs(); };
+$('dark').onclick = () => { const on = document.documentElement.dataset.dark !== '1'; document.documentElement.dataset.dark = on ? '1' : ''; store.set('dark', on ? 1 : 0); $('dark').classList.toggle('on', on); };
+let lock = null;
+$('wake').onclick = async () => {
+  try {
+    if (lock) { await lock.release(); lock = null; $('wake').classList.remove('on'); toast('화면 꺼짐 방지 끔'); return; }
+    lock = await navigator.wakeLock.request('screen'); $('wake').classList.add('on'); toast('화면이 꺼지지 않게 유지합니다');
+    lock.addEventListener('release', () => { lock = null; $('wake').classList.remove('on'); });
+  } catch (e) { toast('이 브라우저는 화면 꺼짐 방지를 지원하지 않습니다'); }
+};
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && $('wake').classList.contains('on') && !lock) $('wake').click(); });
+
+// 처음 열 때: 진행 중인 큐가 있으면 그 카드, 없으면 마지막으로 보던 카드
+const li = liveCardIndex(); requestAnimationFrame(() => goCard(li >= 0 ? li : store.get('cur', 0), false));
+addEventListener('resize', () => goCard(cur, false));
+</script>
+</body>
+</html>
