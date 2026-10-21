@@ -80,6 +80,19 @@ details.stage[open] summary::after { content:'접기 ▴'; }
 .box { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:10px; }
 .box p, .box li { font-size:15px; line-height:1.6; } .box ul { padding-left:18px; } .box .k { font-weight:800; color:var(--gold); font-size:13px; }
 .reset { margin:6px 14px 20px; padding:12px; width:calc(100% - 28px); border-radius:12px; border:1px solid var(--line); color:var(--muted); font-weight:700; }
+.ed [contenteditable="true"] { outline:2px dashed var(--gold2); outline-offset:3px; border-radius:6px; }
+.ed .kw [contenteditable="true"] { outline-offset:1px; }
+.edited { position:relative; } .edited::after { content:'수정'; position:absolute; right:-4px; top:-10px; font-size:10px; font-weight:800; color:#fff; background:var(--gold); padding:1px 5px; border-radius:6px; }
+.ed .edited::after { display:none; }
+.memo { display:none; margin-top:14px; } .memo.has, .ed .memo { display:block; }
+.memo b { display:block; font-size:13px; color:var(--gold); margin-bottom:4px; }
+.memo textarea { width:100%; min-height:70px; border:1px solid var(--line); border-radius:10px; background:var(--card); color:var(--ink); padding:10px; font:inherit; font-size:15px; line-height:1.5; resize:vertical; }
+.memo .mv { font-size:15px; line-height:1.55; white-space:pre-wrap; background:var(--tip); border-radius:10px; padding:10px; }
+.ed .memo .mv { display:none; } .memo textarea { display:none; } .ed .memo textarea { display:block; }
+.edbar { display:none; margin-top:12px; gap:8px; } .ed .edbar { display:flex; }
+.edbar button { flex:1; padding:11px; border-radius:12px; border:1px solid var(--line); background:var(--card); font-weight:700; font-size:14px; }
+.edhint { display:none; background:var(--gold2); color:#1A1916; font-size:13px; font-weight:800; text-align:center; padding:7px 10px; } .ed .edhint { display:block; }
+.sync { font-size:11.5px; color:#B9B2A3; margin-left:8px; font-weight:600; }
 .toast { position:fixed; left:50%; bottom:96px; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:10px 14px; border-radius:10px; font-size:14px; font-weight:700; opacity:0; transition:opacity .3s; pointer-events:none; z-index:30; }
 .toast.on { opacity:1; }
 </style>
@@ -87,18 +100,19 @@ details.stage[open] summary::after { content:'접기 ▴'; }
 <body>
 <header class="top">
   <div class="r1">
-    <h1>사회자 큐카드 · AI 마에스트로</h1>
+    <h1>사회자 큐카드 · AI 마에스트로<span class="sync" id="sync"></span></h1>
     <div class="clock" id="clock">--:--</div>
   </div>
   <div class="r1" style="margin-top:6px">
     <div class="tools">
       <button id="fsDown" aria-label="글자 작게">가-</button><button id="fsUp" aria-label="글자 크게">가+</button>
-      <button id="dark" aria-label="어두운 화면">◐</button><button id="wake" aria-label="화면 꺼짐 방지">☀</button>
+      <button id="dark" aria-label="어두운 화면">◐</button><button id="wake" aria-label="화면 꺼짐 방지">☀</button><button id="edit" aria-label="문구 수정">✎</button>
     </div>
     <div class="now" style="margin:0 0 0 auto"><span id="nowLabel">행사 전</span></div>
   </div>
   <div class="now"><span id="leftLabel">다음 큐까지</span><span class="left" id="left">--:--</span></div>
   <div class="bar"><i id="bar"></i></div>
+  <div class="edhint">수정 모드 · 점선 글자를 눌러 고치면 자동 저장됩니다 (다 고치면 ✎ 다시 누르기)</div>
   <nav class="tabs" id="tabs">
     <button data-v="deck" class="on">큐카드</button><button data-v="flow">진행표</button><button data-v="pre">사전 점검</button><button data-v="ref">참고</button>
   </nav>
@@ -148,10 +162,20 @@ applyFs();
 if (store.get('dark', 0)) document.documentElement.dataset.dark = '1';
 $('dark').classList.toggle('on', !!store.get('dark', 0));
 
+// ── 고친 문구(모든 휴대폰 공유: Apps Script 「큐카드수정」 시트) ──
+const API = 'https://script.google.com/macros/s/AKfycbys6p3dIgzhe-x_EWW6IiSTuMl24F_tFx0424BLlk_cGY-4oNPF9lhDC3y9zkFyikdV6g/exec';
+let ED = store.get('edits', {});                         // 마지막으로 받은 수정 내용(오프라인 대비)
+const val = (key, orig) => (ED[key] !== undefined ? ED[key] : orig);
+const isEd = key => ED[key] !== undefined;
+const ek = (no, t, i) => `${no}|${t}${i === undefined ? '' : '|' + i}`;
+
 // ── 큐카드 ──
 function cardHTML(c) {
-  const ment = (c.멘트 || []).map(p => p.trim().startsWith('▶') ? `<p class="cue">${hl(p)}</p>` : `<p>${hl(p)}</p>`).join('');
-  const kw = (c.키워드 || []).map(k => `<span>${hl(k)}</span>`).join('');
+  const no = c.번호;
+  const ment = (c.멘트 || []).map((p0, i) => { const k = ek(no, 'm', i), p = val(k, p0);
+    return `<p class="${p.trim().startsWith('▶') ? 'cue' : ''}${isEd(k) ? ' edited' : ''}" data-ek="${k}">${hl(p)}</p>`; }).join('');
+  const kw = (c.키워드 || []).map((k0, i) => { const k = ek(no, 'k', i); return `<span class="${isEd(k) ? 'edited' : ''}" data-ek="${k}">${hl(val(k, k0))}</span>`; }).join('');
+  const memo = val(ek(no, 'memo'), '');
   const kv = [['진행', c.진행], ['음향', c.음향], ['영상', c.영상], ['무대', c.무대], ['비고', c.비고], ['내용', c.내용]]
     .filter(([, v]) => v && v !== '-').map(([k, v]) => `<dt>${k}</dt><dd>${hl(v)}</dd>`).join('');
   return `<article class="card" data-no="${esc(c.번호)}">
@@ -159,13 +183,17 @@ function cardHTML(c) {
     <h2>${hl(c.순서)}</h2><div class="who">${hl(c.진행 || '')}</div>
     ${kw ? `<div class="kw">${kw}</div>` : ''}
     <div class="ment">${ment}</div>
-    ${c.끝멘트 ? `<p class="endm">끝 멘트 → <b>${hl(c.끝멘트)}</b></p>` : ''}
+    ${c.끝멘트 ? `<p class="endm">끝 멘트 → <b class="${isEd(ek(no, 'e')) ? 'edited' : ''}" data-ek="${ek(no, 'e')}">${hl(val(ek(no, 'e'), c.끝멘트))}</b></p>` : ''}
+    <div class="memo${memo ? ' has' : ''}"><b>메모</b><div class="mv">${esc(memo)}</div><textarea data-memo="${ek(no, 'memo')}" placeholder="이 카드에 남길 메모(진행 순서 변경, 호명 순서 등)">${esc(memo)}</textarea></div>
+    <div class="edbar"><button type="button" data-reset="${esc(no)}">이 카드 원래 문구로 되돌리기</button></div>
     <details class="stage"><summary>현장 지시(음향·영상·무대)</summary><dl class="kv">${kv}</dl></details>
     <button class="donebtn" data-done="${esc(c.번호)}"></button>
   </article>`;
 }
 $('deck').innerHTML = CARDS.map(cardHTML).join('');
-const deck = $('deck'), cards = [...deck.children];
+const deck = $('deck');
+let cards = [...deck.children];
+function redraw() { const keep = cur; deck.innerHTML = CARDS.map(cardHTML).join(''); cards = [...deck.children]; setEditable(); paint(); goCard(keep, false); }
 let cur = 0;
 const goCard = (i, smooth = true) => { cur = Math.max(0, Math.min(cards.length - 1, i)); deck.scrollTo({ left: cur * deck.clientWidth, behavior: smooth ? 'smooth' : 'auto' }); paintPos(); window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' }); };
 const paintPos = () => { $('pos').textContent = `${cur + 1}/${cards.length}`; };
@@ -177,6 +205,64 @@ deck.addEventListener('click', e => {
   const no = b.dataset.done; done[no] = !done[no]; store.set('done', done); paint();
   if (done[no]) { toast(`큐 ${no} 완료`); setTimeout(() => goCard(cur + 1), 350); }
 });
+
+// ── 수정 모드 ──
+let editing = false, pin = sessionStorage.getItem('mc.pin') || '';
+function setEditable() {
+  document.body.classList.toggle('ed', editing);
+  deck.querySelectorAll('[data-ek]').forEach(el => { el.contentEditable = editing ? 'true' : 'false'; });
+}
+async function post(key, value) {
+  $('sync').textContent = '저장 중…';
+  try {
+    const r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                                 body: JSON.stringify({ action: 'mcedit', payload: { pin, key, value } }) }).then(x => x.json());
+    if (!r.ok) { $('sync').textContent = ''; toast(r.message || '저장하지 못했습니다'); if (/PIN/.test(r.message || '')) { pin = ''; sessionStorage.removeItem('mc.pin'); toggleEdit(false); } return false; }
+    if (value.trim()) ED[key] = value; else delete ED[key];
+    store.set('edits', ED); $('sync').textContent = '저장됨'; setTimeout(() => { if ($('sync').textContent === '저장됨') $('sync').textContent = ''; }, 1500);
+    return true;
+  } catch (e) { $('sync').textContent = '연결 안 됨'; toast('인터넷 연결을 확인해 주세요'); return false; }
+}
+function toggleEdit(on) {
+  if (on && !pin) { const v = prompt('수정 PIN 4자리를 입력하세요'); if (!v) return; pin = v.trim(); sessionStorage.setItem('mc.pin', pin); }
+  editing = on; $('edit').classList.toggle('on', on); setEditable();
+  if (!on) redraw(); else toast('점선 글자를 눌러 고치세요');
+}
+$('edit').onclick = () => toggleEdit(!editing);
+deck.addEventListener('focusout', async e => {
+  const el = e.target; if (!editing) return;
+  if (el.dataset && el.dataset.ek) {
+    const key = el.dataset.ek, text = el.innerText.replace(/\u00a0/g, ' ').trim();
+    const no = key.split('|')[0], c = CUES.find(x => x.번호 === no), [, t, i] = key.split('|');
+    const orig = t === 'm' ? c.멘트[+i] : t === 'k' ? c.키워드[+i] : c.끝멘트;
+    if (text === val(key, orig).trim()) return;
+    await post(key, text === orig.trim() ? '' : text);                   // 원래 문구와 같으면 수정 기록 지움
+    el.classList.toggle('edited', ED[key] !== undefined);
+  }
+  if (el.dataset && el.dataset.memo) {
+    const key = el.dataset.memo, text = el.value.trim();
+    if (text === val(key, '')) return;
+    await post(key, text);
+  }
+});
+deck.addEventListener('click', async e => {
+  const b = e.target.closest('[data-reset]'); if (!b) return;
+  const no = b.dataset.reset; const keys = Object.keys(ED).filter(k => k.split('|')[0] === no && !k.endsWith('|memo'));
+  if (!keys.length) { toast('이 카드에 고친 문구가 없습니다'); return; }
+  if (!confirm(`큐 ${no}의 고친 문구 ${keys.length}곳을 원래대로 되돌릴까요? (메모는 남겨 둡니다)`)) return;
+  for (const k of keys) await post(k, '');
+  redraw(); setEditable(); toast('원래 문구로 되돌렸습니다');
+});
+async function pull() {
+  if (editing) return;
+  try {
+    const r = await fetch(API + '?api=mcedits', { cache: 'no-store' }).then(x => x.json());
+    if (r && r.ok && JSON.stringify(r.items) !== JSON.stringify(ED)) { ED = r.items; store.set('edits', ED); redraw(); }
+    if (r && r.ok && r.at) $('sync').textContent = '';
+  } catch (e) { /* 오프라인이면 저장된 내용으로 */ }
+}
+pull(); setInterval(pull, 60000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') pull(); });
 
 // ── 진행표(카드 없는 큐 포함) ──
 function flowHTML() {
