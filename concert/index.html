@@ -493,8 +493,9 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
       <div class="dv"><b></b></div>
       <div class="quote">“21명이 완주한 8번의 미션, 100건의 활용 사례”</div>
     </div>
-    <div><button class="start" id="play" type="button"><span class="tri" aria-hidden="true"></span><span id="playLabel">음악과 함께 보기</span></button></div>
-    <div class="hint">♪ 「수고했어요, 여름의 마에스트로」 · 화면을 내려 다섯 달의 기록을 보세요</div>
+    <!-- 첫 화면 '음악과 함께 보기' 버튼은 숨김(10. 21.). 아래 바의 ▶ 음악 버튼이 이 버튼을 눌러 재생하므로 요소는 남겨 둔다 -->
+    <div hidden><button class="start" id="play" type="button"><span class="tri" aria-hidden="true"></span><span id="playLabel">음악과 함께 보기</span></button></div>
+    <div class="hint">화면을 내려 다섯 달의 기록을 보세요</div>
     <a class="down" href="#ch1">SCROLL</a>
   </header>
 
