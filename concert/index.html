@@ -424,10 +424,16 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
 @media (max-width: 420px) { .pa-nav a { padding:7px 9px; font-size:12.5px; } .pa-nav a b { display:none; } }
 
 /* 시안 C — 체험형: 남은 시간이 흐르고, 사진을 크게 넘겨 보고, 일정·길·공유를 한 번에 */
-.pc-cd { margin:26px auto 0; display:inline-flex; align-items:flex-end; gap:10px; }
-.pc-cd .u { min-width:58px; padding:9px 6px 7px; border-radius:12px; background:var(--paper); border:1px solid var(--gold2); text-align:center; box-shadow:0 6px 14px rgba(26,25,22,.05); }
-.pc-cd .u b { display:block; font-size:clamp(24px, 6.4vw, 32px); font-weight:900; letter-spacing:-.03em; line-height:1; font-variant-numeric:tabular-nums; }
-.pc-cd .u span { display:block; margin-top:4px; font-size:11px; color:var(--muted); letter-spacing:.08em; }
+.pc-when { margin:24px auto 0; display:inline-block; padding:14px 26px 13px; border-top:1.5px solid var(--gold2); border-bottom:1.5px solid var(--gold2); }
+.pc-when .d { font-size:clamp(30px, 8.6vw, 42px); font-weight:900; letter-spacing:-.03em; line-height:1.1; color:var(--ink); }
+.pc-when .d small { font-size:.62em; font-weight:800; margin-left:2px; } .pc-when .d em { font-style:normal; color:var(--gold); margin-left:.28em; }
+.pc-when .p { margin-top:7px; font-size:clamp(15px, 4.2vw, 18px); font-weight:800; color:var(--ink); }
+.pc-when .p span { color:var(--muted); font-weight:600; margin-right:6px; }
+.pc-cd-l { margin-top:16px !important; font-size:11.5px !important; letter-spacing:.14em !important; }
+.pc-cd { margin:6px auto 0; display:inline-flex; align-items:flex-end; gap:6px; }
+.pc-cd .u { min-width:42px; padding:6px 5px 5px; border-radius:9px; background:var(--paper); border:1px solid var(--gold2); text-align:center; box-shadow:0 4px 10px rgba(26,25,22,.04); }
+.pc-cd .u b { display:block; font-size:clamp(17px, 4.6vw, 21px); font-weight:900; letter-spacing:-.03em; line-height:1; font-variant-numeric:tabular-nums; }
+.pc-cd .u span { display:block; margin-top:3px; font-size:9px; color:var(--muted); letter-spacing:.08em; }
 .pc-cd .u.g { background:var(--ink); border-color:var(--ink); color:var(--bg); } .pc-cd .u.g span { color:#E2B85C; }
 .hero { padding-bottom:130px; }   /* 카운트다운이 들어가 첫 화면이 길어진 만큼 SCROLL 표시와 띄운다 */
 .pc-cd-l { margin-top:8px; font-size:12.5px; color:var(--gold); font-weight:700; letter-spacing:.12em; }
@@ -919,9 +925,11 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
   // ① 첫 화면 카운트다운
   const hint = document.querySelector('.hero .hint');
   const cdBox = document.createElement('div');
-  cdBox.innerHTML = `<div class="pc-cd" aria-label="성과공유회까지 남은 시간"><div class="u g"><b id="pcD">0</b><span>DAYS</span></div>
-    <div class="u"><b id="pcH">00</b><span>HOURS</span></div><div class="u"><b id="pcM">00</b><span>MIN</span></div><div class="u"><b id="pcS">00</b><span>SEC</span></div></div>
-    <div class="pc-cd-l">10. 30.(금) 오후 2시까지</div>`;
+  cdBox.innerHTML = `<div class="pc-when" aria-label="일시와 장소"><div class="d">10. 30.<small>(금)</small><em>오후 2시</em></div>
+      <div class="p"><span>장소</span>부산대학교 대학본부 본관 3층 대강당</div></div>
+    <div class="pc-cd-l">행사 시작까지</div>
+    <div class="pc-cd" aria-label="성과공유회까지 남은 시간"><div class="u g"><b id="pcD">0</b><span>DAYS</span></div>
+    <div class="u"><b id="pcH">00</b><span>HOURS</span></div><div class="u"><b id="pcM">00</b><span>MIN</span></div><div class="u"><b id="pcS">00</b><span>SEC</span></div></div>`;
   hint.after(cdBox);
   const pad = n => String(n).padStart(2, '0');
   const cd = () => { const s = Math.floor(left() / 1000);
