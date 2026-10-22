@@ -111,6 +111,9 @@
   .banner p { margin: 0; color: var(--muted); font-size: 14px; }
   .banner .actions { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
 
+  h2.h-mc { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 0; }
+  h2.h-mc .mc { margin-left:12px; padding-left:12px; border-left:1px solid var(--line, #d8cfbf); font-family:inherit; font-size:14px; font-weight:600; color:var(--muted, #8a8272); letter-spacing:0; }
+  h2.h-mc .mc b { font-weight:800; color:var(--fg); margin-left:4px; }
   /* 당일 진행 순서 = 공연 프로그램 */
   table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
   .table-wrap { overflow-x: auto; border-top: 2px solid var(--fg); border-bottom: 1px solid var(--fg); background: var(--paper); }
@@ -469,7 +472,7 @@
       </div>
     </div>
 
-    <h2>당일 진행 순서</h2>
+    <h2 class="h-mc">당일 진행 순서<span class="mc">사회 <b>AX혁신과 한혜진</b></span></h2>
     <div class="table-wrap">
       <table>
         <thead>
