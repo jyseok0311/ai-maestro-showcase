@@ -498,6 +498,19 @@ footer { padding-bottom:calc(120px + env(safe-area-inset-bottom)) !important; }
 .pa-top { bottom:calc(92px + env(safe-area-inset-bottom)); }
 .px-toast { bottom:calc(92px + env(safe-area-inset-bottom)); }
 footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
+
+/* Ⅴ 현장 사진 + 발표자료 내려받기 */
+.ev-dl { display:flex; align-items:center; gap:14px; margin:34px auto 0; max-width:620px; padding:14px 16px; border-radius:14px; background:var(--ink); color:var(--bg); text-decoration:none; box-shadow:0 12px 30px rgba(26,25,22,.18); }
+.ev-dl .ic { flex:none; width:46px; height:46px; border-radius:10px; display:grid; place-items:center; background:#E2B85C; color:var(--ink); font-weight:900; font-size:13px; letter-spacing:.04em; }
+.ev-dl .tx { flex:1; min-width:0; } .ev-dl b { display:block; font-size:16px; font-weight:800; } .ev-dl small { display:block; margin-top:3px; font-size:12.5px; color:rgba(243,238,227,.7); }
+.ev-dl .ar { flex:none; font-size:20px; color:#E2B85C; } .ev-dl:hover .ar { transform:translateY(2px); }
+.ev-gal { display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; margin-top:12px; }
+.ev-gal figure { position:relative; margin:0; overflow:hidden; border-radius:8px; background:#e9e3d6; aspect-ratio:3/2; }
+.ev-gal figure:first-child { grid-column:span 2; }
+.ev-gal img { display:block; width:100%; height:100%; object-fit:cover; cursor:zoom-in; transition:transform .5s; }
+.ev-gal figure:hover img { transform:scale(1.03); }
+.ev-gal figcaption { position:absolute; left:0; right:0; bottom:0; padding:18px 10px 7px; font-size:11.5px; font-weight:700; color:#fff; background:linear-gradient(transparent, rgba(16,15,13,.72)); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; pointer-events:none; }
+@media (min-width: 760px) { .ev-gal { grid-template-columns:repeat(3, 1fr); gap:10px; } .ev-gal figcaption { font-size:12.5px; } }
 </style>
 </head>
 <body>
@@ -630,6 +643,54 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
       <div class="due">10. 29.(목)까지</div>
     </div>
     <figure class="group rv"><img src="photos/edu_group.webp" alt="2026. 8. 21. AI 교육 성과공유회 단체 사진" loading="lazy"><figcaption>2026. 8. 21. AI 교육 성과공유회</figcaption></figure>
+  </section>
+
+  <!-- Ⅴ 현장 사진 — 2026. 10. 30. 성과공유회 현장(사진 원본: 성과공유회 사진 폴더). 통합 발표자료 PDF는 AX 특강 슬라이드(67~165쪽)를 뺀 70쪽 -->
+  <section class="chap wrap" id="ch-live">
+    <div class="chap-hd rv">
+      <div class="no">Ⅴ · October 30 · Scenes</div>
+      <h2>그날의 <em>현장</em></h2>
+      <p>2026년 10월 30일, 대학본부 대강당에서 다섯 달의 이야기를 함께 나눴습니다. <br>사진을 누르면 크게 볼 수 있습니다.</p>
+      <div class="dv"><b></b></div>
+    </div>
+    <a class="ev-dl rv" href="files/ai-maestro-showcase-deck-v1.6.pdf" download="AI 마에스트로 성과공유회_통합 발표자료_최종본v1.6.pdf">
+      <span class="ic" aria-hidden="true">PDF</span>
+      <span class="tx"><b>통합 발표자료 최종본 내려받기</b><small>v1.6 · 70쪽 · 약 21MB · AX 특강 자료 제외</small></span>
+      <span class="ar" aria-hidden="true">↓</span>
+    </a>
+    <div class="gal-hd rv"><b>여는 순서</b><i>Opening</i></div>
+    <div class="ev-gal">
+      <figure class="rv"><img src="live/p7321.webp" alt="인사말씀" loading="lazy" decoding="async"><figcaption>인사말씀</figcaption></figure>
+      <figure class="rv"><img src="live/p7345.webp" alt="Ⅰ 사업성과 발표" loading="lazy" decoding="async"><figcaption>Ⅰ 사업성과 발표</figcaption></figure>
+      <figure class="rv"><img src="live/p7351.webp" alt="Ⅰ 사업성과 발표 — 다섯 달의 결과" loading="lazy" decoding="async"><figcaption>Ⅰ 사업성과 발표 — 다섯 달의 결과</figcaption></figure>
+      <figure class="rv"><img src="live/p7353.webp" alt="객석" loading="lazy" decoding="async"><figcaption>객석</figcaption></figure>
+    </div>
+    <div class="gal-hd rv"><b>우수사례 발표</b><i>Best Practices</i></div>
+    <div class="ev-gal">
+      <figure class="rv"><img src="live/p7360.webp" alt="① 김근수 · 한 편의 영상에 담은 AI 마에스트로" loading="lazy" decoding="async"><figcaption>① 김근수 · 한 편의 영상에 담은 AI 마에스트로</figcaption></figure>
+      <figure class="rv"><img src="live/p7372.webp" alt="① 김근수 · 한 편의 영상에 담은 AI 마에스트로" loading="lazy" decoding="async"><figcaption>① 김근수 · 한 편의 영상에 담은 AI 마에스트로</figcaption></figure>
+      <figure class="rv"><img src="live/p7390.webp" alt="② 진한룡 · 도서관 일을 다시 짜보았습니다" loading="lazy" decoding="async"><figcaption>② 진한룡 · 도서관 일을 다시 짜보았습니다</figcaption></figure>
+      <figure class="rv"><img src="live/p7395.webp" alt="② 진한룡 · 도서관 일을 다시 짜보았습니다" loading="lazy" decoding="async"><figcaption>② 진한룡 · 도서관 일을 다시 짜보았습니다</figcaption></figure>
+      <figure class="rv"><img src="live/p7410.webp" alt="③ 이현지 · 반복 업무는 스킬에, 자취방 고르기는 구글 시트에" loading="lazy" decoding="async"><figcaption>③ 이현지 · 반복 업무는 스킬에, 자취방 고르기는 구글 시트에</figcaption></figure>
+      <figure class="rv"><img src="live/p7415.webp" alt="③ 이현지 · 반복 업무는 스킬에, 자취방 고르기는 구글 시트에" loading="lazy" decoding="async"><figcaption>③ 이현지 · 반복 업무는 스킬에, 자취방 고르기는 구글 시트에</figcaption></figure>
+      <figure class="rv"><img src="live/p7427.webp" alt="④ 김정목 · 계획에서 화면까지, 그리고 나만의 에이전트로" loading="lazy" decoding="async"><figcaption>④ 김정목 · 계획에서 화면까지, 그리고 나만의 에이전트로</figcaption></figure>
+      <figure class="rv"><img src="live/p7441.webp" alt="④ 김정목 · 계획에서 화면까지, 그리고 나만의 에이전트로" loading="lazy" decoding="async"><figcaption>④ 김정목 · 계획에서 화면까지, 그리고 나만의 에이전트로</figcaption></figure>
+      <figure class="rv"><img src="live/p7354.webp" alt="객석" loading="lazy" decoding="async"><figcaption>객석</figcaption></figure>
+    </div>
+    <div class="gal-hd rv"><b>AX 특강</b><i>Special Lecture</i></div>
+    <div class="ev-gal">
+      <figure class="rv"><img src="live/p7496.webp" alt="Ⅲ AX 특강 · AI 그라운드 장병준 대표" loading="lazy" decoding="async"><figcaption>Ⅲ AX 특강 · AI 그라운드 장병준 대표</figcaption></figure>
+      <figure class="rv"><img src="live/p7503.webp" alt="Ⅲ AX 특강 · AI 그라운드 장병준 대표" loading="lazy" decoding="async"><figcaption>Ⅲ AX 특강 · AI 그라운드 장병준 대표</figcaption></figure>
+      <figure class="rv"><img src="live/p7520.webp" alt="Ⅲ AX 특강 · AI 그라운드 장병준 대표" loading="lazy" decoding="async"><figcaption>Ⅲ AX 특강 · AI 그라운드 장병준 대표</figcaption></figure>
+      <figure class="rv"><img src="live/p7529.webp" alt="Ⅲ AX 특강" loading="lazy" decoding="async"><figcaption>Ⅲ AX 특강</figcaption></figure>
+      <figure class="rv"><img src="live/p7533.webp" alt="Ⅲ AX 특강" loading="lazy" decoding="async"><figcaption>Ⅲ AX 특강</figcaption></figure>
+    </div>
+    <div class="gal-hd rv"><b>피날레</b><i>Finale</i></div>
+    <div class="ev-gal">
+      <figure class="rv"><img src="live/p7478.webp" alt="Ⅳ 피날레 · 단체사진" loading="lazy" decoding="async"><figcaption>Ⅳ 피날레 · 단체사진</figcaption></figure>
+      <figure class="rv"><img src="live/p7458.webp" alt="Ⅳ 피날레 · 단체사진" loading="lazy" decoding="async"><figcaption>Ⅳ 피날레 · 단체사진</figcaption></figure>
+      <figure class="rv"><img src="live/p7347.webp" alt="대학본부 본관 3층 대강당" loading="lazy" decoding="async"><figcaption>대학본부 본관 3층 대강당</figcaption></figure>
+    </div>
   </section>
 
   <!-- 실시간 객석 참여 — 신청 웹앱(Apps Script) 「객석참여」 시트에 쌓인다. 부적절한 답은 시트에서 '공개' 체크만 풀면 빠진다 -->
@@ -872,7 +933,7 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
 
 <div class="pa-prog" aria-hidden="true"><i id="paProg"></i></div>
 <nav class="pa-nav" id="paNav" aria-label="장 바로가기">
-  <a href="#ch1"><b>Ⅰ</b>교육</a><a href="#ch2"><b>Ⅱ</b>자율스터디</a><a href="#ch-traces"><b>Ⅲ</b>결과물</a><a href="#ch3"><b>Ⅳ</b>공유회</a>
+  <a href="#ch1"><b>Ⅰ</b>교육</a><a href="#ch2"><b>Ⅱ</b>자율스터디</a><a href="#ch-traces"><b>Ⅲ</b>결과물</a><a href="#ch3"><b>Ⅳ</b>공유회</a><a href="#ch-live"><b>Ⅴ</b>현장</a>
 </nav>
 <div class="pa-bar" id="paBar">
   <button class="mu" id="paMu" type="button" aria-label="음악 켜기"><svg class="pl" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg><svg class="ps" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></svg></button>
@@ -921,7 +982,7 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
   top.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
   let ctaSeen = false, keepBar = () => false;   // keepBar: 본문 신청 버튼이 보여도 바를 남길 조건(A+C: 음악 재생 중)
   new IntersectionObserver(es => es.forEach(e => { ctaSeen = e.isIntersecting; tick(); })).observe(cta);
-  const secs = ['ch1', 'ch2', 'ch-traces', 'ch3'].map(id => document.getElementById(id));
+  const secs = ['ch1', 'ch2', 'ch-traces', 'ch3', 'ch-live'].map(id => document.getElementById(id));
   const links = [...nav.querySelectorAll('a')];
   function tick() {
     const y = scrollY, H = document.documentElement.scrollHeight - innerHeight;
@@ -959,7 +1020,7 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
   const lb = document.createElement('div'); lb.className = 'pc-lb'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true'); lb.setAttribute('aria-label', '사진 크게 보기');
   lb.innerHTML = '<img alt=""><div class="cap"></div><button class="x" type="button" aria-label="닫기">✕</button><button class="pv" type="button" aria-label="이전 사진">‹</button><button class="nx" type="button" aria-label="다음 사진">›</button>';
   document.body.appendChild(lb);
-  const photos = () => [...document.querySelectorAll('.tl .ph img, .group img')];
+  const photos = () => [...document.querySelectorAll('.tl .ph img, .group img, .ev-gal img')];
   let idx = 0, back = null;
   const capOf = im => { const f = im.closest('figure'); const c = f && f.querySelector('figcaption'); const li = im.closest('li');
     const h = li && li.querySelector('h3'); return [h ? h.textContent : (c ? c.textContent : ''), h && c ? c.textContent : '']; };
@@ -968,7 +1029,7 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
     const [a, b] = capOf(im); lb.querySelector('.cap').innerHTML = `${a}${b ? `<small>${b} · ${idx + 1} / ${ps.length}</small>` : `<small>${idx + 1} / ${ps.length}</small>`}`; };
   const open = i => { back = document.activeElement; showAt(i); lb.classList.add('on'); document.body.style.overflow = 'hidden'; lb.querySelector('.x').focus(); };
   const close = () => { lb.classList.remove('on'); document.body.style.overflow = ''; back && back.focus && back.focus(); };
-  document.addEventListener('click', e => { const im = e.target.closest('.tl .ph img, .group img'); if (im) open(photos().indexOf(im)); });
+  document.addEventListener('click', e => { const im = e.target.closest('.tl .ph img, .group img, .ev-gal img'); if (im) open(photos().indexOf(im)); });
   lb.querySelector('.x').onclick = close; lb.querySelector('.pv').onclick = () => showAt(idx - 1); lb.querySelector('.nx').onclick = () => showAt(idx + 1);
   lb.addEventListener('click', e => { if (e.target === lb) close(); });
   addEventListener('keydown', e => { if (!lb.classList.contains('on')) return;
