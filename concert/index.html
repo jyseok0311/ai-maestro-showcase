@@ -526,6 +526,11 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
   .ev-gal figcaption { opacity:0; transform:translateY(6px); transition:opacity .25s, transform .25s; }   /* PC: 사진을 가리지 않게 올려 둘 때만 설명 */
   .ev-gal figure:first-child figcaption, .ev-gal figure:hover figcaption { opacity:1; transform:none; }
 }
+
+/* 행사 종료 후(11. 25.) — 카운트다운·신청 버튼 대신 종료 안내 */
+.info .done { margin-top:14px; font-size:14px; font-weight:700; color:var(--gold); }
+.pc-done { margin:18px auto 0; display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:999px; background:var(--ink); color:var(--bg); text-decoration:none; font-size:13.5px; font-weight:800; }
+.pc-done b { color:#E2B85C; } .pc-done span { color:#E2B85C; font-weight:700; }
 </style>
 </head>
 <body>
@@ -620,7 +625,7 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
     <div class="chap-hd rv">
       <div class="no">Ⅳ · October 30</div>
       <h2>그리고, 성과공유회</h2>
-      <p>다섯 달의 결과와 시행착오를 함께 나누고, AX 특강으로 다음 단계를 준비합니다.</p>
+      <p>다섯 달의 결과와 시행착오를 함께 나누고, AX 특강으로 다음 단계를 준비했습니다.</p>
       <div class="dv"><b></b></div>
     </div>
     <div class="prog-hd rv"><b>행사 내용<span class="mc">사회 <em>AX혁신과 한혜진</em></span></b><i>Program</i></div>
@@ -634,7 +639,7 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
           <li data-n="④"><b>김정목</b> 정보화기획운영과 — 계획에서 화면까지, 그리고 나만의 에이전트로</li>
         </ul></li>
       <li class="rv"><div class="row"><span class="m">Ⅲ</span><span class="t">14:35 – 16:50</span><span class="nm">AX 특강</span><span class="ld"></span><span class="by">AI 그라운드 장병준</span></div>
-        <div class="peek">무엇을 듣게 될까요? <b>특강 미리보기 ↓</b></div>
+        <div class="peek">어떤 이야기였을까요? <b>특강 미리보기 ↓</b></div>
         <!-- AX 특강 미리보기 — 자료는 공개하지 않고, 세션마다 장면 하나와 질문 하나로 궁금증만 건넵니다 -->
         <div class="ax" id="ax">
           <div class="ax-hd">
@@ -644,7 +649,7 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
           </div>
           <div class="ax-tabs" role="tablist" id="axTabs"></div>
           <div class="ax-card" id="axCard" role="tabpanel"></div>
-          <p class="ax-ft">나머지 이야기는 <b>10. 30.(금) 14:35</b>, 대강당에서 이어집니다.</p>
+          <p class="ax-ft">특강 현장은 아래 <b>Ⅴ 그날의 현장</b>에서 볼 수 있습니다.</p>
         </div>
       </li>
       <li class="rv"><div class="row"><span class="m">Ⅳ</span><span class="t">16:50 – 17:00</span><span class="nm">피날레</span><span class="ld"></span><span class="by">성과조사 · 단체사진</span></div></li>
@@ -654,8 +659,8 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
       <div class="when">10. 30.(금)</div>
       <div class="time">오후 2시</div>
       <div class="where">대학본부 본관 3층 대강당</div>
-      <a class="cta" href="https://ai-maestro-showcase.vercel.app/apply/" target="_blank" rel="noopener">참석 신청하기 →</a>
-      <div class="due">10. 29.(목)까지</div>
+      <div class="done">행사를 마쳤습니다 · 함께해 주셔서 감사합니다</div>
+      <a class="cta" href="#ch-live">현장 사진 · 발표자료 보기 ↓</a>
     </div>
     <figure class="group rv"><img src="photos/edu_group.webp" alt="2026. 8. 21. AI 교육 성과공유회 단체 사진" loading="lazy"><figcaption>2026. 8. 21. AI 교육 성과공유회</figcaption></figure>
   </section>
@@ -955,10 +960,9 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
 </nav>
 <div class="pa-bar" id="paBar">
   <button class="mu" id="paMu" type="button" aria-label="음악 켜기"><svg class="pl" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg><svg class="ps" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></svg></button>
-  <div class="d"><b><span id="paDd">D-10</span><span class="pc-eq" aria-hidden="true"><s></s><s></s><s></s></span></b><span id="paSub">10. 30.(금) 14:00 · 본관 3층 대강당</span></div>
+  <div class="d"><b><span id="paDd">공연을 마쳤습니다</span><span class="pc-eq" aria-hidden="true"><s></s><s></s><s></s></span></b><span id="paSub">2026. 10. 30.(금) · 본관 3층 대강당</span></div>
   <i class="pr" aria-hidden="true"><u id="paPr"></u></i>
   <button class="sh" id="paShare" type="button" aria-label="공유하기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
-  <a class="go" href="https://ai-maestro-showcase.vercel.app/apply/" target="_blank" rel="noopener">참석 신청</a>
 </div>
 <button class="pa-top" id="paTop" type="button" aria-label="맨 위로">↑</button>
 
@@ -974,7 +978,7 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
     if (!t) { t = document.createElement('div'); t.id = 'pxToast'; t.className = 'px-toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
     t.textContent = msg; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 2200); };
   const share = async () => {
-    const data = { title: 'AI 마에스트로 성과공유회', text: '10. 30.(금) 오후 2시 · 대학본부 본관 3층 대강당', url: URL0 };
+    const data = { title: 'AI 마에스트로 성과공유회', text: '2026. 10. 30. 성과공유회 — 다섯 달의 기록과 현장 사진', url: URL0 };
     if (navigator.share) { try { await navigator.share(data); return; } catch (e) { if (e.name === 'AbortError') return; } }
     try { await navigator.clipboard.writeText(URL0); toast('페이지 주소를 복사했습니다'); } catch (e) { prompt('아래 주소를 복사하세요', URL0); }
   };
@@ -995,7 +999,6 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
 
   const prog = document.getElementById('paProg'), nav = document.getElementById('paNav'), bar = document.getElementById('paBar'), top = document.getElementById('paTop');
   const hero = document.querySelector('.hero'), cta = document.querySelector('.info .cta');
-  document.getElementById('paDd').textContent = dday() === '종료' ? '행사 종료' : dday();
   document.getElementById('paShare').addEventListener('click', share);
   top.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
   let ctaSeen = false, keepBar = () => false;   // keepBar: 본문 신청 버튼이 보여도 바를 남길 조건(A+C: 음악 재생 중)
@@ -1024,15 +1027,8 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
       <li><span class="m">Ⅳ</span><span class="t">16:50–17:00</span><span class="nm">피날레</span><span class="ld"></span><span class="by">성과조사 · 단체사진</span></li></ol></div>
     <div class="pc-when" aria-label="일시와 장소"><div class="d">10. 30.<small>(금)</small><em>오후 2시</em></div>
       <div class="p"><span>장소</span><i class="u-full">부산대학교 </i>대학본부 본관 3층 대강당</div></div>
-    <div class="pc-cd-l">행사 시작까지</div>
-    <div class="pc-cd" aria-label="성과공유회까지 남은 시간"><div class="u g"><b id="pcD">0</b><span>DAYS</span></div>
-    <div class="u"><b id="pcH">00</b><span>HOURS</span></div><div class="u"><b id="pcM">00</b><span>MIN</span></div><div class="u"><b id="pcS">00</b><span>SEC</span></div></div>`;
+    <a class="pc-done" href="#ch-live"><b>✓</b> 행사를 마쳤습니다 <span>현장 사진 보기 ↓</span></a>`;
   hint.after(cdBox);
-  const pad = n => String(n).padStart(2, '0');
-  const cd = () => { const s = Math.floor(left() / 1000);
-    pcD.textContent = Math.floor(s / 86400); pcH.textContent = pad(Math.floor(s % 86400 / 3600)); pcM.textContent = pad(Math.floor(s % 3600 / 60)); pcS.textContent = pad(s % 60); };
-  const pcD = document.getElementById('pcD'), pcH = document.getElementById('pcH'), pcM = document.getElementById('pcM'), pcS = document.getElementById('pcS');
-  cd(); setInterval(cd, 1000);
 
   // ② 사진 크게 보기 — 교육 8회 사진과 단체 사진을 한 줄로 넘겨 본다
   const lb = document.createElement('div'); lb.className = 'pc-lb'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true'); lb.setAttribute('aria-label', '사진 크게 보기');
@@ -1057,15 +1053,6 @@ audio.addEventListener('ended', () => { btn.classList.remove('playing'); lab.tex
   const mark = () => document.querySelectorAll('.tl .ph, .group').forEach(f => { if (!f.querySelector('.pc-zoom')) f.insertAdjacentHTML('beforeend', '<span class="pc-zoom">⤢ 크게</span>'); });
   mark();
 
-  // ③ 신청 버튼 아래 — 캘린더 · 길찾기 · 공유
-  const acts = document.createElement('div'); acts.className = 'pc-acts';
-  acts.innerHTML = `<button type="button" id="pcCal">📅 캘린더에 추가</button><button type="button" id="pcMapB" aria-expanded="false">🗺 길찾기</button><button type="button" id="pcShare">🔗 공유하기</button>
-    <div class="pc-map" id="pcMap"><p>부산대학교 대학본부 본관 3층 대강당</p>${MAPS.map(([n, u]) => `<a href="${u}" target="_blank" rel="noopener">${n}에서 보기 <span>↗</span></a>`).join('')}</div>`;
-  document.querySelector('.info .due').after(acts);
-  document.getElementById('pcCal').onclick = ics; document.getElementById('pcShare').onclick = share;
-  const mb = document.getElementById('pcMapB'), mp = document.getElementById('pcMap');
-  mb.onclick = e => { e.stopPropagation(); const o = !mp.classList.contains('on'); mp.classList.toggle('on', o); mb.setAttribute('aria-expanded', String(o)); };
-  document.addEventListener('click', e => { if (!e.target.closest('#pcMap')) { mp.classList.remove('on'); mb.setAttribute('aria-expanded', 'false'); } });
 
 
   // ④ 음악 — 첫 화면 '음악과 함께 보기'와 같은 음악을 바에서 켜고 끈다
