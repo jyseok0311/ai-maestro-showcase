@@ -510,7 +510,22 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
 .ev-gal img { display:block; width:100%; height:100%; object-fit:cover; cursor:zoom-in; transition:transform .5s; }
 .ev-gal figure:hover img { transform:scale(1.03); }
 .ev-gal figcaption { position:absolute; left:0; right:0; bottom:0; padding:18px 10px 7px; font-size:11.5px; font-weight:700; color:#fff; background:linear-gradient(transparent, rgba(16,15,13,.72)); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; pointer-events:none; }
-@media (min-width: 760px) { .ev-gal { grid-template-columns:repeat(3, 1fr); gap:10px; } .ev-gal figcaption { font-size:12.5px; } }
+.ev-gal figure:last-child:nth-child(even) { grid-column:span 2; }   /* 휴대폰 2칸: 마지막 한 장이 혼자 남지 않게 */
+@media (min-width: 760px) {   /* 태블릿·PC 3칸: 첫 사진 2×2 + 나머지 3장씩 — 묶음마다 3의 배수(6·9장) */
+  .ev-gal { grid-template-columns:repeat(3, 1fr); gap:10px; }
+  .ev-gal figure:first-child { grid-column:span 2; grid-row:span 2; aspect-ratio:auto; }
+  .ev-gal figure:last-child:nth-child(even) { grid-column:auto; }
+  .ev-gal figcaption { font-size:12.5px; } .ev-gal figure:first-child figcaption { font-size:14px; padding:26px 14px 10px; }
+}
+@media (min-width: 1024px) {
+  .ev-gal { gap:14px; } .ev-gal figure { border-radius:10px; }
+  .ev-dl { max-width:680px; padding:18px 22px; } .ev-dl b { font-size:17px; }
+  #ch-live .gal-hd { margin-top:72px; }
+}
+@media (min-width: 1024px) and (hover: hover) {   /* 마우스가 있는 PC: 사진을 가리지 않게 올려 둘 때만 설명 */
+  .ev-gal figcaption { opacity:0; transform:translateY(6px); transition:opacity .25s, transform .25s; }   /* PC: 사진을 가리지 않게 올려 둘 때만 설명 */
+  .ev-gal figure:first-child figcaption, .ev-gal figure:hover figcaption { opacity:1; transform:none; }
+}
 </style>
 </head>
 <body>
@@ -664,6 +679,8 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
       <figure class="rv"><img src="live/p7345.webp" alt="Ⅰ 사업성과 발표" loading="lazy" decoding="async"><figcaption>Ⅰ 사업성과 발표</figcaption></figure>
       <figure class="rv"><img src="live/p7351.webp" alt="Ⅰ 사업성과 발표 — 다섯 달의 결과" loading="lazy" decoding="async"><figcaption>Ⅰ 사업성과 발표 — 다섯 달의 결과</figcaption></figure>
       <figure class="rv"><img src="live/p7353.webp" alt="객석" loading="lazy" decoding="async"><figcaption>객석</figcaption></figure>
+      <figure class="rv"><img src="live/p7348.webp" alt="Ⅰ 사업성과 발표" loading="lazy" decoding="async"><figcaption>Ⅰ 사업성과 발표</figcaption></figure>
+      <figure class="rv"><img src="live/p7347.webp" alt="대학본부 본관 3층 대강당" loading="lazy" decoding="async"><figcaption>대학본부 본관 3층 대강당</figcaption></figure>
     </div>
     <div class="gal-hd rv"><b>우수사례 발표</b><i>Best Practices</i></div>
     <div class="ev-gal">
@@ -683,13 +700,14 @@ footer { padding-bottom:calc(130px + env(safe-area-inset-bottom)) !important; }
       <figure class="rv"><img src="live/p7503.webp" alt="Ⅲ AX 특강 · AI 그라운드 장병준 대표" loading="lazy" decoding="async"><figcaption>Ⅲ AX 특강 · AI 그라운드 장병준 대표</figcaption></figure>
       <figure class="rv"><img src="live/p7520.webp" alt="Ⅲ AX 특강 · AI 그라운드 장병준 대표" loading="lazy" decoding="async"><figcaption>Ⅲ AX 특강 · AI 그라운드 장병준 대표</figcaption></figure>
       <figure class="rv"><img src="live/p7529.webp" alt="Ⅲ AX 특강" loading="lazy" decoding="async"><figcaption>Ⅲ AX 특강</figcaption></figure>
+      <figure class="rv"><img src="live/p7523.webp" alt="Ⅲ AX 특강" loading="lazy" decoding="async"><figcaption>Ⅲ AX 특강</figcaption></figure>
       <figure class="rv"><img src="live/p7533.webp" alt="Ⅲ AX 특강" loading="lazy" decoding="async"><figcaption>Ⅲ AX 특강</figcaption></figure>
     </div>
     <div class="gal-hd rv"><b>피날레</b><i>Finale</i></div>
     <div class="ev-gal">
       <figure class="rv"><img src="live/p7478.webp" alt="Ⅳ 피날레 · 단체사진" loading="lazy" decoding="async"><figcaption>Ⅳ 피날레 · 단체사진</figcaption></figure>
       <figure class="rv"><img src="live/p7458.webp" alt="Ⅳ 피날레 · 단체사진" loading="lazy" decoding="async"><figcaption>Ⅳ 피날레 · 단체사진</figcaption></figure>
-      <figure class="rv"><img src="live/p7347.webp" alt="대학본부 본관 3층 대강당" loading="lazy" decoding="async"><figcaption>대학본부 본관 3층 대강당</figcaption></figure>
+      <figure class="rv"><img src="live/p7442.webp" alt="Ⅳ 피날레 · 단체사진" loading="lazy" decoding="async"><figcaption>Ⅳ 피날레 · 단체사진</figcaption></figure>
     </div>
   </section>
 
